@@ -1,6 +1,6 @@
 #ifndef HAUTENF_H
 #define HAUTENF_H
-
+#include <gtk/gtk.h>
 
 
 typedef struct
@@ -9,6 +9,10 @@ typedef struct
 	gpointer user_data;
 
 } SGlobalData;
+
+
+
+
 
 struct main_board
 {

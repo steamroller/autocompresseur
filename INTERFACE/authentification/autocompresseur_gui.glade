@@ -115,7 +115,7 @@
             <property name="height_request">136</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">../rsc_rapport_de_soutenance/orange_resized_plus.png</property>
+            <property name="pixbuf">orange_resized_plus.png</property>
           </object>
           <packing>
             <property name="y">43</property>

@@ -14,5 +14,5 @@ hautenf : ${OBJ}
 
 clean:
 
-	${RM} hautenf *.o
+	${RM} hautenf *.o *.d
 

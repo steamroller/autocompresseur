@@ -9,13 +9,20 @@
 #include <SDL/SDL.h>
 
 #include "hautenf.h"
-
-#define _GNU_SOURCE
+/*
+void init()
+{
 
 SGlobalData data;
-data.builder=Gtk_new_builder();
+(data).builder=Gtk_new_builder();
 gtk_builder_add_from_file(data.builder,"autocompresseur_gui.glade",NULL);
-gtk_builder_connect_signals(data.builder,&data);
+GtkWidget* main_window=GTK_WIDGET(gtk_builder_get_object(data.builder,"main_window"));
+GtkLabel* connexion_message= GTK_WIDGET(gtk_builder_get_object(data.builder,"connexion_message"));
+GtkWidget* name_entry=GTK_WIDGET(gtk_builder_get_object(data.builder,"login_entry"));
+GtkWidget* password_entry=GTK_WIDGET(gtk_builder_get_object(data.builder,"password_entry"));
+
+}
+*/
 
 
 
@@ -207,17 +214,6 @@ int connect(GtkButton* button)
 	char password[4];
 
 	(void)button;
-	GtkWidget* name_entry;
-	GtkWidget * password_entry;
-	GtkWidget * connexion_message;
-
-
-	GtkBuilder* builder=gtk_builder_new();
-	gtk_builder_add_from_file(builder,"autocompression_gui.glade",NULL);
-
-	connexion_message= GTK_WIDGET(gtk_builder_get_object(builder,"connexion_message"));
-	name_entry=GTK_WIDGET(gtk_builder_get_object(builder,"login_entry"));
-	password_entry=GTK_WIDGET(gtk_builder_get_object(builder,"password_entry"));
 
 	const gchar* name= gtk_entry_get_text(GTK_ENTRY(name_entry));
 	const gchar* password= gtk_entry_get_text(GTK_ENTRY(password_entry));
@@ -262,19 +258,21 @@ int connect(GtkButton* button)
 int main(int argc, char *argv[])
 {
 	gtk_init(&argc,&argv);
+	
 	GtkWidget * main_window;
 
+ 	SGlobalData data;
 	data.builder=gtk_builder_new();
 	gtk_builder_add_from_file(data.builder,"autocompresseur_gui.glade",NULL);
-	
+	GtkWidget* connexion_message= GTK_WIDGET(gtk_builder_get_object(data.builder,"connexion_message"));
+
 	main_window=GTK_WIDGET(gtk_builder_get_object(data.builder,"main_window"));
 	if(main_window==NULL)
 		fprintf(stderr,"unable to find object with id \"main_window\" \n");
 	gtk_builder_connect_signals(data.builder,&data);
 	gtk_widget_show(main_window);
-	const gchar* text="YOOOOO";
-	GtkLabel* textlabel=GTK_LABEL(gtk_builder_get_object(data.builder,"connexion_message"));
-	gtk_label_set_text(textlabel,text);
+	const gchar* text="test message d'erreur";
+	gtk_label_set_text(GTK_LABEL(connexion_message),text);
 
 
 	gtk_main();
