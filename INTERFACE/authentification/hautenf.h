@@ -1,18 +1,17 @@
 #ifndef HAUTENF_H
 #define HAUTENF_H
-#include <gtk/gtk.h>
 
-
+/*
+GtkBuilder* builder=NULL;
+gtk_builder_add_from_file(builder,"autocompresseur_gui.glade",NULL);
+GtkWidget *main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));
+*/
 typedef struct
 {
 	GtkBuilder *builder;
 	gpointer user_data;
 
 } SGlobalData;
-
-
-
-
 
 struct main_board
 {
