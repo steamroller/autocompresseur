@@ -141,6 +141,7 @@ void on_connexion_button_clicked()
 		if(cmp==0 && cmn==0)
 		{
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Connected !");
+			gtk_main_quit();
 	
 		}
 		else
