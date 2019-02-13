@@ -13,9 +13,12 @@
 typedef struct node
 {
     char *cryptedvalue;
-    int  realvalue;
+    int r;
+    int g;
+    int b;
     struct node *left;
     struct node *right;
+    struct node *previous;
 } node ;
 
 
@@ -24,7 +27,6 @@ typedef struct carre
 {
     SDL_Rect* rect;
     SDL_Surface* surf;
-    struct node *binaryarbre;
     int line;
     int col;
     struct carre *next;
@@ -40,6 +42,7 @@ typedef struct ensemble
     struct matrix *Blue;
     struct matrix *Red;
     struct matrix *Green;
+    struct node *btree;
     int col;
     int ligne;
     struct ensemble* next;
@@ -47,15 +50,18 @@ typedef struct ensemble
 
 //////generate_struct
 
-struct node *initnode()
+struct node *initnode(struct node* pre,int red,int green,int blue)
 {
     struct node *no=malloc(sizeof(struct node));
     if(no==0)
         errx(1,"error generating node");
-    no->cryptedvalue="";
-    no->realvalue=0;
+    no->cryptedvalue=malloc(sizeof(char)*64);;
+    no->r=red;
+    no->g=green;
+    no->b=blue;
     no->left=NULL;
     no->right=NULL;
+    no->previous=pre;
     return no;
 }
 
@@ -98,6 +104,8 @@ struct ensemble *initensemble(int col, int line)
     ens->col=col;
     ens->ligne=line;
     ens->next=NULL;
+    char pika[64]="";
+    ens->btree=initnode(NULL,0,0,0);
     return ens;
 }
 //////free_struct
@@ -121,28 +129,28 @@ void freematrix(struct matrix *mat)
     }
     free(ne);
 }
-
+void freenode(struct node *no)
+{
+    if(no->left==NULL && no->left==NULL)
+    {
+        free(no);
+    }
+    if(no->left!=NULL)
+        freenode(no->left);
+    if(no->right!=NULL)
+        freenode(no->right);
+}
 void freeens(struct ensemble *ens)
 {
     if(ens->next)
         freeens(ens->next);
     freematrix(ens->Blue);
     freematrix(ens->Green);
+    freenode(ens->btree);
     freematrix(ens->Red);
     free(ens);
 }
-void freenode(struct node *no)
-{
-    if(no->left==NULL && no->right==NULL)
-    {
-        free(no->cryptedvalue);
-        free(no);
-    }
-    if(no->left==NULL)
-        freenode(no->right);
-    else
-        freenode(no->left);
-}
+
 
     
 /////change_shape_image
@@ -205,11 +213,13 @@ double C(int pos)
     return 1;
 }
 
-void DCT(SDL_Surface *image,struct ensemble *ens,int mq[])
+void DCT(struct carre *carr,struct ensemble *ens,int mq[])
 {
+    SDL_Surface *image = carr->surf;
     struct matrix* blue=ens->Blue;
     struct matrix* red=ens->Red;
     struct matrix* green=ens->Green;
+    int x=0;
     for(int i=0; i<8;i++)
     {
         for(int j=0;j<8;j++)
@@ -238,15 +248,16 @@ void DCT(SDL_Surface *image,struct ensemble *ens,int mq[])
                         cos((double)((2*col+1)*j*M_PI)/16)*b;
                 }
             }
-            Rres=(1/sqrt(16))*C(j)*C(i)*Rres/mq[i*8+j];
-            Gres=(1/sqrt(16))*C(j)*C(i)*Gres/mq[i*8+j];
-            Bres=(1/sqrt(16))*C(j)*C(i)*Bres/mq[i*8+j];
+            Rres=(double)((1/sqrt(16))*C(j)*C(i)*Rres)/(double)mq[8*i+j];
+            Gres=(double)((1/sqrt(16))*C(j)*C(i)*Gres)/(double)mq[8*i+j];
+            Bres=(double)((1/sqrt(16))*C(j)*C(i)*Bres)/(double)mq[8*i+j];
             nmB->value=Bres;
             nmG->value=Gres;
             nmR->value=Rres;
             blue=blue->next;
             green=green->next;
             red=red->next;
+            x++;
         }
     }
 }
@@ -254,15 +265,22 @@ void DCT(SDL_Surface *image,struct ensemble *ens,int mq[])
 void docmatrixDCT(struct ensemble *ens,int a)
 {
     FILE *f;
+    FILE *o;
     a=10000000+a;
     char filename[20];
+    char ff[20];
     sprintf(filename, "%d.DCT", a);
+    sprintf(ff,"%d.tree",a);
     f=fopen(filename, "w");
+    o=fopen(ff, "w");
     int x=0;
     struct matrix *r=ens->Red;
     struct matrix *b=ens->Blue;
     struct matrix *g=ens->Green;
     fputs("|",f);
+    struct node* prev=ens->btree;
+    prev->cryptedvalue="";
+    int n=0;
     while(x<64)
     {
         if(x%8==0 && x!=0)
@@ -274,10 +292,37 @@ void docmatrixDCT(struct ensemble *ens,int a)
         b=b->next;
         g=g->next;
         char value[30];
+        char *before=prev->cryptedvalue;
+        /*printf("before=%s\n",before);
+        printf("cryptedvalue=%s\n",prev->cryptedvalue);*/
+        char after[64*3];
+        char Huffman[64*3+30];
         if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0)
         {
+            sprintf(after,"%s%d",before,n);
+            //printf("after=%s\n",after);
+            struct node* noon=initnode(prev,
+                        (int)r->value,(int)g->value,(int)b->value);
+            noon->cryptedvalue=after;
+            if(n==0)
+            {
+                n++;
+                prev->left=noon;
+            }
+            else
+            {
+                n=0;
+                prev->right=noon;
+
+                if(prev->previous!=NULL && prev==prev->previous->left)
+                    prev=prev->previous->right;
+                else
+                    prev=prev->left;
+            }
+            sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
             sprintf(value,"{%d;%d;%d}",(int) b->value,(int)r->value,(int)g->value);
             fputs(value,f);
+            fputs(Huffman,o);
         }
         /* size_t a=0;
         while((value++)!=" ")
@@ -286,32 +331,68 @@ void docmatrixDCT(struct ensemble *ens,int a)
             fputs(" ",f);*/
         x++;
     }
-    
     fclose(f);
+    fclose(o);
+}
+void treecompress(char* name,int line,int nbdecol)
+{
+    int fd=open(name, O_CREAT|O_RDWR,00700);
+    char rline[30];
+    for(int s=0;s<line;s++)
+    {
+        for(int i=0;i<nbdecol;i++)
+        {
+            size_t len=30;
+            FILE* g;
+            int nmb=10000000+s*nbdecol+i;
+            char ff[30];
+            sprintf(ff,"%d.tree",nmb);
+            g=fopen(ff,"r");
+            while(len!=0)
+            {
+                fgets(rline, 30, g);
+                len=strlen(rline);
+                write(fd,rline,len);
+                sprintf(rline,"");
+            }
+            write(fd,"\n",1);
+            fclose(g);
+        }
+    }
+    close(fd);
 }
 
 void fichiercompress(char* name,int line,int nbdecol)
 {
     int fd=open(name, O_CREAT|O_RDWR,00700);
+    size_t len=0;
+    char Bigline[nbdecol*30*line];
+    char Bigline1[nbdecol*30*line];
+    char Bigline2[nbdecol*30*line];
+    char Bigline3[nbdecol*30*line];
+    char Bigline4[nbdecol*30*line];
+    char Bigline5[nbdecol*30*line];
+    char Bigline6[nbdecol*30*line];
+    char Bigline7[nbdecol*30*line];
     for(int s=0;s<line;s++)
     {
-        ssize_t r=0;
-        ssize_t r1=0;
-        ssize_t r2=0;
-        ssize_t r3=0;
-        ssize_t r4=0;
-        ssize_t r5=0;
-        ssize_t r6=0;
-        ssize_t r7=0;
-        size_t len=0;
-        char Bigline[8*200*line];
-        char Bigline1[8*200*line];
-        char Bigline2[8*200*line];
-        char Bigline3[8*200*line];
-        char Bigline4[8*200*line];
-        char Bigline5[8*200*line];
-        char Bigline6[8*200*line];
-        char Bigline7[8*200*line];
+        ssize_t r,r1,r2,r3,r4,r5,r6,r7;
+        r=0;
+        r1=0;
+        r2=0;
+        r3=0;
+        r4=0;
+        r5=0;
+        r6=0;
+        r7=0;
+        sprintf(Bigline,"");
+        sprintf(Bigline1,"");
+        sprintf(Bigline2,"");
+        sprintf(Bigline3,"");
+        sprintf(Bigline4,"");
+        sprintf(Bigline5,"");
+        sprintf(Bigline6,"");
+        sprintf(Bigline7,"");
         for(int i=0;i<nbdecol;i++)
         {
             FILE* f;
@@ -373,10 +454,4 @@ void fichiercompress(char* name,int line,int nbdecol)
     }
     close(fd);
 }
-
-
-
-
-    
-    
 

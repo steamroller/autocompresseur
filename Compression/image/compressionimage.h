@@ -14,13 +14,13 @@ typedef struct node
     int realvalue;
     struct node *left;
     struct node *right;
+    struct node *previous;
 } node;
 
 typedef struct carre
 {
     SDL_Rect* rect;
     SDL_Surface* surf;
-    struct node *binaryarbre;
     int col;
     int line;
     struct carre* next;
@@ -39,10 +39,11 @@ typedef struct ensemble
     struct matrix *Green;
     int col;
     int ligne;
+    struct node *btree;
     struct ensemble *next;
 } ensemble;
 
-struct node *initnode();
+struct node *initnode(struct node* prev, int r,int g, int b);
 struct carre *initcarre(int heigh, int width);
 struct matrix *initmatrix(double a);
 struct ensemble *initensemble(int col, int line);
@@ -51,10 +52,11 @@ void freematrix(struct matrix *mat);
 void freeens(struct ensemble *ens);
 void freenode(struct node *no);
 SDL_Surface* sizechange(SDL_Surface* image_surface);
-struct carre *bloc(SDL_Surface *image_surface, int col, int line);
+struct carre *bloc(SDL_Surface* surf, int col, int line);
 void matricequantification(int coefficient,int matrixquantification[]);
 double C(int pos);
-void DCT(SDL_Surface *image,struct ensemble *ens,int mq[]);
+void DCT(struct carre* car,struct ensemble *ens,int mq[]);
 void docmatrixDCT(struct ensemble *ens, int a);
+void treecompress(char *name, int line, int col);
 void fichiercompress(char *name, int line, int col);
 #endif 

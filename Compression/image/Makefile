@@ -16,6 +16,6 @@ main : ${OBJ}
 
 clean:
 	${RM} main main.d *.o
-	${RM} *.DCT 
+	${RM} *.DCT *.tree
 # END
 
