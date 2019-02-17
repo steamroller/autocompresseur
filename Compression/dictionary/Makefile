@@ -1,6 +1,6 @@
 # Makefile
 
-CC=gcc #-fsanitize=address
+CC=gcc #-fsanitize=address -g3 -fsanitize-recover=address -g3
 CPPFLAGS= -MMD -D_XOPEN_SOURCE=500
 CFLAGS= -Wall -Wextra -std=c99 -O2
 LDFLAGS=

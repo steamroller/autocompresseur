@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 
 struct dictionary
 {
@@ -8,54 +9,110 @@ struct dictionary
 	int num;
 };
 
-//Function that return the length of a string
-size_t leng(char *s)
+int nbword(char *s)
 {
+	size_t p = strlen(s);
 	size_t i = 0;
-	while (*s != 0)
+	int cpt =  0;
+	while(i < p)
 	{
+		if(s[i]=='<')
+			cpt += 1;
 		i+=1;
-		s+=1;
 	}
-	return i;
+	return cpt;
+}
+
+
+char *convert(int q)
+{
+	char *t = calloc(1,sizeof(char));
+
+	if(digit_count(q)==1)
+	{
+		asprintf(&t,"%c%c%i",'0','0',q);
+		return t;
+	}
+	if(digit_count(q)==2)
+	{
+		asprintf(&t,"%c%i",'0',q);
+		return t;
+	}
+	else
+		asprintf(&t,"%i",q);
+	return t;
+}
+
+
+int digit_count(int nombre)
+{
+	if(nombre == 0)
+		return 1;
+	else
+	{
+		int res = 0;
+		while(nombre > 0)
+		{
+			nombre = nombre/10;
+			res += 1;
+		}
+		return res;
+	}
+}
+
+
+
+
+
+
+void *substring(char *s)
+{
+	size_t len = strlen(s);
+	s[len-1] = 0;
 }
 
 
 //Function that tells if two strings are equals or not
 int are_equal(char* s1, char* s2)
 {
-	size_t i = leng(s1);
-	size_t y = leng(s2);
-	if(i != y)
-		return 0;
-	else
-	{
-		size_t u = 0;
-		while(u < i && *s1 == *s2)
-		{
-			s1 += 1;
-			s2 += 1;
-			u += 1;
-		}
-		return *s1 == *s2;
-	}
+	return strcmp(s1,s2);
 }
 
 //Function returning the ascii's weight of a string
 int weight(char *s)
 {
-	size_t i = leng(s);
-	size_t u = 0;
-	int accu = 0;
-	while(u < i)
+	size_t i = strlen(s);
+	int u = 0;
+	for(size_t p = 0; p < i; p++)
 	{
-		//printf("%c \n" ,*s);
-		accu += (*s);
-		s += 1;
-		u += 1;
+		u += (int)(s[p]);
 	}
-	return accu;
+	return u;
 }
+
+int is_belonging(struct dictionary *dico, char *s)
+{
+	int w = weight(s);
+	struct dictionary *f = dico;
+	int index = 0;
+	while(dico->next != NULL)
+	{
+		if(dico->num == w && strcmp(dico->value,s)==0)
+		{
+			return index;
+		}
+		index += 1;
+		dico = dico->next;
+	}
+	if(strcmp(dico->value,s)==0)
+	{
+		return index;
+	}
+	return -1;
+}
+
+
+
 
 
 
@@ -68,7 +125,8 @@ struct dictionary *build()
 	{
 		if(dico == NULL)
 			printf("capi\n");
-		char *str = malloc(1*sizeof(char));
+		char *str = malloc(2*sizeof(char));
+		str[1] = 0;
 		*str = (char)i;
 		(dico->value) = (char*)str;
 		dico -> num = (int)(weight(str));
@@ -88,11 +146,12 @@ struct dictionary *add(char* to_add,struct dictionary *dico)
 {
 
 	struct dictionary *final = dico;
-	size_t l = leng(to_add);
+	size_t l = strlen(to_add);
 	int w = weight(to_add);
-	printf("to_add = %s \n",(to_add));
+	//printf("to_add's weight = %i\n",w);
+	//printf("to_add = %s \n",(to_add));
 	struct dictionary *new = malloc(1*sizeof(struct dictionary));
-	char *str = malloc(2*sizeof(char));
+	/*char *str = malloc(2*sizeof(char));
 	for(size_t y = 0;y < l; y++)
 	{
 		*str = *to_add;
@@ -100,34 +159,270 @@ struct dictionary *add(char* to_add,struct dictionary *dico)
 		to_add += 1;
 	}
 	str-= l;
-	new->value = (char*)str;
-
-	printf("chipo\n");
-
-	while(dico->next != NULL && w > dico->num)
+	new->value = (char*)str;*/
+	new->value = to_add;
+	while(dico->next != NULL)
 	{
 		dico = dico->next;
 	}
-	printf("dddd\n");
-	struct dictionary *temp = malloc(1*sizeof(struct dictionary));
-	if(dico->next == NULL)
-	{
-		temp = NULL;
-		printf("please \n");
-	}
-	else
-	{
-		temp = dico->next;
-	}
-	printf("chuibo\n");
-	if (temp == NULL)
-		dico->next = new;
-	else
-		dico->next = new;
-	printf("et la \n");
-	new->next = temp;
-	new->num = (int)(weight(str));
+	dico->next = new;
+	//new->num = (int)(weight(str));
+	new->num = (int)(weight(to_add));
+	new->next = NULL;
 	return final;
+}
+
+
+
+//======================================================================================================================================================================
+																																										
+																																										
+//																COMPRESSION																								
+																																										
+																																										
+//======================================================================================================================================================================
+
+char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
+{
+	if(*s == 0)
+	{
+		nbw = nbw;
+		return str;
+	}
+	if(strlen(s) == 1)
+	{
+		asprintf(&str,"%s<%d>",str,is_belonging(dico,s));
+		nbw = nbw;
+		return str;
+	}
+	else
+	{
+		struct dictionary *f = dico;
+		int size = 1;
+		char *toreturn = calloc(1,100*sizeof(char));
+		*toreturn = *s;
+		toreturn += 1;
+		s += 1;
+		char *temp = toreturn-size;
+		while(*s != 0 && is_belonging(dico,temp)!= -1)
+		{
+			*toreturn = *s;
+			s+=1;
+			toreturn += 1;
+			size += 1;
+			temp = toreturn - size;
+		}
+
+		//printf("par ici : %s\n",temp);
+		int a;
+		if((a = is_belonging(dico,temp))!=-1)
+		{
+			//printf("pas de chance = %i\n",a);
+			asprintf(&str,"%s<%s>",str,convert(a));
+			dico = f;
+			nbw = nbw;
+			return str;
+		}
+		
+
+		
+		//substring(temp);
+		//printf("we add = %s\n",temp);
+		//char *chiffre = (substring(temp,1));
+		char *chiffre = temp;
+		char last = chiffre[strlen(chiffre)-1];
+		substring(chiffre);
+		char *chiffree = calloc(1,100*sizeof(char));
+		//printf(" = %s\n",chiffre);
+		for(size_t i = 0; i<strlen(chiffre);i++)
+		{
+			chiffree[i]=chiffre[i];
+		}
+		temp[strlen(chiffre)]= last;
+		temp[strlen(chiffre)] = 0;
+		//printf("we add = %s\n",temp);
+		//printf("we write = %s\n",chiffree);
+		int vg  = is_belonging(dico, chiffree);
+		//printf("vg = %i\n",vg);
+		dico = f;
+		dico = add(temp,dico);
+		dico = f;
+		s -= 1;
+		asprintf(&str,"%s<%s>",str,convert(vg));
+		return max_word(dico,s,str,nbw+1);
+	}
+}
+
+/*char *max_word(struct dictionary *dico,char *s,int i, char *str)
+{
+	if(s[i] == 0)
+	{
+		return str;
+	}
+	else
+	{
+		size_t u = 2;//nb caracteres
+		char *tmp = calloc(1,u*sizeof(char));
+		tmp[0]=s[i];
+		while(s->next != NULL && is_blonging(dico,tmp)!=-1)
+		{
+			i+=1;
+			tmp = realloc(tmp,(u+1)*sizeof(char));
+			tmp[i]=s[i];
+		}
+	}
+}*/
+
+
+char *final(struct dictionary *dico, char *s,int nbw)
+{
+	//printf("taille = %i\n",sod(dico));
+	char *v = calloc(1,4000*sizeof(char));
+	return max_word(dico,s,v,1);
+}
+
+//======================================================================================================================================================================
+																																										
+																																										
+//																DECOMPRESSION																							
+																																										
+																																										
+//======================================================================================================================================================================
+
+
+char *recup(struct dictionary *dic, int index)
+{
+	//printf("index = %i\n",index);
+	if(index >= sod(dic))
+		printf("tentative de recuperer un valeur superieur à la taille du dico");
+	int s = 0;
+	struct dictionary *f = dic;
+	while(s != index)
+	{
+		//printf("fanta\n");
+		dic = dic->next;
+		s += 1;
+	}
+	//printf("germain le mais humain\n");
+	size_t t = strlen(dic->value);
+	char *ret = calloc(1,(t+1)*sizeof(char));
+	asprintf(&ret,"%s",dic->value);
+	dic = f;
+	return ret;
+}
+
+int sod(struct dictionary *dico)
+{
+	int retour = 0;
+	while(dico != NULL)
+	{
+		retour += 1;
+		dico = dico->next;
+	}
+	return retour;
+}
+
+
+
+char *first(char *s)
+{
+	//printf("sos");
+	size_t taille = strlen(s);
+	int i = 0;
+	if(*s == '>'&& taille > 1)
+		s+= 1;
+	if(*s == '<')
+		s += 1;
+	//printf("ddd");
+	char *ret = calloc(1,4*sizeof(char));
+	while(s[i]!='>')
+	{
+		//printf("first = %c \n",*s);
+		ret[i] = s[i];
+		i += 1;
+	}
+	return ret;
+	
+}
+
+char *decompress(char *init,char *dest,int bw)
+{
+	struct dictionary *dico = calloc(1,sizeof(struct dictionary));
+	dico = build();
+	size_t i = 0;
+	size_t tot = strlen(init);
+	while(i < tot-1)
+	{
+		bw += 1;
+		int b = 0;
+		if(init[i] == '<')
+			i += 1;
+		size_t s = 0;
+		char *temp = calloc(1,10*sizeof(char));
+
+		while(init[i] != '>')
+		{
+			temp[s] = init[i];
+			i += 1;
+			s += 1;
+		}
+		//printf("tmp = %s\n",temp);
+		int actu = atoi(temp);
+		//if(tp < sod(dico))
+		if(1)
+		{
+			//printf("potatoes\n");
+			asprintf(&dest,"%s%s",dest,recup(dico,actu));
+			//printf("so?\n");
+			char *temporary;
+			//printf("init = %s\n",init);
+			int next ;
+			if (i<tot-4)
+				next = atoi(first(init + i + 1));
+			//printf("I = %i\n",i);
+			//printf("as suposed, tpn = %i\n",next);
+			//printf(" i = %i\n",i);
+			//printf("actu = %i et next = %i sachant que le dico a %i cases\n",actu,next,sod(dico));
+
+			if(i<tot-1 && next >= sod(dico))
+			{
+				//printf("c ca hein \n");
+				char *casse = calloc(1,6*sizeof(char));
+				asprintf(&casse,"%s%c",recup(dico,actu),recup(dico,actu)[0]);
+				add(casse,dico);
+				b = 1;
+				//printf("b = 1\n");
+			}
+
+
+			if(b == 0 && i< tot -1)
+				asprintf(&temporary,"%s%c",recup(dico,actu),recup(dico,next)[0]);
+			//printf("added = %s\n",temporary);
+			//printf("here\n");
+			if(i< tot -1 && b == 0 && is_belonging(dico,temporary)==-1)
+			{
+				//printf("addedd = %s\n",temporary);
+				add(temporary,dico);
+			}
+			//i += digit_count(tpn);
+			//printf("i = %i\n",i);
+			//free(temp);
+			i += 2;
+			//printf(" ii = %i\n",i);
+			//printf("result = %s\n",dest);
+			//printf("bw = %i\n",bw);
+		}
+
+		
+		//printf("bw = %i\n",bw);
+		
+
+	}
+	//printf("bw = %i\n",bw);
+	return dest;
+
+
+
 }
 
 
