@@ -93,6 +93,7 @@ struct matrix *initmatrix(double a)
     matrix->next=NULL;
     return matrix;
 }
+
 struct ensemble *initensemble(int col, int line)
 {
     struct ensemble *ens=malloc(sizeof(struct ensemble));
@@ -104,7 +105,6 @@ struct ensemble *initensemble(int col, int line)
     ens->col=col;
     ens->ligne=line;
     ens->next=NULL;
-    char pika[64]="";
     ens->btree=initnode(NULL,0,0,0);
     return ens;
 }
@@ -154,6 +154,7 @@ void freeens(struct ensemble *ens)
 
     
 /////change_shape_image
+
 SDL_Surface* sizechange(SDL_Surface* image_surface)
 {
     int width= image_surface->w;
@@ -261,6 +262,20 @@ void DCT(struct carre *carr,struct ensemble *ens,int mq[])
         }
     }
 }
+long decimalToBinary(int decimalnum)
+{
+    long binarynum = 0;
+    int rem, temp = 1;
+
+    while (decimalnum!=0)
+    {
+        rem = decimalnum%2;
+        decimalnum = decimalnum / 2;
+        binarynum = binarynum + rem*temp;
+        temp = temp * 10;
+    }
+    return binarynum;
+}
 
 void docmatrixDCT(struct ensemble *ens,int a)
 {
@@ -279,8 +294,8 @@ void docmatrixDCT(struct ensemble *ens,int a)
     struct matrix *g=ens->Green;
     fputs("|",f);
     struct node* prev=ens->btree;
-    prev->cryptedvalue="";
     int n=0;
+    int nomber=0;
     while(x<64)
     {
         if(x%8==0 && x!=0)
@@ -291,16 +306,16 @@ void docmatrixDCT(struct ensemble *ens,int a)
         r=r->next;
         b=b->next;
         g=g->next;
-        char value[30];
-        char *before=prev->cryptedvalue;
         /*printf("before=%s\n",before);
         printf("cryptedvalue=%s\n",prev->cryptedvalue);*/
-        char after[64*3];
-        char Huffman[64*3+30];
         if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0)
         {
-            sprintf(after,"%s%d",before,n);
-            //printf("after=%s\n",after);
+            char value[30];
+            char Huffman[64*3+30];
+            char after[30];
+            long goodenough=decimalToBinary(nomber);
+            sprintf(after,"%ld",goodenough);
+            nomber++;
             struct node* noon=initnode(prev,
                         (int)r->value,(int)g->value,(int)b->value);
             noon->cryptedvalue=after;
@@ -315,9 +330,13 @@ void docmatrixDCT(struct ensemble *ens,int a)
                 prev->right=noon;
 
                 if(prev->previous!=NULL && prev==prev->previous->left)
+                {
                     prev=prev->previous->right;
+                }
                 else
+                {
                     prev=prev->left;
+                }
             }
             sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
             sprintf(value,"{%d;%d;%d}",(int) b->value,(int)r->value,(int)g->value);
@@ -331,6 +350,7 @@ void docmatrixDCT(struct ensemble *ens,int a)
             fputs(" ",f);*/
         x++;
     }
+    fputs("|",f);
     fclose(f);
     fclose(o);
 }
@@ -346,16 +366,20 @@ void treecompress(char* name,int line,int nbdecol)
             FILE* g;
             int nmb=10000000+s*nbdecol+i;
             char ff[30];
+            memset(ff,0,sizeof(ff));
             sprintf(ff,"%d.tree",nmb);
             g=fopen(ff,"r");
             while(len!=0)
             {
-                fgets(rline, 30, g);
+                memset(rline,0,sizeof(rline));
+                if(fgets(rline, 30, g)==NULL)
+                    break;
                 len=strlen(rline);
-                write(fd,rline,len);
-                sprintf(rline,"");
+                if(write(fd,rline,len)==-1)
+                    errx(1,"didn't write all the line");
             }
-            write(fd,"\n",1);
+            if(write(fd,"\n",1)==-1)
+                errx(1,"error writing");
             fclose(g);
         }
     }
@@ -385,72 +409,97 @@ void fichiercompress(char* name,int line,int nbdecol)
         r5=0;
         r6=0;
         r7=0;
-        sprintf(Bigline,"");
-        sprintf(Bigline1,"");
-        sprintf(Bigline2,"");
-        sprintf(Bigline3,"");
-        sprintf(Bigline4,"");
-        sprintf(Bigline5,"");
-        sprintf(Bigline6,"");
-        sprintf(Bigline7,"");
+        memset(Bigline,0,sizeof(Bigline));
+        memset(Bigline1,0,sizeof(Bigline1));
+        memset(Bigline2,0,sizeof(Bigline2));
+        memset(Bigline3,0,sizeof(Bigline3));
+        memset(Bigline4,0,sizeof(Bigline4));
+        memset(Bigline5,0,sizeof(Bigline5));
+        memset(Bigline6,0,sizeof(Bigline6));
+        memset(Bigline7,0,sizeof(Bigline7));
         for(int i=0;i<nbdecol;i++)
         {
             FILE* f;
             int numberf=10000000+s*nbdecol+i;
             char filename[20];
+            memset(filename,0,20*sizeof(char));
             sprintf(filename, "%d.DCT", numberf);
             f=fopen(filename, "r");
             char abc[200];
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL) 
+                errx(1,"error reading the first line");
             len=strlen(abc);
             r+=len-1;
             strncat(Bigline,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 2nd line");
             len=strlen(abc);
             r1+=len-1;
             strncat(Bigline1,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 3rd line");
             len=strlen(abc);
             r2+=len-1;
             strncat(Bigline2,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 4th line");
             len=strlen(abc);
             r3+=len-1;
             strncat(Bigline3,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 5th line");
             len=strlen(abc);
             r4+=len-1;
             strncat(Bigline4,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 6th line");
             len=strlen(abc);
             r5+=len-1;
             strncat(Bigline5,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 7th line");
             len=strlen(abc);
             r6+=len-1;
             strncat(Bigline6,abc,len-1);
-            fgets(abc,200,f);
+            if(fgets(abc,200,f)==NULL)
+                errx(1,"error reading the 8th line");
             len=strlen(abc);
-            r7+=len-1;
-            strncat(Bigline7,abc,len-1);
+            r7+=len;
+            strncat(Bigline7,abc,len);
             fclose(f);
        }
-       write(fd,Bigline,r);
-       write(fd,"\n",1);
-       write(fd,Bigline1,r1);
-       write(fd,"\n",1);
-       write(fd,Bigline2,r2);
-       write(fd,"\n",1);
-       write(fd,Bigline3,r3);
-       write(fd,"\n",1);
-       write(fd,Bigline4,r4);
-       write(fd,"\n",1);
-       write(fd,Bigline5,r5);
-       write(fd,"\n",1);
-       write(fd,Bigline6,r6);
-       write(fd,"\n",1);
-       write(fd,Bigline7,r7);
-       write(fd,"\n",1);
+       if(write(fd,Bigline,r)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline1,r1)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline2,r2)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline3,r3)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline4,r4)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline5,r5)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline6,r6)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n",1)==-1)
+           errx(1,"error writing");
+       if(write(fd,Bigline7,r7)==-1)
+           errx(1,"error writing");
+       if(write(fd,"\n\n",2)==-1)
+           errx(1,"error writing");
     }
     close(fd);
 }

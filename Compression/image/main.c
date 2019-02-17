@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 
     wait_for_keypressed();
     
-    int width= image_surface->w;
-    int height= image_surface->h;
+    //int width= image_surface->w;
+    //int height= image_surface->h;
 
     resized_surface=sizechange(image_surface);
     
@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
     char *p;
     long coocoo=strtol(argv[2], &p,10);
     int bea=coocoo;
-    printf("bea=%d",bea);
     matricequantification(bea,mq);
 
     for(int c=0;c<nwidth;c++)
@@ -69,8 +68,8 @@ int main(int argc, char *argv[])
     char name[40];
     char namme[40];
 
-    sprintf(name,"%s.DCT",argv[1]);
-    sprintf(namme,"%s.tree",argv[1]);
+    sprintf(name,"%s%i.DCT",argv[1],bea);
+    sprintf(namme,"%s%i.tree",argv[1],bea);
 
     fichiercompress(name,nwidth,nheight);
 
