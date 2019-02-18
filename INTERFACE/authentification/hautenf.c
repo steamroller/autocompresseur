@@ -92,6 +92,7 @@ void on_new_user_button_clicked()
 {
 	name= gtk_entry_get_text(GTK_ENTRY(name_entry));
 	password= gtk_entry_get_text(GTK_ENTRY(password_entry));
+	
 	size_t len_login=strlen(name);
 	size_t len_password=strlen(password);
 	char nam[len_login];
@@ -103,6 +104,9 @@ void on_new_user_button_clicked()
 		gtk_label_set_text(GTK_LABEL(connexion_message),"There is already an account on this computer ! ");
 	else
 	{
+		printf("------------------New account------------------\n");
+		printf("Login: %s \nPassword: %s \n\n", name, password);
+
 		int fdl=open("userdatal",O_TRUNC|O_CREAT|O_RDWR,00700);
 		int fdm=open("userdatam",O_TRUNC|O_CREAT|O_RDWR,00700);
 		write(fdl,nam,len_login);
@@ -119,6 +123,7 @@ void on_connexion_button_clicked()
 	password= gtk_entry_get_text(GTK_ENTRY(password_entry));
 	size_t len_enter_name=strlen(name);
 	size_t len_enter_password=strlen(password);
+	
 
 	int fdl=open("userdatal",O_RDWR,00700);
 	int fdm=open("userdatam",O_RDWR,00700);
@@ -126,6 +131,9 @@ void on_connexion_button_clicked()
 		gtk_label_set_text(GTK_LABEL(connexion_message),"You should create an account");
 	else
 	{
+		printf("------------------Connexion------------------\n");
+		printf("Name entry : %s \nPassword entry: %s \n", name, password);
+
 
 		char rdname[len_enter_name];
 		rdname[len_enter_name-1]='\n';
@@ -140,12 +148,14 @@ void on_connexion_button_clicked()
 		printf("\n\n\n");
 		if(cmp==0 && cmn==0)
 		{
+			printf("        Connected  !            \n");
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Connected !");
 			gtk_main_quit();
 	
 		}
 		else
 		{
+			printf("Wrong login or password, try again.\n");
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Wrong login or password, try again.");
 			
 		}
