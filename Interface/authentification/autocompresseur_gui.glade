@@ -15,8 +15,8 @@
         <child>
           <object class="GtkEntry" id="password_entry">
             <property name="name">password_entry</property>
-            <property name="width_request">166</property>
-            <property name="height_request">29</property>
+            <property name="width_request">168</property>
+            <property name="height_request">34</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="visibility">False</property>
@@ -24,20 +24,20 @@
           </object>
           <packing>
             <property name="x">274</property>
-            <property name="y">105</property>
+            <property name="y">121</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="login_entry">
             <property name="name">login_entry</property>
-            <property name="width_request">166</property>
-            <property name="height_request">29</property>
+            <property name="width_request">168</property>
+            <property name="height_request">34</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
           <packing>
             <property name="x">276</property>
-            <property name="y">64</property>
+            <property name="y">83</property>
           </packing>
         </child>
         <child>
@@ -50,8 +50,8 @@
             <property name="label" translatable="yes">            LOGIN :</property>
           </object>
           <packing>
-            <property name="x">166</property>
-            <property name="y">37</property>
+            <property name="x">171</property>
+            <property name="y">61</property>
           </packing>
         </child>
         <child>
@@ -64,8 +64,8 @@
             <property name="label" translatable="yes">PASSWORD :</property>
           </object>
           <packing>
-            <property name="x">169</property>
-            <property name="y">79</property>
+            <property name="x">171</property>
+            <property name="y">99</property>
           </packing>
         </child>
         <child>
@@ -133,19 +133,19 @@
             <property name="pixbuf">orange_resized_plus.png</property>
           </object>
           <packing>
-            <property name="y">43</property>
+            <property name="y">47</property>
           </packing>
         </child>
         <child>
           <object class="GtkImage">
             <property name="width_request">356</property>
-            <property name="height_request">80</property>
+            <property name="height_request">53</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="pixbuf">image1.png</property>
           </object>
           <packing>
-            <property name="x">46</property>
+            <property name="x">58</property>
           </packing>
         </child>
       </object>
