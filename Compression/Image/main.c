@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 
     image_surface = load_image(argv[1]);
     screen_surface = display_image(image_surface);
-
-    wait_for_keypressed();
     
     //int width= image_surface->w;
     //int height= image_surface->h;
@@ -33,7 +31,6 @@ int main(int argc, char *argv[])
    
     update_surface(screen_surface,resized_surface);
     
-    wait_for_keypressed();
 
     nwidth=nwidth/8;
     nheight=nheight/8;

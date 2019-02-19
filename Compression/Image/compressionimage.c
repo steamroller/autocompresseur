@@ -350,7 +350,7 @@ void docmatrixDCT(struct ensemble *ens,int a)
             fputs(" ",f);*/
         x++;
     }
-    fputs("|",f);
+    fputs("|\n",f);
     fclose(f);
     fclose(o);
 }
@@ -464,8 +464,8 @@ void fichiercompress(char* name,int line,int nbdecol)
             if(fgets(abc,200,f)==NULL)
                 errx(1,"error reading the 8th line");
             len=strlen(abc);
-            r7+=len;
-            strncat(Bigline7,abc,len);
+            r7+=len-1;
+            strncat(Bigline7,abc,len-1);
             fclose(f);
        }
        if(write(fd,Bigline,r)==-1)
