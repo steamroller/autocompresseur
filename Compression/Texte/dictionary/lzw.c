@@ -1,6 +1,8 @@
+#define _GNU_SOURCE
 #include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
+#include"lzw.h"
 
 struct dictionary
 {
@@ -30,16 +32,26 @@ char *convert(int q)
 
 	if(digit_count(q)==1)
 	{
-		asprintf(&t,"%c%c%i",'0','0',q);
+		int a = asprintf(&t,"%c%c%i",'0','0',q);
+		if (a == -1)
+			printf("error");
 		return t;
 	}
 	if(digit_count(q)==2)
 	{
-		asprintf(&t,"%c%i",'0',q);
+		int a = asprintf(&t,"%c%i",'0',q);
+		if (a == -1)
+			printf("error");
+			
 		return t;
 	}
 	else
-		asprintf(&t,"%i",q);
+	{
+		int a = asprintf(&t,"%i",q);
+		if (a == -1)
+			printf("error");
+	}
+		
 	return t;
 }
 
@@ -65,7 +77,7 @@ int digit_count(int nombre)
 
 
 
-void *substring(char *s)
+void substring(char *s)
 {
 	size_t len = strlen(s);
 	s[len-1] = 0;
@@ -93,7 +105,7 @@ int weight(char *s)
 int is_belonging(struct dictionary *dico, char *s)
 {
 	int w = weight(s);
-	struct dictionary *f = dico;
+	//struct dictionary *f = dico;
 	int index = 0;
 	while(dico->next != NULL)
 	{
@@ -146,8 +158,8 @@ struct dictionary *add(char* to_add,struct dictionary *dico)
 {
 
 	struct dictionary *final = dico;
-	size_t l = strlen(to_add);
-	int w = weight(to_add);
+	//size_t l = strlen(to_add);
+	//int w = weight(to_add);
 	//printf("to_add's weight = %i\n",w);
 	//printf("to_add = %s \n",(to_add));
 	struct dictionary *new = malloc(1*sizeof(struct dictionary));
@@ -191,7 +203,9 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 	}
 	if(strlen(s) == 1)
 	{
-		asprintf(&str,"%s<%d>",str,is_belonging(dico,s));
+		int a = asprintf(&str,"%s<%d>",str,is_belonging(dico,s));
+		if (a == -1)
+			printf("error");
 		nbw = nbw;
 		return str;
 	}
@@ -218,7 +232,9 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 		if((a = is_belonging(dico,temp))!=-1)
 		{
 			//printf("pas de chance = %i\n",a);
-			asprintf(&str,"%s<%s>",str,convert(a));
+			int b = asprintf(&str,"%s<%s>",str,convert(a));
+			if (b == -1)
+				printf("error");
 			dico = f;
 			nbw = nbw;
 			return str;
@@ -248,7 +264,9 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 		dico = add(temp,dico);
 		dico = f;
 		s -= 1;
-		asprintf(&str,"%s<%s>",str,convert(vg));
+		int c = asprintf(&str,"%s<%s>",str,convert(vg));
+		if (c == -1)
+			printf("error");
 		return max_word(dico,s,str,nbw+1);
 	}
 }
@@ -274,7 +292,7 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 }*/
 
 
-char *final(struct dictionary *dico, char *s,int nbw)
+char *final(struct dictionary *dico, char *s)
 {
 	//printf("taille = %i\n",sod(dico));
 	char *v = calloc(1,4000*sizeof(char));
@@ -306,7 +324,9 @@ char *recup(struct dictionary *dic, int index)
 	//printf("germain le mais humain\n");
 	size_t t = strlen(dic->value);
 	char *ret = calloc(1,(t+1)*sizeof(char));
-	asprintf(&ret,"%s",dic->value);
+	int a = asprintf(&ret,"%s",dic->value);
+	if (a == -1)
+			printf("error");
 	dic = f;
 	return ret;
 }
@@ -345,7 +365,7 @@ char *first(char *s)
 	
 }
 
-char *decompress(char *init,char *dest,int bw)
+char *decompress(char *init,char *dest)
 {
 	struct dictionary *dico = calloc(1,sizeof(struct dictionary));
 	dico = build();
@@ -353,7 +373,7 @@ char *decompress(char *init,char *dest,int bw)
 	size_t tot = strlen(init);
 	while(i < tot-1)
 	{
-		bw += 1;
+		//bw += 1;
 		int b = 0;
 		if(init[i] == '<')
 			i += 1;
@@ -372,13 +392,17 @@ char *decompress(char *init,char *dest,int bw)
 		if(1)
 		{
 			//printf("potatoes\n");
-			asprintf(&dest,"%s%s",dest,recup(dico,actu));
+			int a = asprintf(&dest,"%s%s",dest,recup(dico,actu));
+			if (a == -1)
+				printf("error");
 			//printf("so?\n");
 			char *temporary;
 			//printf("init = %s\n",init);
 			int next ;
 			if (i<tot-4)
 				next = atoi(first(init + i + 1));
+			else
+				next = 5;//CRAEFUL
 			//printf("I = %i\n",i);
 			//printf("as suposed, tpn = %i\n",next);
 			//printf(" i = %i\n",i);
@@ -388,7 +412,9 @@ char *decompress(char *init,char *dest,int bw)
 			{
 				//printf("c ca hein \n");
 				char *casse = calloc(1,6*sizeof(char));
-				asprintf(&casse,"%s%c",recup(dico,actu),recup(dico,actu)[0]);
+				a = asprintf(&casse,"%s%c",recup(dico,actu),recup(dico,actu)[0]);
+				if (a == -1)
+					printf("error");
 				add(casse,dico);
 				b = 1;
 				//printf("b = 1\n");
@@ -396,7 +422,11 @@ char *decompress(char *init,char *dest,int bw)
 
 
 			if(b == 0 && i< tot -1)
-				asprintf(&temporary,"%s%c",recup(dico,actu),recup(dico,next)[0]);
+			{
+				int a = asprintf(&temporary,"%s%c",recup(dico,actu),recup(dico,next)[0]);
+				if (a == -1)
+					printf("error");
+			}
 			//printf("added = %s\n",temporary);
 			//printf("here\n");
 			if(i< tot -1 && b == 0 && is_belonging(dico,temporary)==-1)

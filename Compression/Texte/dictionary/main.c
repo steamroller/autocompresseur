@@ -1,6 +1,11 @@
+#define _GNU_SOURCE
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
+#include<err.h>
 #include"lzw.h"
+
+int sod(struct dictionary *dico);
 
 
 
@@ -15,6 +20,8 @@ struct dictionary
 
 int main(int argc, char *argv[])
 {
+	if(argc != 2)
+		errx(1,"2 arguments excpected");
 
 	//char p[9]="chocolat";
 	//printf("%i est le poids de chocolat \n",weight(p));
@@ -70,7 +77,7 @@ int main(int argc, char *argv[])
 	{
 		struct dictionary *temp = f;
 		f = f->next;
-		free(temp->value); 
+		free(temp->value);
 		free(temp);
 	}
 	free(tab);*/
@@ -137,23 +144,26 @@ int main(int argc, char *argv[])
 	int *array = invalues(phrase,l);
 	print_array(array,l);*/
 	char *tty = calloc(1,888*sizeof(char));
-	tty=final(ret,argv[1],1);
-
+	tty=final(ret,argv[1]);
+	printf("\n");
 	size_t v = 0;
 	while(c!=NULL)
 	{
 		//printf("pipi\n");
-		printf("Dic[%zu] = %s, numeric value : %i \n",v,c->value, c->num);
+		printf("Dic[%zu] = %s\n",v,c->value);// numeric value : %i \n",v,c->value, c->num);
 		c = c->next;
 		v += 1;
 	}
-	int n = 0;
-	printf("Initial sentence : %s\n",argv[1]);
-	printf("Resultat apres compression : %s\n",(final(d,argv[1],n)));
-	printf("%i * %i = %i bits\n",nbword(tty),7+(sod(d)/127),nbword(tty)*(7+(sod(d)/127)));
-	printf("Resultat apres decompression : %s\n",decompress(tty,try,nbword));
-	printf("%i * %i = %i bits\n",strlen(argv[1]),7,7*strlen(argv[1]));
+	//int n = 0;
+	printf("\nPhrase initiale : %s\n\n",argv[1]);
+	printf("Resultat apres compression : %s -----> ",(final(d,argv[1])));
+	int pr = nbword(tty)*(8+(sod(d)/127));
+	printf("%i * %i = %i bits\n\n",nbword(tty),8+(sod(d)/127),pr);
+	printf("Resultat apres decompression : %s -----> ",decompress(tty,try));
+	int apr = 8*strlen(argv[1]);
+	printf("%li * %i = %i bits\n\n",strlen(argv[1]),8,apr);
 	//printf("nbword = %i\n",nbword(tty));
+	printf("Taux de compression : %.2f%%\n\n",100 - (double)pr/(double)apr*100);
 
 
 	/*size_t v = 0;
