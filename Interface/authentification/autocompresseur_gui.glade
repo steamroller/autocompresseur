@@ -20,7 +20,8 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="visibility">False</property>
-            <property name="invisible_char">*</property>
+            <property name="invisible_char">.</property>
+            <property name="input_hints">GTK_INPUT_HINT_UPPERCASE_CHARS | GTK_INPUT_HINT_UPPERCASE_WORDS | GTK_INPUT_HINT_NONE</property>
           </object>
           <packing>
             <property name="x">274</property>
