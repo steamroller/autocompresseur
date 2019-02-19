@@ -572,6 +572,141 @@ struct mousquetaire *compression(char *input)
 
 }
 
+// PRETTY PRINT     ===============
+
+void printwhitespace(int x)
+{
+    for (int i = 0; i < x; i++)
+    {
+        printf(" ");
+    }
+    //printf("%d",x);
+}
+
+int max(int x, int y)
+{
+    if (x > y)
+        return x;
+    else
+        return y;
+}
+
+int AllNone(struct bizzare *liste)
+{
+    while (liste != NULL)
+    {
+        if (liste->arbre != NULL)
+            return 0;
+        liste = liste->next;
+    }
+
+    return 1;
+}
+
+int maxlvl(struct bintree *B)
+{
+    if (B == NULL)
+        return 0;
+    return max(maxlvl(B->left),maxlvl(B->right)) +1;
+}
+
+void insert_bi(struct bizzare *liste,struct bintree *tree)
+{
+    struct bizzare *elm = calloc(1,sizeof(struct bizzare));
+    elm->arbre = tree;
+    elm->next = NULL;
+
+    while (liste->next != NULL)
+    {
+        liste = liste->next;
+    }
+
+    liste->next = elm;
+}
+
+
+void printtreeinterval(struct bizzare *liste,int lvl,int maxlvl)
+{
+    int l = len_bizzare(liste);
+
+    if (!(l == 0 || AllNone(liste)))
+    {    
+
+    int floor = maxlvl - lvl;
+    //printf("floor : %d, maxlvl : %d, lvl : %d\n",floor,maxlvl,lvl);
+    int endgeLines = poww(max(floor -1, 0));
+    int firstSpaces = poww(floor) -1;
+    int betweenSpaces = poww(floor +1) -1;
+    printwhitespace(firstSpaces);
+
+    struct bizzare *L2 = calloc(1,sizeof(struct bizzare));
+
+    struct bizzare *ret = liste;
+    ret = ret->next;
+    while (ret != NULL)
+    {
+        if (ret->arbre != NULL)
+        {
+            printf("%c",ret->arbre->letter);
+            insert_bi(L2,ret->arbre->left);
+            insert_bi(L2,ret->arbre->right);
+        }
+        else
+        {
+            insert_bi(L2,NULL);
+            insert_bi(L2,NULL);
+            printf(" ");
+        }
+        
+        printwhitespace(betweenSpaces);
+        ret = ret->next;
+    }
+    printf("\n");
+
+    for (int i = 1; i < endgeLines +1; i++)
+    {
+        for (int j = 0; j < l; j++)
+        {
+            //printf("a");
+            printwhitespace(firstSpaces - i);
+
+            if (recup_tree(liste,j) == NULL)
+            {
+                //printf("b");
+                printwhitespace(endgeLines + endgeLines + i + 1);
+                continue;
+            }
+            else if (recup_tree(liste,j)->left != NULL)
+                printf("/");
+            else
+                printwhitespace(1);
+
+            printwhitespace(i+i-1);
+
+            if (recup_tree(liste,j)->right != NULL)
+                printf("\\");
+            else
+                printwhitespace(1);
+            printwhitespace(endgeLines+endgeLines - i);
+        }
+        printf("\n");
+    }
+
+    printtreeinterval(L2,lvl +1,maxlvl);
+    }
+}
+void printTree(struct bintree *tree)
+{
+    struct bizzare *sent = calloc(1,sizeof(struct bizzare));
+    struct bizzare *liste = calloc(1,sizeof(struct bizzare));
+    liste->arbre = tree;
+    liste->next = NULL;
+    sent->next = liste;
+    printtreeinterval(sent,1,maxlvl(tree));
+}
+
+
+
 
 
 

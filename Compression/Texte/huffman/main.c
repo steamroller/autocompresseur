@@ -85,7 +85,7 @@ int main(int argc,char *argv[])
 	//printf("This list has a len of : %i\n",len_listuple(d));
 	struct bintree *test = calloc(1,sizeof(struct bintree));
 	test = build_tree(d);
-	//print_tree(test);
+	printTree(test);
 	printf("\n");
 	char *bin = encodetree(test);
 	printf("Arbre de Huffman associé =  %s\n\n",bin);

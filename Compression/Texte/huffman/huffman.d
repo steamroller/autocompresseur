@@ -1,0 +1,1 @@
+huffman.o: huffman.c
