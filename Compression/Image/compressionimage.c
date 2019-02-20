@@ -354,6 +354,87 @@ void docmatrixDCT(struct ensemble *ens,int a)
     fclose(f);
     fclose(o);
 }
+
+void docmatrixDCT2(struct ensemble *ens,int a)
+{
+    FILE *f;
+    FILE *o;
+    a=10000000+a;
+    char filename[20];
+    char ff[20];
+    sprintf(filename, "%d.DCT", a);
+    sprintf(ff,"%d.tree",a);
+    f=fopen(filename, "w");
+    o=fopen(ff, "w");
+    int x=0;
+    struct matrix *r=ens->Red;
+    struct matrix *b=ens->Blue;
+    struct matrix *g=ens->Green;
+    //fputs("|",f);
+    struct node* prev=ens->btree;
+    int n=0;
+    int nomber=0;
+    int y=0;
+    while(x<64)
+    {
+        if(x%8==0 && x!=0 && y>0)
+        {
+            //fputs("|",f);
+            fputs("\n",f);
+            y=0;
+        }
+        r=r->next;
+        b=b->next;
+        g=g->next;
+        /*printf("before=%s\n",before);
+        printf("cryptedvalue=%s\n",prev->cryptedvalue);*/
+        if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0)
+        {
+            char value[30];
+            char Huffman[64*3+30];
+            char after[30];
+            long goodenough=decimalToBinary(nomber);
+            sprintf(after,"%ld",goodenough);
+            nomber++;
+            struct node* noon=initnode(prev,
+                        (int)r->value,(int)g->value,(int)b->value);
+            noon->cryptedvalue=after;
+            if(n==0)
+            {
+                n++;
+                prev->left=noon;
+            }
+            else
+            {
+                n=0;
+                prev->right=noon;
+
+                if(prev->previous!=NULL && prev==prev->previous->left)
+                {
+                    prev=prev->previous->right;
+                }
+                else
+                {
+                    prev=prev->left;
+                }
+            }
+            sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
+            sprintf(value,"%s",noon->cryptedvalue);
+            fputs(value,f);
+            fputs(Huffman,o);
+            y++;
+        }
+        /* size_t a=0;
+        while((value++)!=" ")
+            a++;
+        for(int i=0;i+a<30;i++)
+            fputs(" ",f);*/
+        x++;
+    }
+    fputs(/*|*/"\n",f);
+    fclose(f);
+    fclose(o);
+}
 void treecompress(char* name,int line,int nbdecol)
 {
     int fd=open(name, O_CREAT|O_RDWR,00700);
@@ -384,6 +465,42 @@ void treecompress(char* name,int line,int nbdecol)
         }
     }
     close(fd);
+}
+
+struct stat* fichiercompress2(char* name,int line,int nbdecol)
+{
+    struct stat *b=malloc(sizeof(struct stat));
+    int fd=open(name, O_CREAT|O_RDWR,00700);
+    char rline[30];
+    for(int s=0;s<line;s++)
+    {
+        for(int i=0;i<nbdecol;i++)
+        {
+            size_t len=30;
+            FILE* g;
+            int nmb=10000000+s*nbdecol+i;
+            char ff[30];
+            memset(ff,0,sizeof(ff));
+            sprintf(ff,"%d.DCT",nmb);
+            g=fopen(ff,"r");
+            while(len!=0)
+            {
+                memset(rline,0,sizeof(rline));
+                if(fgets(rline, 30, g)==NULL)
+                    break;
+                len=strlen(rline);
+                if(write(fd,rline,len)==-1)
+                    errx(1,"didn't write all the line");
+            }
+            if(write(fd,"\n",1)==-1)
+                errx(1,"error writing");
+            fclose(g);
+        }
+    }
+    if(fstat(fd,b)==-1)
+        errx(1,"couldn't do the thing");
+    close(fd);
+    return b;
 }
 
 struct stat *fichiercompress(char* name,int line,int nbdecol)
