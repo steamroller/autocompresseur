@@ -339,7 +339,7 @@ void docmatrixDCT(struct ensemble *ens,int a)
                 }
             }
             sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
-            sprintf(value,"{%d;%d;%d}",(int) b->value,(int)r->value,(int)g->value);
+            sprintf(value,"%s",noon->cryptedvalue);
             fputs(value,f);
             fputs(Huffman,o);
         }
@@ -386,8 +386,9 @@ void treecompress(char* name,int line,int nbdecol)
     close(fd);
 }
 
-void fichiercompress(char* name,int line,int nbdecol)
+struct stat *fichiercompress(char* name,int line,int nbdecol)
 {
+    struct stat *b=malloc(sizeof(struct stat));
     int fd=open(name, O_CREAT|O_RDWR,00700);
     size_t len=0;
     char Bigline[nbdecol*30*line];
@@ -501,6 +502,9 @@ void fichiercompress(char* name,int line,int nbdecol)
        if(write(fd,"\n\n",2)==-1)
            errx(1,"error writing");
     }
+    if(fstat(fd,b)==-1)
+        errx(1,"couldn't get back the value of stat");
     close(fd);
+    return b;
 }
 

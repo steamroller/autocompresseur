@@ -58,5 +58,5 @@ double C(int pos);
 void DCT(struct carre* car,struct ensemble *ens,int mq[]);
 void docmatrixDCT(struct ensemble *ens, int a);
 void treecompress(char *name, int line, int col);
-void fichiercompress(char *name, int line, int col);
+struct stat *fichiercompress(char *name, int line, int col);
 #endif 

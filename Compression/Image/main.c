@@ -6,7 +6,8 @@
 #include "display.h"
 #include "pixel_operations.h"
 #include <stdlib.h>
-
+#include <sys/types.h>
+#include <sys/stat.h>
 int main(int argc, char *argv[])
 {
     if(argc!=3)
@@ -21,14 +22,17 @@ int main(int argc, char *argv[])
     image_surface = load_image(argv[1]);
     screen_surface = display_image(image_surface);
     
-    //int width= image_surface->w;
-    //int height= image_surface->h;
-
+    printf("old width= %d\n",image_surface->w);
+    printf("old height= %d\n",image_surface->h);
+    int size0 = image_surface->w*image_surface->h*4;
+    printf("old size of the image= %d octets\n\n",size0);
     resized_surface=sizechange(image_surface);
     
     int nwidth= resized_surface->w;
     int nheight= resized_surface->h;
-   
+
+    printf("new width=%d\nnew height=%d\n",nwidth,nheight);
+
     update_surface(screen_surface,resized_surface);
     
 
@@ -67,9 +71,13 @@ int main(int argc, char *argv[])
 
     sprintf(name,"%s%i.DCT",argv[1],bea);
     sprintf(namme,"%s%i.tree",argv[1],bea);
+    
+    struct stat *stating=fichiercompress(name,nwidth,nheight);
 
-    fichiercompress(name,nwidth,nheight);
-
+    printf("the compressed file have a size of %lld octets \n\n",
+            (long long) stating->st_size);
+    printf("the compression is %f \n", (double)size0/(long long)stating->st_size);
+    
     treecompress(namme,nwidth,nheight);
 
     for(int j=0;j<a;j++)
