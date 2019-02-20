@@ -1,9 +1,9 @@
                         Un projet de l'équipe Steamroller: Autocompression
 
 
-Notre ambition est d'offrir à l'utilisateur deux services majeurs : la compression de ses compositions, et leurs chiffrements. L'avantage de lier compression et chiffrement est la réduction du coût du chiffrement. En effet les méthodes de cryptage peuvent parfois s'avérer coûteuse sur de longs fragments de texte, et ainsi, en passant avant par une compression de ces données, on limitera au moins (on l'espère) de moitié la longueur du texte à chiffrer.
-Ainsi, réalisera-t-on en premier lieu un travail de codage, c'est-à-dire une simple réduction de volume, puis un travail de chiffrement sur le texte réduit, pour cette fois véritablement en protéger le contenu. Le travail inverse, c'est à dire de déchiffrement et de décompression sera bien évidemment aussi pris en charge.
-
+Notre ambition est d'offrir à l'utilisateur deux services majeurs : le chiffrement de ses compositions et leurs compressions.
+Ainsi, réalisera-t-on en premier lieu un travail de chiffrement, c'est-à-dire protéger les données, puis un travail de compression , pour cette fois réduire la taille occupée par les données.
+Le travail inverse, c'est à dire la décompression puis le déchiffrement sera bien évidemment aussi pris en charge.
 Le programme est compatible uniquement avec les systèmes d'exploitation linux.
 Voici les librairies indispensables à l'utilisation du logiciel:
 
@@ -20,7 +20,6 @@ Voici les librairies indispensables à l'utilisation du logiciel:
 - fcntl.h
 - SDL_image.h
 - gtk.h
-
 
 Ci-dessous les fonctions du projet suivis des commandes à exécuter pour les utiliser.
 
