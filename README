@@ -1,0 +1,67 @@
+                        Un projet de l'équipe Steamroller: Autocompression
+
+
+Notre ambition est d'offrir à l'utilisateur deux services majeurs : la compression de ses compositions, et leurs chiffrements. L'avantage de lier compression et chiffrement est la réduction du coût du chiffrement. En effet les méthodes de cryptage peuvent parfois s'avérer coûteuse sur de longs fragments de texte, et ainsi, en passant avant par une compression de ces données, on limitera au moins (on l'espère) de moitié la longueur du texte à chiffrer.
+Ainsi, réalisera-t-on en premier lieu un travail de codage, c'est-à-dire une simple réduction de volume, puis un travail de chiffrement sur le texte réduit, pour cette fois véritablement en protéger le contenu. Le travail inverse, c'est à dire de déchiffrement et de décompression sera bien évidemment aussi pris en charge.
+
+Le programme est compatible uniquement avec les systèmes d'exploitation linux.
+Voici les librairies indispensables à l'utilisation du logiciel:
+
+- stdlib.h
+- stdio.h
+- string.h
+- math.h
+- err.h
+- errno.h
+- SDL.h
+- unistd.h
+- types.h
+- stat.h
+- fcntl.h
+- SDL_image.h
+- gtk.h
+
+
+Ci-dessous les fonctions du projet suivis des commandes à exécuter pour les utiliser.
+
+**CHIFFREMENT ET DECHIFFREMENT DE TEXTE PAR RSA
+
+     -> cd Codage
+     -> make
+     -> ./encryption_test 
+     -> Suivre les instructions affichés dans le terminal jusqu'à la fin du processus
+     -> copier la suite de nombre résultant du processus
+     -> ./decoding_test
+     -> Suivre les instructions affichés dans le terminal jusqu'à la demande "Enter the message you want to decode"
+     -> coller la suite de nombre
+     
+
+**COMPRESSION D'IMAGE
+
+     -> cd Compression/Image
+     -> make
+     -> ./ main <chemin_vers_le_fichier> <niveau de compression entre 0 et 25>
+
+**COMPRESSION ET DECOMPRESSION DE TEXTE
+
+  COMPRESSION DE HUFFMAN
+
+     -> cd Compression/Texte/huffman
+     -> make
+     -> ./main <phrase à compresser>
+
+  COMPRESSION ET DECOMPRESSION AVEC DICTIONNAIRE
+
+    -> cd Compression/Texte/dictionary
+    -> make 
+    -> ./main <phrase à compresser et décompresser>
+    
+**AUTHENTIFICATION 
+
+    -> cd Interface/authentification
+    -> make
+    -> ./authenf
+    -> entrer login et mot de passe 
+    -> si c'est votre première utilisation du logiciel cliquez sur "NEW USER" sinon sur "CONNECT"
+
+
