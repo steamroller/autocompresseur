@@ -28,12 +28,12 @@ Ci-dessous les fonctions du projet suivis des commandes à exécuter pour les ut
 
      -> cd Codage
      -> make
-     -> ./encryption_test 
+     -> ./encryption
      -> Suivre les instructions affichés dans le terminal jusqu'à la fin du processus
-     -> copier la suite de nombre résultant du processus
-     -> ./decoding_test
+     -> copier la suite de nombre résultant du processus (une version ./encrytpion_test disponible pour plus de précision sur le chiffrement)
+     -> ./decoding
      -> Suivre les instructions affichés dans le terminal jusqu'à la demande "Enter the message you want to decode"
-     -> coller la suite de nombre
+     -> coller la suite de nombre (une version ./decoding_test disponible pour plus de précision sur le déchiffrement)
      
 
 **COMPRESSION D'IMAGE
