@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     printf("the compressed file have a size of %lld octets \n\n",
             (long long) stating->st_size);
-    printf("the compression is %f \n", (double)size0/(long long)stating->st_size);
+    printf("the size has been divided with a ratio of  %f  \n", (double)size0/(long long)stating->st_size);
     
     treecompress(namme,nwidth,nheight);
 
