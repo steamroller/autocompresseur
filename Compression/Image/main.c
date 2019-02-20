@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
             carre->next->line++;
             carre=carre->next;
             DCT(carre,ensemble->next,mq);
-            docmatrixDCT(ensemble->next,a);
+            docmatrixDCT2(ensemble->next,a);
             a++;
             ensemble=ensemble->next;
         }
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     sprintf(name,"%s%i.DCT",argv[1],bea);
     sprintf(namme,"%s%i.tree",argv[1],bea);
     
-    struct stat *stating=fichiercompress(name,nwidth,nheight);
+    struct stat *stating=fichiercompress2(name,nwidth,nheight);
 
     printf("the compressed file have a size of %lld octets \n\n",
             (long long) stating->st_size);
