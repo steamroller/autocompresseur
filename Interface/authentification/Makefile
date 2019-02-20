@@ -4,15 +4,15 @@ CFLAGS= -Wall -Wextra -Werror  -std=c99 -g
 LDLIBS= `pkg-config  --libs  gtk+-3.0  ` -lm -export-dynamic
 
 
-SRC= hautenf.c
+SRC= authenf.c
 OBJ=${SRC:*.c=.o}
 
 .PHONY:clean all
-all: hautenf
+all: authenf
 
 hautenf : ${OBJ}
 
 clean:
 
-	${RM} hautenf *.o *.d userdatal userdatam
+	${RM} authenf *.o *.d userdatal userdatam
 
