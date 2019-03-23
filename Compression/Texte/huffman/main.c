@@ -103,6 +103,8 @@ int main(int argc,char *argv[])
 	fclose(f);*/
 
 	printf("Resultat compressé : Le texte -> (%s , %i) L'arbre -> (%s , %i)\n\n",chapeau->cabane->string,chapeau->cabane->booleen,chapeau->fut->string,chapeau->fut->booleen);
+	printf(" test de decodedata : %s\n",decodedata(test,"00"));
+
 
 
 

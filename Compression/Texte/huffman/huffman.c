@@ -705,6 +705,42 @@ void printTree(struct bintree *tree)
     printtreeinterval(sent,1,maxlvl(tree));
 }
 
+//===========================================================================
+//							Décompression									
+//===========================================================================
+
+char *decodedata(struct bintree *huff,char *input)
+{
+	int length = strlen(input);
+	struct bintree *B = huff;
+	int i = 0;
+	char *string = calloc(1,sizeof(char));
+	while(i<length)
+	{
+		printf("B == null ? : %i , B->letter = %i \n", B==NULL,(int)B->letter);
+		while(B != NULL && (int)B->letter == 0)
+		{
+			if(input[i] == '0')
+			{
+				printf("left\n");
+				B = B->left;
+			}
+			else
+			{
+				printf("ritght\n");
+				B = B->right;
+			}
+			i+=1;
+		}
+		printf("b->letter = %c\n",B->letter);
+		int recup = asprintf(&string,"%s%c",string,B->letter);
+		if(recup == -1)
+			printf("problem with asprintf\n");
+		B = huff;
+	}
+	return string;
+}
+
 
 
 

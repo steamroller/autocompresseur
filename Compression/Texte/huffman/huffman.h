@@ -17,6 +17,7 @@ char to_int(char *s);
 struct gobelin *tobinarybis(char *input);
 struct mousquetaire *compression(char *input);
 void printTree(struct bintree *tree);
+char *decodedata(struct bintree *huff, char *input);
 
 
 #endif
