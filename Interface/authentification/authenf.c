@@ -9,6 +9,12 @@
 #include <SDL/SDL.h>
 
 
+struct components
+{
+  
+  char *str;
+  
+};
 
 GtkBuilder* builder;
 
@@ -23,7 +29,7 @@ GtkWidget* close_edit_button;
 
 /*CONNECT*/
 
-
+gchar *filename= "";
 GtkLabel* textlabel;
 
 GtkEntry* name_entry;
@@ -41,7 +47,8 @@ GtkWidget * menu_window;
 GtkWidget * settings_window;
 GtkWidget * edit_window;
 
-	
+GtkTextBuffer * text_buffer;	
+GtkWidget * text_zone;
 
 int main(int argc, char *argv[])
 {
@@ -57,6 +64,7 @@ int main(int argc, char *argv[])
 	menu_window=GTK_WIDGET(gtk_builder_get_object(builder,"menu_window"));
 	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
 	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
+	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
 
 
 	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
@@ -197,10 +205,73 @@ void on_new_file_button_clicked()
 
 }
 
+char *conca(const char *s1, const char *s2) //Concatenate char
+{
+     char *s3 = NULL;
+     s3 = (char *)malloc((strlen(s1)+strlen(s2))+1);
+     strcpy(s3,s1);
+     strcat(s3,s2);
+     return s3;
+}
+
+
+void cp_file(char *filename)   // copy file choosed in the folder images/
+{
+	char *cp_arg1 = conca("cp ", filename);
+	char *arg1_arg2 = conca(cp_arg1, "  tmp/test_file.txt");
+
+	system(arg1_arg2);
+}
+
 void on_open_file_button_clicked()
 {
 
+	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(open_file_button));
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	dialog = gtk_file_chooser_dialog_new ("Open File",GTK_WINDOW(toplevel)     
+,action,
+        "open",GTK_RESPONSE_ACCEPT,"Cancel",GTK_RESPONSE_CANCEL, NULL);
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        filename = gtk_file_chooser_get_filename (chooser);
+		
+		struct components *elm = malloc(sizeof(struct components));
+		elm->str =malloc(sizeof(char)*1200);
+		
+		cp_file(filename);
 
+		FILE* temp = NULL;
+    	char result[1000] = "";
+   		temp = fopen("tmp/test_file.txt", "r");	
+
+
+		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+
+    	if (temp != NULL)
+    	{
+    	    while ( fgets(result, 1000, temp))
+			{
+				GtkTextIter end;
+				gtk_text_buffer_get_end_iter(text_buffer,&end);
+				gtk_text_buffer_insert(text_buffer,&end,result,-1);
+
+			}
+    	    fclose(temp);
+    	}
+
+	/*	elm->str = result;
+
+		gtk_text_buffer_set_text(text_buffer, elm->str, strlen(elm->str));*/
+
+		gtk_widget_show(edit_window);
+		gtk_widget_hide(menu_window);
+	}
+	else
+		g_print("You pressed the cancel \n");
+
+	gtk_widget_destroy(dialog);
 }
 
 
@@ -221,6 +292,41 @@ void on_close_edit_button_clicked()
 
 void on_save_button_clicked()
 {
+/*	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+	GtkTextIter start;
+	GtkTextIter end;
+	gtk_text_buffer_get_start_iter(text_buffer,&start);
+	gtk_text_buffer_get_end_iter(text_buffer,&end);
+	gchar* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
+
+	 ENVOYER LINES AU FCT DE CHIFFR ET COMPR 
+
+	FILE* fichier = fopen("tmp/test_file.txt","w");
+	fputs(lines,fichier);
+	fputs("\n",fichier);
+	fclose(fichier);*/
+
+	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(save_button));
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+
+	dialog = gtk_file_chooser_dialog_new ("Save File",GTK_WINDOW(toplevel)     
+,action,
+        "save",GTK_RESPONSE_ACCEPT,"Cancel",GTK_RESPONSE_CANCEL, NULL);
+
+
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+
+		gtk_file_chooser_set_current_name(chooser,"Untitled document");
+        filename = gtk_file_chooser_get_filename (chooser);
+
+		/* SEND FILENAME TO ANTOINE FOR COMPRESS AND SAVE IT */
+	}
+	
+	gtk_widget_destroy(dialog);
+
 
 }
 
