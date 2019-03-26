@@ -329,6 +329,7 @@
             <property name="height_request">26</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <signal name="state-set" handler="on_switch_rsa_state_set" swapped="no"/>
           </object>
           <packing>
             <property name="x">262</property>
@@ -355,6 +356,7 @@
             <property name="height_request">26</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <signal name="state-set" handler="on_switch_huffman_state_set" swapped="no"/>
           </object>
           <packing>
             <property name="x">261</property>
@@ -368,6 +370,7 @@
             <property name="height_request">26</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <signal name="state-set" handler="on_switch_dictionnary_state_set" swapped="no"/>
           </object>
           <packing>
             <property name="x">259</property>

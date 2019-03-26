@@ -27,6 +27,10 @@ GtkWidget* setting_button;
 GtkWidget* save_button;
 GtkWidget* close_edit_button;
 
+GtkWidget* switch_rsa;
+GtkWidget* switch_huffman;
+GtkWidget* switch_dictionnary;
+
 /*CONNECT*/
 
 gchar *filename= "";
@@ -65,6 +69,11 @@ int main(int argc, char *argv[])
 	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
 	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
 	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
+
+
+    switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
+ 	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
+	switch_dictionnary=GTK_WIDGET(gtk_builder_get_object(builder,"switch_dictionnary"));
 
 
 	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
@@ -137,8 +146,8 @@ void on_new_user_button_clicked()
 		gtk_label_set_text(GTK_LABEL(connexion_message),"There is already an account on this computer ! ");
 	else
 	{
-		printf("------------------New account------------------\n");
-		printf("Login: %s \nPassword: %s \n\n", name, password);
+	//	printf("------------------New account------------------\n");
+	//	printf("Login: %s \nPassword: %s \n\n", name, password);
 
 		int fdl=open("userdatal",O_TRUNC|O_CREAT|O_RDWR,00700);
 		int fdm=open("userdatam",O_TRUNC|O_CREAT|O_RDWR,00700);
@@ -164,8 +173,8 @@ void on_connexion_button_clicked()
 		gtk_label_set_text(GTK_LABEL(connexion_message),"You should create an account");
 	else
 	{
-		printf("------------------Connexion------------------\n");
-		printf("Name entry : %s \nPassword entry: %s \n", name, password);
+	//	printf("------------------Connexion------------------\n");
+	//	printf("Name entry : %s \nPassword entry: %s \n", name, password);
 
 
 		char rdname[len_enter_name];
@@ -178,10 +187,10 @@ void on_connexion_button_clicked()
 		int cmn=compar(rdname,name,len_rd_name,len_enter_name);
 		
 		int cmp=compar(rdpassword,password,len_rd_password,len_enter_password);
-		printf("\n\n\n");
+	//	printf("\n\n\n");
 		if(cmp==0 && cmn==0)
 		{
-			printf("        Connected  !            \n");
+		//	printf("        Connected  !            \n");
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Connected !");
 			gtk_widget_show(menu_window);
 			gtk_widget_hide(main_window);
@@ -189,7 +198,7 @@ void on_connexion_button_clicked()
 		}
 		else
 		{
-			printf("Wrong login or password, try again.\n");
+		//	printf("Wrong login or password, try again.\n");
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Wrong login or password, try again.");
 			
 		}
@@ -334,4 +343,31 @@ void on_apply_button_clicked()
 {
 	gtk_widget_show(menu_window);
 	gtk_widget_hide(settings_window);
+}
+
+
+void on_switch_rsa_state_set()
+{
+	if(gtk_switch_get_active(GTK_SWITCH(switch_rsa)))
+		printf("rsa on ! \n");
+	else
+		printf("rsa off ! \n");
+}
+
+void on_switch_huffman_state_set()
+{
+	if(gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
+		printf("huffman on ! \n");
+	else
+		printf("huffman off ! \n");
+
+}
+
+void on_switch_dictionnary_state_set()
+{
+	if(gtk_switch_get_active(GTK_SWITCH(switch_dictionnary)))
+		printf("dictionnary on ! \n");
+	else
+		printf("dictionnary off ! \n");
+
 }
