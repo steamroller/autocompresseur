@@ -12,23 +12,40 @@
 
 GtkBuilder* builder;
 
+/* BUTTON*/
+
+GtkWidget* new_user;
+GtkWidget* new_file_button;
+GtkWidget* open_file_button;
+GtkWidget* setting_button;
+GtkWidget* save_button;
+GtkWidget* close_edit_button;
+
+/*CONNECT*/
+
+
 GtkLabel* textlabel;
 
 GtkEntry* name_entry;
 GtkEntry * password_entry;
 GtkLabel * connexion_message;
 
-GtkWidget* new_user;
+
 const gchar * name;
 const gchar * password;
+
+/* WINDOW */
+
+GtkWidget * main_window;
+GtkWidget * menu_window;
+GtkWidget * settings_window;
+GtkWidget * edit_window;
 
 	
 
 int main(int argc, char *argv[])
 {
 	gtk_init(&argc,&argv);
-	GtkWidget * main_window;
-
 
 
 	builder=gtk_builder_new();
@@ -37,10 +54,18 @@ int main(int argc, char *argv[])
 	gtk_builder_add_from_file(builder,"autocompresseur_gui.glade",NULL);
 	
 	main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));
-	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
+	menu_window=GTK_WIDGET(gtk_builder_get_object(builder,"menu_window"));
+	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
+	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
 
-	if(main_window==NULL)
-		fprintf(stderr,"unable to find object with id \"main_window\" \n");
+
+	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
+	new_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_file_button"));
+	open_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"open_file_button"));
+	setting_button=GTK_WIDGET(gtk_builder_get_object(builder,"setting_button"));
+	save_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
+	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
+
 	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
 	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
@@ -150,7 +175,8 @@ void on_connexion_button_clicked()
 		{
 			printf("        Connected  !            \n");
 			gtk_label_set_text(GTK_LABEL(connexion_message),"Connected !");
-			gtk_main_quit();
+			gtk_widget_show(menu_window);
+			gtk_widget_hide(main_window);
 	
 		}
 		else
@@ -161,4 +187,45 @@ void on_connexion_button_clicked()
 		}
 	
 	}
+}
+
+
+void on_new_file_button_clicked()
+{
+	gtk_widget_show(edit_window);
+	gtk_widget_hide(menu_window);
+
+}
+
+void on_open_file_button_clicked()
+{
+
+
+}
+
+
+void on_setting_button_clicked()
+{
+	gtk_widget_show(settings_window);
+	gtk_widget_hide(menu_window);
+
+}
+
+
+void on_close_edit_button_clicked()
+{
+	gtk_widget_show(menu_window);
+	gtk_widget_hide(edit_window);
+}
+
+
+void on_save_button_clicked()
+{
+
+}
+
+void on_apply_button_clicked()
+{
+	gtk_widget_show(menu_window);
+	gtk_widget_hide(settings_window);
 }
