@@ -74,6 +74,9 @@ int main(int argc, char *argv[])
     switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
  	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
 	switch_dictionnary=GTK_WIDGET(gtk_builder_get_object(builder,"switch_dictionnary"));
+	
+	gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
+	gtk_switch_set_active(GTK_SWITCH(switch_huffman),TRUE);
 
 
 	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
@@ -349,7 +352,10 @@ void on_apply_button_clicked()
 void on_switch_rsa_state_set()
 {
 	if(gtk_switch_get_active(GTK_SWITCH(switch_rsa)))
+	{
 		printf("rsa on ! \n");
+		gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
+	}
 	else
 		printf("rsa off ! \n");
 }
@@ -366,7 +372,11 @@ void on_switch_huffman_state_set()
 void on_switch_dictionnary_state_set()
 {
 	if(gtk_switch_get_active(GTK_SWITCH(switch_dictionnary)))
+	{
+		gtk_switch_set_active(GTK_SWITCH(switch_rsa),FALSE);
+	
 		printf("dictionnary on ! \n");
+	}
 	else
 		printf("dictionnary off ! \n");
 
