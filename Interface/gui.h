@@ -1,5 +1,5 @@
-#ifndef HAUTENF_H
-#define HAUTENF_H
+#ifndef GUI_H
+#define GUI_H
 
 /*
 GtkBuilder* builder=NULL;

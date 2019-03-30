@@ -4,15 +4,15 @@ CFLAGS= -Wall -Wextra -Werror  -std=c99 -g
 LDLIBS= `pkg-config  --libs  gtk+-3.0  ` -lm -export-dynamic
 
 
-SRC= authenf.c
+SRC= gui.c
 OBJ=${SRC:*.c=.o}
 
 .PHONY:clean all
-all: authenf
+all: gui
 
 hautenf : ${OBJ}
 
 clean:
 
-	${RM} authenf *.o *.d userdatal userdatam
+	${RM} gui *.o *.d userdatal userdatam
 

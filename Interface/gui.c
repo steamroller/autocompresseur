@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 	builder=gtk_builder_new();
 
 	//------ GET ELEMENT FROM GLADE FILE
-	gtk_builder_add_from_file(builder,"autocompresseur_gui.glade",NULL);
+	gtk_builder_add_from_file(builder,"gui.glade",NULL);
 	
 	main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));
 	menu_window=GTK_WIDGET(gtk_builder_get_object(builder,"menu_window"));
@@ -363,7 +363,10 @@ void on_switch_rsa_state_set()
 void on_switch_huffman_state_set()
 {
 	if(gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
+	{
 		printf("huffman on ! \n");
+		gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
+	}
 	else
 		printf("huffman off ! \n");
 
@@ -374,7 +377,7 @@ void on_switch_dictionnary_state_set()
 	if(gtk_switch_get_active(GTK_SWITCH(switch_dictionnary)))
 	{
 		gtk_switch_set_active(GTK_SWITCH(switch_rsa),FALSE);
-	
+		gtk_switch_set_active(GTK_SWITCH(switch_huffman),FALSE);
 		printf("dictionnary on ! \n");
 	}
 	else
