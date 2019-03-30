@@ -1,103 +1,18 @@
- \documentclass[a4paper, pt]{article}
-
-%% Language and font encodings
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-\usepackage[T1]{fontenc}
+CC=gcc
+CPPFLAGS= -MMD `pkg-config --cflags gtk+-3.0`
+CFLAGS= -Wall -Wextra -Werror  -std=c99 -g
+LDLIBS= `pkg-config  --libs  gtk+-3.0  ` -lm -export-dynamic
 
 
-%% Sets page size and margins
-\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-% * <lucas.sappey@yahoo.fr> 2018-05-03T15:21:30.498Z:
-%
-% ^.
-%% Useful packages
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\usepackage{lastpage}
+SRC= gui.c
+OBJ=${SRC:*.c=.o}
 
-\usepackage[normalem]{ ulem }
-\usepackage{soul}
+.PHONY:clean all
+all: gui
 
+hautenf : ${OBJ}
 
-\setlength{\hoffset}{-18pt}         
-\setlength{\oddsidemargin}{0pt} % Marge gauche sur pages impaires
-\setlength{\evensidemargin}{9pt} % Marge gauche sur pages paires
-\setlength{\marginparwidth}{54pt} % Largeur de note dans la marge
-\setlength{\textwidth}{481pt} % Largeur de la zone de texte (17cm)
-\setlength{\voffset}{-18pt} % Bon pour DOS
-\setlength{\marginparsep}{7pt} % Séparation de la marge
-\setlength{\topmargin}{0pt} % Pas de marge en haut
-\setlength{\headheight}{13pt} % Haut de page
-\setlength{\headsep}{21pt} % Entre le haut de page et le texte
-\setlength{\footskip}{60pt} % Bas de page + séparation
-\setlength{\textheight}{685pt} % Hauteur de la zone de texte (25cm)
+clean:
 
-
-
-\fancyfoot[C]{
-\textbf{Page \thepage/\pageref{LastPage}}}
-\fancyfoot[R]{\includegraphics[scale = 0.05]{steamroller.png}}
-\fancyfoot[L]{\includegraphics[scale = 0.2]{logof.png}}
-\renewcommand\footrulewidth{.4pt}
-
-\newcommand{\TextSoulign}[3]{\emph{\textcolor{#1}{\underline{#2\textcolor{black}{#3}}}}}
-
-
-\title{\Huge{Projet S4 : Cahier des charges}.\\
- Epita, Promotion 2022 }
-
-\author{\Huge "Autocompression", par Steamroller\\ \\David Clara, Mignon Dorian, Mendjindou-Tayou Ivan et Fournier Antoine. }
-
-\date{\vspace{-5ex}}
-
-\begin{document}
-\maketitle
- \par\leavevmode\ \par\leavevmode\ \par\leavevmode\ \par\leavevmode\ \par\leavevmode\ \par\leavevmode\ \par\leavevmode\
- 
-\includegraphics[scale = 0.7]{steamroller2.png} 
-\newpage
-\tableofcontents
-\newpage 
-
-\section{Introduction}
-\par\leavevmode\ \par\leavevmode\
-\section{Etat de l'art}
-
-
-\subsection{Compression d'images}
-
-\subsection{Compression de textes}
-
-\subsection{Chiffrement de textes}
-
-\subsection{Editeur auto-protecto-compresseur ?}
-\par\leavevmode\ 
-
-\section{Structure Technologique et méthodologique : Outils utilisés}
-\par\leavevmode\
-
-\section{Découpage du projet}
-
-
-\subsection{Répartition}
-
-\subsection{Avancement}
-\par\leavevmode\ 
-
-\section{Operationnel}
-
-\subsection{Coût}
-\subsection{Délais}
-\subsection{Rentabilité}
-\par\leavevmode\
-
-\section{Conclusion}
-
-\end{document}
+	${RM} gui *.o *.d userdatal userdatam
 

@@ -253,7 +253,9 @@ void on_open_file_button_clicked()
 		elm->str =malloc(sizeof(char)*1200);
 		
 		cp_file(filename);
-
+		
+        
+        printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename);
 		FILE* temp = NULL;
     	char result[1000] = "";
    		temp = fopen("tmp/test_file.txt", "r");	
@@ -331,8 +333,10 @@ void on_save_button_clicked()
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
 
-		gtk_file_chooser_set_current_name(chooser,"Untitled document");
+	//	gtk_file_chooser_set_current_name(chooser,"Untitled document");
         filename = gtk_file_chooser_get_filename (chooser);
+        
+        printf("Sauvegarde du fichier : %s \n\n--------------------------------------\n\n", filename);
 
 		/* SEND FILENAME TO ANTOINE FOR COMPRESS AND SAVE IT */
 	}
@@ -346,6 +350,21 @@ void on_apply_button_clicked()
 {
 	gtk_widget_show(menu_window);
 	gtk_widget_hide(settings_window);
+	
+	printf("Les paramètres sont : \n\n");
+	if(gtk_switch_get_active(GTK_SWITCH(switch_rsa)))
+	{
+		printf("Chiffrement RSA\n\n");
+	}
+	if(gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
+	{
+		printf("Compression HUFFMAN\n\n");
+	}
+	if(gtk_switch_get_active(GTK_SWITCH(switch_dictionnary)))
+	{
+		printf("Compression DICTIONNAIRE\n\n");
+	}
+	printf("--------------------------------------\n\n");
 }
 
 
@@ -353,22 +372,22 @@ void on_switch_rsa_state_set()
 {
 	if(gtk_switch_get_active(GTK_SWITCH(switch_rsa)))
 	{
-		printf("rsa on ! \n");
+		//printf("rsa on ! \n");
 		gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
 	}
-	else
-		printf("rsa off ! \n");
+	//else
+		//printf("rsa off ! \n");
 }
 
 void on_switch_huffman_state_set()
 {
 	if(gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
 	{
-		printf("huffman on ! \n");
+		//printf("huffman on ! \n");
 		gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
 	}
-	else
-		printf("huffman off ! \n");
+	//else
+	//	printf("huffman off ! \n");
 
 }
 
@@ -378,9 +397,9 @@ void on_switch_dictionnary_state_set()
 	{
 		gtk_switch_set_active(GTK_SWITCH(switch_rsa),FALSE);
 		gtk_switch_set_active(GTK_SWITCH(switch_huffman),FALSE);
-		printf("dictionnary on ! \n");
+		//printf("dictionnary on ! \n");
 	}
-	else
-		printf("dictionnary off ! \n");
+	//else
+		//printf("dictionnary off ! \n");
 
 }
