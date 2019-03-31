@@ -17,6 +17,27 @@ struct dictionary
 
 };
 
+int poww(int i)
+{
+	int acc = 1;
+	for(int y = 0; y < i; y++)
+	{
+		acc *= 2;
+	}
+	return acc;
+
+}
+int nec(int nb)
+{
+	int i = 8;
+	while(poww(i)<nb)
+	{
+		i += 1;
+	}
+	return i;
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -157,8 +178,8 @@ int main(int argc, char *argv[])
 	//int n = 0;
 	printf("\nPhrase initiale : %s\n\n",argv[1]);
 	printf("Resultat apres compression : %s -----> ",(final(d,argv[1])));
-	int pr = nbword(tty)*(8+(sod(d)/127));
-	printf("%i * %i = %i bits\n\n",nbword(tty),8+(sod(d)/127),pr);
+	int pr = nbword(tty)*nec(sod(d));
+	printf("%i * %i = %i bits\n\n",nbword(tty),nec(sod(d)),pr);
 	printf("Resultat apres decompression : %s -----> ",decompress(tty,try));
 	int apr = 8*strlen(argv[1]);
 	printf("%li * %i = %i bits\n\n",strlen(argv[1]),8,apr);

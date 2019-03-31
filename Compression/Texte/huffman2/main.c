@@ -92,10 +92,8 @@ int main(int argc,char *argv[])
 	//char *a = calloc(1,sizeof(char));
 	//int coucou = findbinary(test,'a');
 	//printf("%s\n",a);
-    char *encode = encodedata(test,argv[1]);
-    //printf("message encode %s:\n",encode);
 
-	printf("encode_data = %s\n",encodedata(test,argv[1]));
+	//printf("%s\n",encodedata(test,argv[1]));
 	//printf("entier = %li\n",strlen((tobinarybis("01011010010000001010010011000110111"))->string));
 	struct mousquetaire *chapeau = compression(argv[1]);
 	/*char *testt = calloc(1,sizeof(char));
@@ -105,49 +103,16 @@ int main(int argc,char *argv[])
 	fclose(f);*/
 
 	printf("Resultat compressé : Le texte -> (%s , %i) L'arbre -> (%s , %i)\n\n",chapeau->cabane->string,chapeau->cabane->booleen,chapeau->fut->string,chapeau->fut->booleen);
-
-  printf("========= D E C O M P R E S S I O N ==========\n");
-	//printf(" test de decodedata : %s\n",decodedata(test,"00"));
+	printf(" test de decodedata : %s\n",decodedata(test,"00"));
 	struct bintree *te = calloc(1,sizeof(struct bintree));
-	//te = decode_tree("01011000110101110010101101111"); //representation binaire de l'arbre obtenu en compressant "croco"
+	te = decode_tree("01011000110101110010101101111"); //representation binaire de l'arbre obtenu en compressant "croco"
 	printTree(te);
-	te = decode_tree(bin); //representation binaire de l'arbre obtenu en compressant "croco"
-	printTree(te);
+	struct gobelin *g = calloc(1,sizeof(struct gobelin));
+	g = tobinarybis("111111111111111");
+	printf("choco = %s, %i\n",g->string,g->booleen);
 
-  char *string = decodedata(test,encode);
-  printf("decode : %s\n",string);
-	//struct gobelin *g = calloc(1,sizeof(struct gobelin));
-	//g = tobinarybis("10101010");
-//	printf("choco = %s, %i\n",g->string,g->booleen);
+	printf("res = %s\n",frombinary(g->string,g->booleen));
 
-	//printf("res = %s\n",frombinary(g->string,g->booleen));
-  char *final = decompress(chapeau->cabane->string,chapeau->cabane->booleen,chapeau->fut->string,chapeau->fut->booleen);
-printf("decompress : %s\n",final);
-float tx = (float)(strlen(chapeau->cabane->string)/7 + strlen(chapeau->fut->string)/7) / (float)strlen(argv[1]);
-printf("tx = %f \n",tx);
-printf("Taux de compression : %.2f / %.2f = %.2f%%\n",(float)(strlen(chapeau->cabane->string)/7 + strlen(chapeau->fut->string)/7),(float)strlen(argv[1]),(float)100-(tx*100));
-
-/*FILE *f;
-f = fopen("res.tree","w");
-fprintf(f,"%i%s",chapeau->fut->booleen,chapeau->fut->string);
-fclose(f);
-FILE *f2;
-f2 = fopen("res.data","w");
-fprintf(f2,"%i%s",chapeau->cabane->booleen,chapeau->cabane->string);
-fclose(f2);*/
-//whole_comp(argv[1],"testo");
-whole_decomp("testo");
-
-//fread(dodo,sizeof(struct mousquetaire),1,f);
-//printf("coucou\n");
-//int ret;
-//char *s = calloc(56,sizeof(char));
-//ret = fgetc(f);
-//printf("decalage = %i\n",ret-48);
-//fscanf(f,"%s",s);
-//printf("waited = %s\n",s);
-//printf("ftell = %lu\n",(ftell(f)));
-//fclose(f2);
 
 
 

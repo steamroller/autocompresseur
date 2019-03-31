@@ -332,7 +332,7 @@ struct bintree *build_tree(struct listuple *input)
 
 struct gobelin
 {
-	u_int8_t booleen;
+	int booleen;
 	char *string;
 };
 
@@ -438,7 +438,8 @@ char *tobinary(int x)
         n = n/2;
         len++;
     }
-    while (len < 7)
+
+    while (len < 8)
     {
         int z = asprintf(&bin,"0%s",bin);
         if(z == -1)
@@ -509,39 +510,25 @@ char to_int(char *s)
 	long a = atoi(s);
 	int kaka = convertb(a);
 	return (char)kaka;
-
 }
-
 
 struct gobelin *tobinarybis(char *input)
 {
-	int l = (int)strlen(input);
-	int reste = l%7;
-	size_t align = 7 - reste;
-	int j = 0;
-	char *s = calloc(1,7*sizeof(char));
+	size_t l = strlen(input);
+	size_t reste = l%8;
+	size_t align = 8 - reste;
+	size_t j = 0;
+	char *s = calloc(1,8*sizeof(char));
 	char *final = calloc(1,sizeof(char));
-	for(int i = 0; i < l-reste;i ++)
+	for(size_t i = 0; i < l-reste;i ++)
 	{
 		s[j]=input[i];
-		if(j == 6)
+		if(j == 7)
 		{
-            // PRIIINT
-           // printf("string : %s\n",s);
-			// tests de merde 
-			//printf("santoine === %s\n",s);
-			if((int)to_int(s) == -45)
-			{
-				asprintf(&final,"%s%s",final,"****");
-				j = -1;
-			}
-			else
-			{
-				int z = asprintf(&final,"%s%s",final,s);
-				if(z == -1)
-					printf("error with asprintf");
-				j = -1;
-			}
+			int z = asprintf(&final,"%s%c",final,(char)to_int(s));
+			if(z == -1)
+				printf("error with asprintf");
+			j = 0;
 		}
 		j += 1;
 	}
@@ -550,26 +537,17 @@ struct gobelin *tobinarybis(char *input)
 		s[m] = '0';
 	}
 	int meme = 0;
-	for(int w = l - reste ; w < l ; w++)
+	for(size_t w = l - reste ; w < l ; w++)
 	{
 		s[align + meme] = input[w];
 		meme+=1;
 	}
-	//printf("santoine === %s\n",s);
-	if(atoi(s) == -45)
-		asprintf(&final,"%s%c%c%c%c",final,'*','*','*','*');
-	else
-	{
-		int z = asprintf(&final,"%s%s",final,s);
-		if(z == -1)
+	int z = asprintf(&final,"%s%c",final,(char)to_int(s));
+	if(z == -1)
 				printf("error with asprintf");
-	}
 	struct gobelin *pitie = calloc(1,sizeof(struct gobelin));
-	//printf("EHOOO = %s\n",final);
-	//asprintf(&final,"%c%c%c%c%c%s",'*','*','*','*','*',final);
 	pitie->string = final;
 	pitie->booleen = align;
-	//printf("God please : %s\n",final);
 	return pitie;
 
 
@@ -735,28 +713,27 @@ void printTree(struct bintree *tree)
 char *decodedata(struct bintree *huff,char *input)
 {
 	int length = strlen(input);
-    //printf("lenght %d, input : %s\n",length,input);
 	struct bintree *B = huff;
 	int i = 0;
 	char *string = calloc(1,sizeof(char));
 	while(i<length)
 	{
-		//printf("B == null ? : %i , B->letter = %i \n", B==NULL,(int)B->letter);
+		printf("B == null ? : %i , B->letter = %i \n", B==NULL,(int)B->letter);
 		while(B != NULL && (int)B->letter == 0)
 		{
 			if(input[i] == '0')
 			{
-				//printf("left\n");
+				printf("left\n");
 				B = B->left;
 			}
 			else
 			{
-				//printf("ritght\n");
+				printf("ritght\n");
 				B = B->right;
 			}
 			i+=1;
 		}
-		//printf("b->letter = %c and i : %d\n",B->letter,i);
+		printf("b->letter = %c\n",B->letter);
 		int recup = asprintf(&string,"%s%c",string,B->letter);
 		if(recup == -1)
 			printf("problem with asprintf\n");
@@ -776,9 +753,8 @@ struct souris *create_tree(char *input,int i, int l)
 	struct bintree *noeud = calloc(1,sizeof(struct bintree));
 	noeud->left = NULL;
 	noeud->right = NULL;
-	//printf("i :,%d l :%d \n",i,l);
-    if(i < l)
-{
+	if(i < l)
+	{
 		if(input[i] == '0')
 		{
 			struct souris *s = calloc(1,sizeof(struct souris));
@@ -788,7 +764,7 @@ struct souris *create_tree(char *input,int i, int l)
 			if(noeud->left != NULL && input[i] == '1')
 			{
 				i = i+1;
-				int end = i+7;
+				int end = i+8;
 				char *bin = calloc(1,sizeof(char));
 				while(i < end)
 				{
@@ -797,7 +773,6 @@ struct souris *create_tree(char *input,int i, int l)
 						printf("error with asprintf\n");
 					i += 1;
 				}
-        //printf("binary : %s\n",bin);
 				char key = (char)to_int(bin);
 				struct bintree *r = calloc(1,sizeof(struct bintree));
 				r->letter = key;
@@ -814,7 +789,7 @@ struct souris *create_tree(char *input,int i, int l)
 		else
 		{
 			i = i+1;
-			int end = i+7;
+			int end = i+8;
 			char *bin = calloc(1,sizeof(char));
 			while(i < end)
 			{
@@ -823,7 +798,6 @@ struct souris *create_tree(char *input,int i, int l)
 					printf("error with asprintf\n");
 				i += 1;
 			}
-//printf("binary ; %s\n",bin);
 			char key = (char)to_int(bin);
 			struct bintree *u = calloc(1,sizeof(struct bintree));
 			u->letter = key;
@@ -835,7 +809,7 @@ struct souris *create_tree(char *input,int i, int l)
 		return final;
 	}
 	struct souris *err = calloc(1,sizeof(struct souris));
-	//printf("problem of size with create tree\n");
+	printf("problem of size with create tree\n");
 	return err;
 }
 
@@ -851,27 +825,34 @@ struct bintree *decode_tree(char *input)
 
 char *frombinary(char *input,int align)
 {
-    //printf("input : %s, align : %d\n",input,align);
 	int length = strlen(input);
-    //printf("length : %d\n",length);
-	char *final = calloc(1,sizeof(int));
-	int i = 0;
-	while(i <length -7)
+	char *bin = calloc(1,sizeof(char));
+	char *last = calloc(1,sizeof(char));
+	for(int i = 0; i < length; i++)
 	{
-		asprintf(&final,"%s%c",final,input[i]);
-		i+=1;
+		if(i == length -1)
+		{
+			int x = (int)(input[i]);
+			last = tobinary(x);
+		}
+		else
+		{
+			int rec = asprintf(&bin,"%s%s",bin,tobinary((int)input[i]));
+			if(rec == -1)
+				printf("problem with asprintf\n");
+		}
 	}
-	i += align;
-	for(int y = i; y < length; y++)
+	if(align != 0)
 	{
-		asprintf(&final,"%s%c",final,input[y]);
+		int h = (int)strlen(last);
+		for(int y = align; y < h; y++)
+		{
+			int rec = asprintf(&bin,"%s%c",bin,(int)last[y]);
+			if(rec == -1)
+				printf("problem with asprintf\n");
+		}
 	}
-
-	//printf("alors bordel : %s\n",final);
-	return final;
-
-
-	
+	return bin;
 }
 
 char *decompress(char *input, int dataalign,char *tree,int treealign)
@@ -882,182 +863,3 @@ char *decompress(char *input, int dataalign,char *tree,int treealign)
 	return decodedata(Tree,bindata);
 }
 
-//==========================================================================
-//==========================================================================
-
-void whole_comp(char *input,char *filename)
-{
-	//printf("sizeofint = %i\n",(int)sizeof(int));
-	char *data_path;
-	asprintf(&data_path,"%s%s",filename,".data");
-	char *tree_path;
-	asprintf(&tree_path,"%s%s",filename,".tree");
-	FILE *f1;
-	f1 = fopen(data_path,"wb");
-	struct mousquetaire *res = compression(input);
-	int len = strlen(res->cabane->string);
-	char *tamp = calloc(2,sizeof(char));
-	fwrite(&res->cabane->booleen,1,1,f1);
-	long datasize = 1;
-	for(int i = 0; i < len; i++)
-	{
-		for(int y = 0 ; y < 7; y++)
-		{
-			asprintf(&tamp,"%s%c",tamp,res->cabane->string[i]);
-			i += 1;
-		}
-		i-=1;
-		//printf("tamp : %s\n",tamp);
-		u_int8_t c = (int)to_int(tamp);
-		fwrite(&c,1,1,f1);
-		tamp = "";
-		datasize += 1;
-	}
-	printf("Taille du fichier .data : %li\n",datasize);
-
-
-	fclose(f1);
-
-
-	FILE *f2;
-	f2 = fopen(tree_path,"wb");
-	int lenbis = strlen(res->fut->string);
-	char *tamp2 = calloc(2,sizeof(char));
-	long treesize = 1;
-	fwrite(&res->fut->booleen,1,1,f2);
-	for(int i = 0; i < lenbis; i++)
-	{
-		for(int y = 0 ; y < 7; y++)
-		{
-			asprintf(&tamp2,"%s%c",tamp2,res->fut->string[i]);
-			i += 1;
-		}
-		i-=1;
-		//printf("tamp2 : %s\n",tamp2);
-		u_int8_t c2 = (int)to_int(tamp2);
-		fwrite(&c2,1,1,f2);
-		tamp2 = "";
-		treesize += 1;
-	}
-	printf("Taille du fichier .tree : %li\n",treesize);
-	fclose(f2);
-	
-
-	/*FILE *f1 = fopen(data_path,"wb");
-	struct mousquetaire *res = compression(input);
-	printf("wtf = %i\n",res->cabane->booleen);
-	fwrite(&res->cabane->booleen,sizeof(int),1,f1);
-	fclose(f1);
-	FILE *f3 = fopen(data_path,"rb");
-	int x;
-	fread(&x,sizeof(int),1,f3);
-	printf("xx = %i\n",x);
-	fclose(f3);*/
-
-	/*char *data = res->cabane->string;
-	for(int i = 0; i < strlen(data) ;i++)
-	{
-		int cv = (int)(data[i]);
-		printf("cv = %i\n",cv);
-		fwrite(&cv,1,1,f1);
-	}
-	fclose(f1);
-	FILE *f2 = fopen(tree_path,"wb");
-	fwrite(&res->fut->booleen,4,1,f2);
-	char *tree = res->fut->string;
-	for(int i = 0; i < strlen(tree) ;i++)
-	{
-		int cv = (int)(tree[i]);
-		fwrite(&cv,4,1,f2);
-	}
-	fclose(f2);*/
-
-}
-
-void whole_decomp(char *path)
-{
-	long tot = 2;
-	//struct mousquetaire *dodo = calloc(1,sizeof(struct mousquetaire));
-	//fwrite(&chapeau,sizeof(struct mousquetaire),1,f);
-	//fprintf(f,"%i%s",chapeau->fut->booleen,chapeau->fut->string);
-	//fread(dodo,sizeof(struct mousquetaire),1,f);
-	//printf("coucou\n");
-	char *data_path;
-	char *tree_path;
-	asprintf(&data_path,"%s%s",path,".data");
-	asprintf(&tree_path,"%s%s",path,".tree");
-	u_int8_t align_data;
-	u_int8_t align_tree;
-	char *data =  calloc(50000,sizeof(char));
-	char *tree = calloc(50000,sizeof(char));
-	FILE *f1 = fopen(data_path,"rb");
-	fread(&align_data,1,1,f1);
-	//printf("align_data = %i\n",align_data);
-	int *tab = calloc(50000,sizeof(int));
-	while(fread(tab,1,1,f1) == 1)
-	{
-		if(tab+1 == NULL)
-		{
-			//printf("merd a la fin\n");
-			asprintf(&data,"%s%s",data,frombinary(tobinary(*tab),align_data));
-		}
-		else
-			asprintf(&data,"%s%s",data,tobinary(*tab));
-
-		//fread(tab,1,1,f1);
-		//if(*tab != 0)
-			//printf("tab = %i\n",*tab);
-		tab += 1;
-		tot += 1;
-	}
-	//data = frombinary(data,align_data);
-	//printf("extrait : %s\n",data);
-	fclose(f1);
-	//printf("chocococococco\n");
-
-	FILE *f2 = fopen(tree_path,"rb");
-	fread(&align_tree,1,1,f2);
-	//printf("align_tree = %i\n",align_tree);
-	int *tab2 = calloc(50000,sizeof(int));
-	while(fread(tab2,1,1,f2) == 1)
-	{
-		asprintf(&tree,"%s%s",tree,tobinary(*tab2));
-		//fread(tab,1,1,f1);
-		//if(*tab2 != 0)
-			//printf("tab2 = %i\n",*tab2);
-		tab2 += 1;
-		tot += 1;
-	}
-	
-	fclose(f2);
-
-
-	/*FILE *f1 = fopen(data_path,"rb");
-	printf("ftell = %li\n",ftell(f1));
-	fread(&align_data,4,1,f1);
-	printf("padding = %i\n",align_data);
-	printf("vhbivb = %li\n",fread(data,4,1,f1));
-	while(fread(data,4,1,f1)==1)
-	{
-		printf("lpftell = %li\n",ftell(f1));
-		printf("char = %c",*data);
-		continue;
-	}
-	fclose(f1);
-	
-	FILE *f2 = fopen(tree_path,"rb");
-	fread(&align_tree,4,1,f2);
-	while(fread(tree,4,1,f2)==1)
-	{
-		continue;
-	}
-	fclose(f2);*/
-
-
-
-
-	char *terminus = decompress(data,align_data,tree,align_tree);
-	printf("decompress : %s\n",terminus);
-	printf("Taux de compression : %.2f%%\n",100-(float)tot*100/strlen(terminus));
-
-}
