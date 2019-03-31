@@ -532,7 +532,10 @@ struct gobelin *tobinarybis(char *input)
 			//printf("santoine === %s\n",s);
 			if((int)to_int(s) == -45)
 			{
-				asprintf(&final,"%s%s",final,"****");
+				int fr = asprintf(&final,"%s%s",final,"****");
+				if(fr == -1)
+					printf("problem with asprintf\n");
+
 				j = -1;
 			}
 			else
@@ -557,7 +560,11 @@ struct gobelin *tobinarybis(char *input)
 	}
 	//printf("santoine === %s\n",s);
 	if(atoi(s) == -45)
-		asprintf(&final,"%s%c%c%c%c",final,'*','*','*','*');
+	{
+		int recup = asprintf(&final,"%s%c%c%c%c",final,'*','*','*','*');
+		if(recup == -1)
+			printf("problem with asprintf\n");
+	}
 	else
 	{
 		int z = asprintf(&final,"%s%s",final,s);
@@ -858,13 +865,17 @@ char *frombinary(char *input,int align)
 	int i = 0;
 	while(i <length -7)
 	{
-		asprintf(&final,"%s%c",final,input[i]);
+		int recup = asprintf(&final,"%s%c",final,input[i]);
+		if(recup == -1)
+			printf("problem with asprintf\n");
 		i+=1;
 	}
 	i += align;
 	for(int y = i; y < length; y++)
 	{
-		asprintf(&final,"%s%c",final,input[y]);
+		int recup =asprintf(&final,"%s%c",final,input[y]);
+		if(recup == -1)
+			printf("problem with asprintf\n");
 	}
 
 	//printf("alors bordel : %s\n",final);
@@ -889,9 +900,13 @@ void whole_comp(char *input,char *filename)
 {
 	//printf("sizeofint = %i\n",(int)sizeof(int));
 	char *data_path;
-	asprintf(&data_path,"%s%s",filename,".data");
+	int recup = asprintf(&data_path,"%s%s",filename,".data");
+	if(recup == -1)
+			printf("problem with asprintf\n");
 	char *tree_path;
-	asprintf(&tree_path,"%s%s",filename,".tree");
+	recup = asprintf(&tree_path,"%s%s",filename,".tree");
+	if(recup == -1)
+			printf("problem with asprintf\n");
 	FILE *f1;
 	f1 = fopen(data_path,"wb");
 	struct mousquetaire *res = compression(input);
@@ -903,7 +918,9 @@ void whole_comp(char *input,char *filename)
 	{
 		for(int y = 0 ; y < 7; y++)
 		{
-			asprintf(&tamp,"%s%c",tamp,res->cabane->string[i]);
+			int recup2 = asprintf(&tamp,"%s%c",tamp,res->cabane->string[i]);
+			if(recup2 == -1)
+				printf("problem with asprintf\n");
 			i += 1;
 		}
 		i-=1;
@@ -929,7 +946,9 @@ void whole_comp(char *input,char *filename)
 	{
 		for(int y = 0 ; y < 7; y++)
 		{
-			asprintf(&tamp2,"%s%c",tamp2,res->fut->string[i]);
+			int c = asprintf(&tamp2,"%s%c",tamp2,res->fut->string[i]);
+			if(c == -1)
+			printf("problem with asprintf\n");
 			i += 1;
 		}
 		i-=1;
@@ -984,14 +1003,20 @@ void whole_decomp(char *path)
 	//printf("coucou\n");
 	char *data_path;
 	char *tree_path;
-	asprintf(&data_path,"%s%s",path,".data");
-	asprintf(&tree_path,"%s%s",path,".tree");
+	int recup;
+	recup = asprintf(&data_path,"%s%s",path,".data");
+	if(recup == -1)
+			printf("problem with asprintf\n");
+	recup = asprintf(&tree_path,"%s%s",path,".tree");
+	if(recup == -1)
+			printf("problem with asprintf\n");
 	u_int8_t align_data;
 	u_int8_t align_tree;
 	char *data =  calloc(50000,sizeof(char));
 	char *tree = calloc(50000,sizeof(char));
 	FILE *f1 = fopen(data_path,"rb");
-	fread(&align_data,1,1,f1);
+	if(fread(&align_data,1,1,f1)!=1)
+		printf("problem with fread\n");
 	//printf("align_data = %i\n",align_data);
 	int *tab = calloc(50000,sizeof(int));
 	while(fread(tab,1,1,f1) == 1)
@@ -999,10 +1024,16 @@ void whole_decomp(char *path)
 		if(tab+1 == NULL)
 		{
 			//printf("merd a la fin\n");
-			asprintf(&data,"%s%s",data,frombinary(tobinary(*tab),align_data));
+			recup = asprintf(&data,"%s%s",data,frombinary(tobinary(*tab),align_data));
+			if(recup == -1)
+				printf("problem with asprintf\n");
 		}
 		else
-			asprintf(&data,"%s%s",data,tobinary(*tab));
+		{
+			recup = asprintf(&data,"%s%s",data,tobinary(*tab));
+			if(recup == -1)
+				printf("problem with asprintf\n");
+		}
 
 		//fread(tab,1,1,f1);
 		//if(*tab != 0)
@@ -1016,12 +1047,15 @@ void whole_decomp(char *path)
 	//printf("chocococococco\n");
 
 	FILE *f2 = fopen(tree_path,"rb");
-	fread(&align_tree,1,1,f2);
+	if(fread(&align_tree,1,1,f2) != 1)
+		printf("problem with fread\n");
 	//printf("align_tree = %i\n",align_tree);
 	int *tab2 = calloc(50000,sizeof(int));
 	while(fread(tab2,1,1,f2) == 1)
 	{
-		asprintf(&tree,"%s%s",tree,tobinary(*tab2));
+		recup = asprintf(&tree,"%s%s",tree,tobinary(*tab2));
+		if(recup == -1)
+			printf("problem with asprintf\n");
 		//fread(tab,1,1,f1);
 		//if(*tab2 != 0)
 			//printf("tab2 = %i\n",*tab2);
