@@ -900,11 +900,12 @@ void whole_comp(char *input,char *filename)
 {
 	//printf("sizeofint = %i\n",(int)sizeof(int));
 	char *data_path;
-	int recup = asprintf(&data_path,"%s%s",filename,".data");
+	int recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateur/",filename,".data");
+	printf("data_path = %s\n",data_path);
 	if(recup == -1)
 			printf("problem with asprintf\n");
 	char *tree_path;
-	recup = asprintf(&tree_path,"%s%s",filename,".tree");
+	recup = asprintf(&tree_path,"%s%s%s","../fichiers_utilisateur/",filename,".tree");
 	if(recup == -1)
 			printf("problem with asprintf\n");
 	FILE *f1;
@@ -1004,10 +1005,10 @@ void whole_decomp(char *path)
 	char *data_path;
 	char *tree_path;
 	int recup;
-	recup = asprintf(&data_path,"%s%s",path,".data");
+	recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateurs",path,".data");
 	if(recup == -1)
 			printf("problem with asprintf\n");
-	recup = asprintf(&tree_path,"%s%s",path,".tree");
+	recup = asprintf(&tree_path,"%s%s%s","../fichiers_utilisateurs",path,".tree");
 	if(recup == -1)
 			printf("problem with asprintf\n");
 	u_int8_t align_data;
