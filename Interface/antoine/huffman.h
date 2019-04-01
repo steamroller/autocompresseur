@@ -22,6 +22,6 @@ struct bintree *decode_tree(char *input);
 char *frombinary(char *input, int align);
 char *decompress(char *input, int dataalign, char *tree, int treealign);
 void whole_comp(char *input,char *filename);
-void whole_decomp(char *path);
+char *whole_decomp(char *path);
 
 #endif

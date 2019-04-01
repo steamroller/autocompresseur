@@ -260,6 +260,19 @@ void on_valid_button_clicked()
 
 	filename_open = gtk_entry_get_text(GTK_ENTRY(filename_open_entry));
 	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
+
+
+	char *decomp;
+	char *fln = g_strdup(filename_open);
+	decomp = whole_decomp(fln);
+	const gchar *result = calloc(strlen(decomp),sizeof(char));
+	strcpy(decomp,result);
+
+	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+	GtkTextIter end;
+	gtk_text_buffer_get_end_iter(text_buffer,&end);
+	gtk_text_buffer_insert(text_buffer,&end,result,-1);
+
 	/*cp_file(filename_open);
 		
     

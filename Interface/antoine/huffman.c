@@ -994,7 +994,7 @@ void whole_comp(char *input,char *filename)
 
 }
 
-void whole_decomp(char *path)
+char *whole_decomp(char *path)
 {
 	long tot = 2;
 	//struct mousquetaire *dodo = calloc(1,sizeof(struct mousquetaire));
@@ -1005,10 +1005,10 @@ void whole_decomp(char *path)
 	char *data_path;
 	char *tree_path;
 	int recup;
-	recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateurs",path,".data");
+	recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateur",path,".data");
 	if(recup == -1)
 			printf("problem with asprintf\n");
-	recup = asprintf(&tree_path,"%s%s%s","../fichiers_utilisateurs",path,".tree");
+	recup = asprintf(&tree_path,"%s%s%s","../fichiers_utilisateur",path,".tree");
 	if(recup == -1)
 			printf("problem with asprintf\n");
 	u_int8_t align_data;
@@ -1092,7 +1092,8 @@ void whole_decomp(char *path)
 
 
 	char *terminus = decompress(data,align_data,tree,align_tree);
-	printf("decompress : %s\n",terminus);
-	printf("Taux de compression : %.2f%%\n",100-(float)tot*100/strlen(terminus));
+	return terminus;
+	//printf("decompress : %s\n",terminus);
+	//printf("Taux de compression : %.2f%%\n",100-(float)tot*100/strlen(terminus));
 
 }
