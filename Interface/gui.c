@@ -345,6 +345,13 @@ void on_close_edit_button_clicked()
 {
 	gtk_widget_show(menu_window);
 	gtk_widget_hide(edit_window);
+	//const gchar *result = calloc(1000,sizeof(char));
+	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+	GtkTextIter end;
+	GtkTextIter start;
+	gtk_text_buffer_get_start_iter(text_buffer,&start);
+	gtk_text_buffer_get_end_iter(text_buffer,&end);
+	gtk_text_buffer_delete (text_buffer,&start,&end);
 }
 void on_oui_button_clicked()
 {
