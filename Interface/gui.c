@@ -26,6 +26,7 @@ GtkWidget* open_file_button;
 GtkWidget* setting_button;
 GtkWidget* save_button;
 GtkWidget* close_edit_button;
+GtkWidget* oui_button;
 
 GtkWidget* switch_rsa;
 GtkWidget* switch_huffman;
@@ -33,16 +34,17 @@ GtkWidget* switch_dictionnary;
 
 /*CONNECT*/
 
-gchar *filename= "";
 GtkLabel* textlabel;
 
 GtkEntry* name_entry;
 GtkEntry * password_entry;
 GtkLabel * connexion_message;
+GtkEntry* filename_entry;
 
 
 const gchar * name;
 const gchar * password;
+const gchar * filename;
 
 /* WINDOW */
 
@@ -50,6 +52,7 @@ GtkWidget * main_window;
 GtkWidget * menu_window;
 GtkWidget * settings_window;
 GtkWidget * edit_window;
+GtkWidget * filename_window;
 
 GtkTextBuffer * text_buffer;	
 GtkWidget * text_zone;
@@ -69,7 +72,7 @@ int main(int argc, char *argv[])
 	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
 	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
 	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
-
+	filename_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_window"));
 
     switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
  	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
@@ -85,11 +88,12 @@ int main(int argc, char *argv[])
 	setting_button=GTK_WIDGET(gtk_builder_get_object(builder,"setting_button"));
 	save_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
 	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
+	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
 
 	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
 	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
-
+	filename_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_entry"));
 	//------ CONNECT BUTTON
 	gtk_builder_connect_signals(builder,NULL);
 	g_object_unref(builder);
@@ -227,7 +231,7 @@ char *conca(const char *s1, const char *s2) //Concatenate char
 }
 
 
-void cp_file(char *filename)   // copy file choosed in the folder images/
+void cp_file(char *filename)   // copy file choosed in the folder tmp/
 {
 	char *cp_arg1 = conca("cp ", filename);
 	char *arg1_arg2 = conca(cp_arg1, "  tmp/test_file.txt");
@@ -247,12 +251,12 @@ void on_open_file_button_clicked()
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        filename = gtk_file_chooser_get_filename (chooser);
+        char * filename_open = gtk_file_chooser_get_filename (chooser);
 		
 		struct components *elm = malloc(sizeof(struct components));
 		elm->str =malloc(sizeof(char)*1200);
 		
-		cp_file(filename);
+		cp_file(filename_open);
 		
         
         printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename);
@@ -302,23 +306,38 @@ void on_close_edit_button_clicked()
 	gtk_widget_show(menu_window);
 	gtk_widget_hide(edit_window);
 }
-
-
-void on_save_button_clicked()
+void on_oui_button_clicked()
 {
-/*	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+	filename= gtk_entry_get_text(GTK_ENTRY(filename_entry));
+	
+	printf("filename : %s \n\n--------------------------------------\n\n",filename);
+	
+	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 	GtkTextIter start;
 	GtkTextIter end;
 	gtk_text_buffer_get_start_iter(text_buffer,&start);
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	gchar* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
+	
+	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
+	
+	gtk_widget_hide(filename_window);
+}
 
+void on_save_button_clicked()
+{
+
+	gtk_widget_show(filename_window);
+	
+	
+	
+/*
 	 ENVOYER LINES AU FCT DE CHIFFR ET COMPR 
 
 	FILE* fichier = fopen("tmp/test_file.txt","w");
 	fputs(lines,fichier);
 	fputs("\n",fichier);
-	fclose(fichier);*/
+	fclose(fichier);
 
 	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(save_button));
     GtkWidget *dialog;
@@ -333,15 +352,15 @@ void on_save_button_clicked()
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
 
-	//	gtk_file_chooser_set_current_name(chooser,"Untitled document");
+	gtk_file_chooser_set_current_name(chooser,"Untitled document");
         filename = gtk_file_chooser_get_filename (chooser);
         
         printf("Sauvegarde du fichier : %s \n\n--------------------------------------\n\n", filename);
 
-		/* SEND FILENAME TO ANTOINE FOR COMPRESS AND SAVE IT */
+		 SEND FILENAME TO ANTOINE FOR COMPRESS AND SAVE IT 
 	}
 	
-	gtk_widget_destroy(dialog);
+	gtk_widget_destroy(dialog);*/
 
 
 }
@@ -374,9 +393,13 @@ void on_switch_rsa_state_set()
 	{
 		//printf("rsa on ! \n");
 		gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
+		gtk_switch_set_active(GTK_SWITCH(switch_huffman),TRUE);
 	}
-	//else
-		//printf("rsa off ! \n");
+/*	else
+	{
+		
+	}*/
+
 }
 
 void on_switch_huffman_state_set()
