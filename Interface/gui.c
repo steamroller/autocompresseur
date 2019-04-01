@@ -263,8 +263,11 @@ void on_valid_button_clicked()
 
 
 	char *decomp;
+	printf("choco\n");
 	char *fln = g_strdup(filename_open);
+	printf("fln = %s\n",fln);
 	decomp = whole_decomp(fln);
+	printf("pbivb = %s\n",decomp);
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
 	strcpy(decomp,result);
 
