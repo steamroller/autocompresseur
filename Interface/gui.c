@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdlib.h>
 #include <err.h>
 #include <stdio.h>
@@ -8,6 +10,8 @@
 #include <gtk/gtk.h>
 #include <SDL/SDL.h>
 #include"antoine/huffman.h"
+#include"antoine/huffman.c"
+//void whole_comp(char *input, char *filename);
 
 
 struct components
@@ -45,8 +49,8 @@ GtkEntry* filename_entry;
 
 const gchar * name;
 const gchar * password;
-//const gchar * filename;
-char *filename;
+const gchar * filename;
+//gchar *filename;
 
 /* WINDOW */
 
@@ -310,7 +314,7 @@ void on_close_edit_button_clicked()
 }
 void on_oui_button_clicked()
 {
-	filename= gtk_entry_get_text(GTK_ENTRY(filename_entry));
+	filename = gtk_entry_get_text(GTK_ENTRY(filename_entry));
 	
 	printf("filename : %s \n\n--------------------------------------\n\n",filename);
 	
@@ -319,12 +323,13 @@ void on_oui_button_clicked()
 	GtkTextIter end;
 	gtk_text_buffer_get_start_iter(text_buffer,&start);
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
-	gchar* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
+	char* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
 
 	//si juste compression huffman
 	char *tocompress = calloc(strlen(lines),sizeof(char));
 	tocompress = lines;
-	whole_comp(tocompress,filename);
+	char *copy = g_strdup(filename);
+	whole_comp(tocompress,copy);
 	//fin si 
 	
 	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
