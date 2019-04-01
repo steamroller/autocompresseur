@@ -7,6 +7,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <SDL/SDL.h>
+#include"antoine/huffman.h"
 
 
 struct components
@@ -359,6 +360,7 @@ void on_apply_button_clicked()
 	if(gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
 	{
 		printf("Compression HUFFMAN\n\n");
+		
 	}
 	if(gtk_switch_get_active(GTK_SWITCH(switch_dictionnary)))
 	{
