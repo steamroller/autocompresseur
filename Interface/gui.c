@@ -120,6 +120,26 @@ int main(int argc, char *argv[])
 
 }
 
+void on_edit_window_destroy()
+{
+	gtk_main_quit();
+	//printf("chocobn\n");
+}
+
+void on_menu_window_destroy()
+{
+	gtk_main_quit();
+	//printf("chocobn\n");
+}
+
+void on_main_window_destroy()
+{
+	gtk_main_quit();
+	//printf("chocobn\n");
+}
+
+
+
 char* strncpy(char *dest, const char *src,size_t n){
     size_t i;
 
