@@ -32,6 +32,7 @@ GtkWidget* setting_button;
 GtkWidget* save_button;
 GtkWidget* close_edit_button;
 GtkWidget* oui_button;
+GtkWidget* valid_button;
 
 GtkWidget* switch_rsa;
 GtkWidget* switch_huffman;
@@ -41,15 +42,19 @@ GtkWidget* switch_dictionnary;
 
 GtkLabel* textlabel;
 
+
 GtkEntry* name_entry;
 GtkEntry * password_entry;
 GtkLabel * connexion_message;
 GtkEntry* filename_entry;
+GtkEntry* filename_open_entry;
+
 
 
 const gchar * name;
 const gchar * password;
 const gchar * filename;
+const gchar * filename_open;
 //gchar *filename;
 
 /* WINDOW */
@@ -59,6 +64,7 @@ GtkWidget * menu_window;
 GtkWidget * settings_window;
 GtkWidget * edit_window;
 GtkWidget * filename_window;
+GtkWidget * filename_open_window;
 
 GtkTextBuffer * text_buffer;	
 GtkWidget * text_zone;
@@ -79,6 +85,7 @@ int main(int argc, char *argv[])
 	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
 	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
 	filename_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_window"));
+	filename_open_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_open_window"));
 
     switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
  	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
@@ -95,11 +102,14 @@ int main(int argc, char *argv[])
 	save_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
 	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
 	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
+	valid_button=GTK_WIDGET(gtk_builder_get_object(builder,"valid_button"));
 
 	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
 	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
 	filename_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_entry"));
+	filename_open_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_open_entry"));
+	
 	//------ CONNECT BUTTON
 	gtk_builder_connect_signals(builder,NULL);
 	g_object_unref(builder);
@@ -245,10 +255,51 @@ void cp_file(char *filename)   // copy file choosed in the folder tmp/
 	system(arg1_arg2);
 }
 
+void on_valid_button_clicked()
+{
+
+	filename_open = gtk_entry_get_text(GTK_ENTRY(filename_open_entry));
+	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
+	/*cp_file(filename_open);
+		
+    
+    printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename);
+	FILE* temp = NULL;
+    char result[1000] = "";
+   	temp = fopen("tmp/test_file.txt", "r");	
+
+
+	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+
+    if (temp != NULL)
+    {
+		while ( fgets(result, 1000, temp))
+		{
+			GtkTextIter end;
+			gtk_text_buffer_get_end_iter(text_buffer,&end);
+			gtk_text_buffer_insert(text_buffer,&end,result,-1);
+
+		}
+    	fclose(temp);
+    }
+
+		elm->str = result;
+
+		gtk_text_buffer_set_text(text_buffer, elm->str, strlen(elm->str));*/
+
+	gtk_widget_show(edit_window);
+	gtk_widget_hide(filename_open_window);
+	//gtk_widget_hide(menu_window);
+	//}
+}
+
 void on_open_file_button_clicked()
 {
 
-	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(open_file_button));
+	gtk_widget_show(filename_open_window);
+	gtk_widget_hide(menu_window);
+
+	/*GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(open_file_button));
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
 	dialog = gtk_file_chooser_dialog_new ("Open File",GTK_WINDOW(toplevel)     
@@ -260,42 +311,8 @@ void on_open_file_button_clicked()
         char * filename_open = gtk_file_chooser_get_filename (chooser);
 		
 		struct components *elm = malloc(sizeof(struct components));
-		elm->str =malloc(sizeof(char)*1200);
+		elm->str =malloc(sizeof(char)*1200);*/
 		
-		cp_file(filename_open);
-		
-        
-        printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename);
-		FILE* temp = NULL;
-    	char result[1000] = "";
-   		temp = fopen("tmp/test_file.txt", "r");	
-
-
-		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
-
-    	if (temp != NULL)
-    	{
-    	    while ( fgets(result, 1000, temp))
-			{
-				GtkTextIter end;
-				gtk_text_buffer_get_end_iter(text_buffer,&end);
-				gtk_text_buffer_insert(text_buffer,&end,result,-1);
-
-			}
-    	    fclose(temp);
-    	}
-
-	/*	elm->str = result;
-
-		gtk_text_buffer_set_text(text_buffer, elm->str, strlen(elm->str));*/
-
-		gtk_widget_show(edit_window);
-		gtk_widget_hide(menu_window);
-	}
-	else
-		g_print("You pressed the cancel \n");
-
-	gtk_widget_destroy(dialog);
 }
 
 

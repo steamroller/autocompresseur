@@ -109,6 +109,67 @@
       </object>
     </child>
   </object>
+  <object class="GtkApplicationWindow" id="filename_open_window">
+    <property name="name">filename_open_window</property>
+    <property name="width_request">34</property>
+    <property name="height_request">0</property>
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkFixed">
+        <property name="width_request">32</property>
+        <property name="height_request">32</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="width_request">105</property>
+            <property name="height_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">nom du fichier : </property>
+          </object>
+          <packing>
+            <property name="x">38</property>
+            <property name="y">39</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="filename_open_entry">
+            <property name="name">filename_open_entry</property>
+            <property name="width_request">166</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+          </object>
+          <packing>
+            <property name="x">162</property>
+            <property name="y">30</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="valid_button">
+            <property name="label">gtk-ok</property>
+            <property name="name">valid_button</property>
+            <property name="width_request">55</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="use_stock">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_valid_button_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">360</property>
+            <property name="y">22</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkApplicationWindow" id="filename_window">
     <property name="name">filename_window</property>
     <property name="width_request">34</property>
