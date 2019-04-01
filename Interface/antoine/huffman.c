@@ -1005,10 +1005,10 @@ char *whole_decomp(char *path)
 	char *data_path;
 	char *tree_path;
 	int recup;
-	recup = asprintf(&data_path,"%s%s",path,".data");
+	recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateur/",path,".data");
 	if(recup == -1)
 			printf("problem with asprintf\n");
-	recup = asprintf(&tree_path,"%s%s",path,".tree");
+	recup = asprintf(&tree_path,"%s%s%s","../fichiers_utilisateur/",path,".tree");
 	if(recup == -1)
 			printf("problem with asprintf\n");
 	u_int8_t align_data;

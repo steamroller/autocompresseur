@@ -269,8 +269,9 @@ void on_valid_button_clicked()
 	decomp = whole_decomp(fln);
 	printf("pbivb = %s\n",decomp);
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
-	strcpy(decomp,result);
-
+	//strcpy(decomp,result);
+	result = decomp;
+	printf("res = %s\n",result);
 	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 	GtkTextIter end;
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
