@@ -45,7 +45,8 @@ GtkEntry* filename_entry;
 
 const gchar * name;
 const gchar * password;
-const gchar * filename;
+//const gchar * filename;
+char *filename;
 
 /* WINDOW */
 
@@ -319,6 +320,12 @@ void on_oui_button_clicked()
 	gtk_text_buffer_get_start_iter(text_buffer,&start);
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	gchar* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
+
+	//si juste compression huffman
+	char *tocompress = calloc(strlen(lines),sizeof(char));
+	tocompress = lines;
+	whole_comp(tocompress,filename);
+	//fin si 
 	
 	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
 	
