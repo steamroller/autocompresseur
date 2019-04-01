@@ -40,8 +40,8 @@
             <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_WORD_COMPLETION | GTK_INPUT_HINT_VERTICAL_WRITING | GTK_INPUT_HINT_EMOJI | GTK_INPUT_HINT_NONE</property>
           </object>
           <packing>
-            <property name="x">10</property>
-            <property name="y">91</property>
+            <property name="x">29</property>
+            <property name="y">109</property>
           </packing>
         </child>
         <child>
@@ -109,8 +109,8 @@
       </object>
     </child>
   </object>
-  <object class="GtkApplicationWindow" id="filename_windows">
-    <property name="name">filename_windows</property>
+  <object class="GtkApplicationWindow" id="filename_window">
+    <property name="name">filename_window</property>
     <property name="width_request">34</property>
     <property name="height_request">0</property>
     <property name="can_focus">False</property>
@@ -143,7 +143,6 @@
             <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="text" translatable="yes">oui_buttonoui_button</property>
           </object>
           <packing>
             <property name="x">162</property>
@@ -161,6 +160,7 @@
             <property name="receives_default">True</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_oui_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="x">360</property>
