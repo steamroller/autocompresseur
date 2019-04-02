@@ -156,7 +156,11 @@ char* decoding(char str[])
 		list_push_end(L, decod);
 		i++;
 	}
-	return list_to_char(L, i);
+	char* code = list_to_char(L, i);
+	printf("Your decoded message is : \n");
+	printf("%s", code);
+	printf("\n");
+	return code;
 }
 
 int main()
@@ -169,10 +173,7 @@ int main()
 	}
 	scanf("%s", msg);
 	
-	char* code = decoding(msg);
-	printf("Your decoded message is : \n");
-	printf("%s", code);
-	printf("\n");
+	decoding(msg);
 	
     return 0;
 }

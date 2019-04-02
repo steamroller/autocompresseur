@@ -178,7 +178,11 @@ char* encryption(char string[])
 		list_push_end(L, encr_let);
 		i++;
 	}
-	return list_to_char(L, length);
+	char* code = list_to_char(L, length);
+	printf("\nYour encoded message is : \n%s", code);
+	printf("\n");
+ 
+	return code;
 }
 
 int main()
@@ -187,10 +191,7 @@ int main()
 	printf("\nEnter the message you want to encrypte:\n");
     read(msg, 100);
     
-    char* code = encryption(msg);
-    printf("\nYour encoded message is : \n%s", code);
-	printf("\n");
- 
+    encryption(msg);
     return 0;
 }
 
