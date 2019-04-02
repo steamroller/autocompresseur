@@ -11,9 +11,9 @@
 #include <SDL/SDL.h>
 #include "antoine/huffman.h"
 #include "antoine/huffman.c"
-//#include "clara/encryption.h"
+#include "clara/encryption.h"
 #include "clara/encoding.c"
-//#include "clara/decoding.h"
+#include "clara/decoding.h"
 #include "clara/decoding.c"
 
 //void whole_comp(char *input, char *filename);
