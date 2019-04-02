@@ -2,7 +2,7 @@
 #define ENCRYPTION_H
 
 int my_read(char *chain, int len);
-char* my_itoa(int nb);
+char* my_itoa(int nb, int size);
 int is_prime_number(int n);
 int PGCD(int a, int b);
 long expo_modul(long a, long b, long n);

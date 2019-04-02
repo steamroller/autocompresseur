@@ -25,10 +25,10 @@ int my_read(char *chain, int len)
 	}
 }
 
-char* my_itoa(int nb)
+char* my_itoa(int nb, int size)
 {
 	int a = nb;
-	char* final = calloc(2, sizeof(char));
+	char* final = calloc(size, sizeof(char));
 	while(a != 0)
 	{
 		int last = a%10;
@@ -111,7 +111,7 @@ char* list_to_char(struct list *l, int size)
 	int i;
 	for (i = 0; l != NULL; l = l->next, i++)
 	{
-		int z = asprintf(&s, "%s%s%c", s, my_itoa(l->data), ',');
+		int z = asprintf(&s, "%s%s%c", s, my_itoa(l->data, size), ',');
 		if (z == -1)
 		{
 			errx(1, "Impossible to convert");
@@ -185,13 +185,13 @@ char* encryption(char string[])
 	return code;
 }
 
-//~ int main()
-//~ {
-	//~ char msg[100];
-	//~ printf("\nEnter the message you want to encrypte:\n");
-    //~ my_read(msg, 100);
+int main()
+{
+	char msg[100];
+	printf("\nEnter the message you want to encrypte:\n");
+    my_read(msg, 100);
     
-    //~ encryption(msg);
-    //~ return 0;
-//~ }
+    encryption(msg);
+    return 0;
+}
 
