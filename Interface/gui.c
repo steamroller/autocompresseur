@@ -9,8 +9,13 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <SDL/SDL.h>
-#include"antoine/huffman.h"
-#include"antoine/huffman.c"
+#include "antoine/huffman.h"
+#include "antoine/huffman.c"
+#include "clara/encryption.h"
+#include "clara/encoding.c"
+#include "clara/decoding.h"
+#include "clara/decoding.c"
+
 //void whole_comp(char *input, char *filename);
 
 
@@ -298,7 +303,8 @@ void on_valid_button_clicked()
 	GtkTextIter end;
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	gtk_text_buffer_insert(text_buffer,&end,result,-1);
-
+	decoding(decomp);
+	
 	/*cp_file(filename_open);
 		
     
@@ -306,10 +312,7 @@ void on_valid_button_clicked()
 	FILE* temp = NULL;
     char result[1000] = "";
    	temp = fopen("tmp/test_file.txt", "r");	
-
-
 	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
-
     if (temp != NULL)
     {
 		while ( fgets(result, 1000, temp))
@@ -317,13 +320,10 @@ void on_valid_button_clicked()
 			GtkTextIter end;
 			gtk_text_buffer_get_end_iter(text_buffer,&end);
 			gtk_text_buffer_insert(text_buffer,&end,result,-1);
-
 		}
     	fclose(temp);
     }
-
 		elm->str = result;
-
 		gtk_text_buffer_set_text(text_buffer, elm->str, strlen(elm->str));*/
 
 	gtk_widget_show(edit_window);
@@ -397,8 +397,9 @@ void on_oui_button_clicked()
 	if (gtk_switch_get_active(GTK_SWITCH(switch_rsa)) && (gtk_switch_get_active(GTK_SWITCH(switch_huffman))))
 	{
 		//chiffrement
-		
+		encryption(tocompress);
 		whole_comp(tocompress,copy);
+
 	}
 	else if(!(gtk_switch_get_active(GTK_SWITCH(switch_rsa))) && gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
 	{
@@ -420,30 +421,23 @@ void on_save_button_clicked()
 	
 /*
 	 ENVOYER LINES AU FCT DE CHIFFR ET COMPR 
-
 	FILE* fichier = fopen("tmp/test_file.txt","w");
 	fputs(lines,fichier);
 	fputs("\n",fichier);
 	fclose(fichier);
-
 	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(save_button));
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-
 	dialog = gtk_file_chooser_dialog_new ("Save File",GTK_WINDOW(toplevel)     
 ,action,
         "save",GTK_RESPONSE_ACCEPT,"Cancel",GTK_RESPONSE_CANCEL, NULL);
-
-
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-
 	gtk_file_chooser_set_current_name(chooser,"Untitled document");
         filename = gtk_file_chooser_get_filename (chooser);
         
         printf("Sauvegarde du fichier : %s \n\n--------------------------------------\n\n", filename);
-
 		 SEND FILENAME TO ANTOINE FOR COMPRESS AND SAVE IT 
 	}
 	
