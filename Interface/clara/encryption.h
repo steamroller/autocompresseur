@@ -1,7 +1,7 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
-int read(char *chain, int len);
+int my_read(char *chain, int len);
 char* my_itoa(int nb);
 int is_prime_number(int n);
 int PGCD(int a, int b);

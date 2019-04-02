@@ -7,7 +7,7 @@
 #include <time.h>
 #include "encryption.h"
 
-int read(char *chain, int len)
+int my_read(char *chain, int len)
 {
 	char *entrypos = NULL;
 	if (fgets(chain, len, stdin) != NULL)
@@ -189,7 +189,7 @@ char* encryption(char string[])
 //~ {
 	//~ char msg[100];
 	//~ printf("\nEnter the message you want to encrypte:\n");
-    //~ read(msg, 100);
+    //~ my_read(msg, 100);
     
     //~ encryption(msg);
     //~ return 0;
