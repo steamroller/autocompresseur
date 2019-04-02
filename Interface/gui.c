@@ -11,9 +11,9 @@
 #include <SDL/SDL.h>
 #include "antoine/huffman.h"
 #include "antoine/huffman.c"
-#include "clara/encryption.h"
+//#include "clara/encryption.h"
 #include "clara/encoding.c"
-#include "clara/decoding.h"
+//#include "clara/decoding.h"
 #include "clara/decoding.c"
 
 //void whole_comp(char *input, char *filename);
@@ -297,13 +297,13 @@ void on_valid_button_clicked()
 	printf("pbivb = %s\n",decomp);
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
 	//strcpy(decomp,result);
-	result = decomp;
+	result = decoding(decomp);
 	printf("res = %s\n",result);
 	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 	GtkTextIter end;
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	gtk_text_buffer_insert(text_buffer,&end,result,-1);
-	decoding(decomp);
+	
 	
 	/*cp_file(filename_open);
 		
@@ -389,22 +389,22 @@ void on_oui_button_clicked()
 	char* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
 
 	
-	char *tocompress = calloc(strlen(lines),sizeof(char));
-	tocompress = lines;
+	char *toencode = calloc(strlen(lines),sizeof(char));
+	toencode= lines;
 	
 	char *copy = g_strdup(filename);
 	
 	if (gtk_switch_get_active(GTK_SWITCH(switch_rsa)) && (gtk_switch_get_active(GTK_SWITCH(switch_huffman))))
 	{
 		//chiffrement
-		encryption(tocompress);
+		char *tocompress = encryption(toencode);
 		whole_comp(tocompress,copy);
 
 	}
 	else if(!(gtk_switch_get_active(GTK_SWITCH(switch_rsa))) && gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
 	{
 		
-		whole_comp(tocompress,copy);
+		whole_comp(toencode,copy);
 	}
 	
 	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
