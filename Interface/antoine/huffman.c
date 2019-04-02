@@ -879,10 +879,7 @@ char *frombinary(char *input,int align)
 	}
 
 	//printf("alors bordel : %s\n",final);
-	return final;
-
-
-	
+	return final;	
 }
 
 char *decompress(char *input, int dataalign,char *tree,int treealign)
@@ -932,7 +929,6 @@ void whole_comp(char *input,char *filename)
 		datasize += 1;
 	}
 	printf("Taille du fichier .data : %li\n",datasize);
-
 
 	fclose(f1);
 
@@ -1087,7 +1083,6 @@ char *whole_decomp(char *path)
 		continue;
 	}
 	fclose(f2);*/
-
 
 	printf("dodo\n");
 

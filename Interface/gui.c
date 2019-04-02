@@ -286,7 +286,9 @@ void on_valid_button_clicked()
 	printf("choco\n");
 	char *fln = g_strdup(filename_open);
 	printf("fln = %s\n",fln);
+	
 	decomp = whole_decomp(fln);
+	
 	printf("pbivb = %s\n",decomp);
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
 	//strcpy(decomp,result);
@@ -386,12 +388,23 @@ void on_oui_button_clicked()
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	char* lines = gtk_text_buffer_get_text(text_buffer,&start,&end,FALSE);
 
-	//si juste compression huffman
+	
 	char *tocompress = calloc(strlen(lines),sizeof(char));
 	tocompress = lines;
+	
 	char *copy = g_strdup(filename);
-	whole_comp(tocompress,copy);
-	//fin si 
+	
+	if (gtk_switch_get_active(GTK_SWITCH(switch_rsa)) && (gtk_switch_get_active(GTK_SWITCH(switch_huffman))))
+	{
+		//chiffrement
+		
+		whole_comp(tocompress,copy);
+	}
+	else if(!(gtk_switch_get_active(GTK_SWITCH(switch_rsa))) && gtk_switch_get_active(GTK_SWITCH(switch_huffman)))
+	{
+		
+		whole_comp(tocompress,copy);
+	}
 	
 	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
 	
