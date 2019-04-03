@@ -296,6 +296,7 @@ void docmatrixDCT(struct ensemble *ens,int a)
     struct node* prev=ens->btree;
     int n=0;
     int nomber=0;
+    int d=0;
     while(x<64)
     {
         if(x%8==0 && x!=0)
@@ -308,8 +309,9 @@ void docmatrixDCT(struct ensemble *ens,int a)
         g=g->next;
         /*printf("before=%s\n",before);
         printf("cryptedvalue=%s\n",prev->cryptedvalue);*/
-        if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0)
+        if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0 || d==0)
         {
+            d=1;
             char value[30];
             char Huffman[64*3+30];
             char after[30];
@@ -373,8 +375,9 @@ void docmatrixDCT2(struct ensemble *ens,int a)
     //fputs("|",f);
     struct node* prev=ens->btree;
     int n=0;
-    int nomber=0;
+    int nomber=1;
     int y=0;
+    int d=0;
     while(x<64)
     {
         if(x%8==0 && x!=0 && y>0)
@@ -388,8 +391,9 @@ void docmatrixDCT2(struct ensemble *ens,int a)
         g=g->next;
         /*printf("before=%s\n",before);
         printf("cryptedvalue=%s\n",prev->cryptedvalue);*/
-        if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0)
+        if((int)b->value!= 0 || (int)g->value!=0 || (int)r->value!=0 || d==0)
         {
+            d=1;
             char value[30];
             char Huffman[64*3+30];
             char after[30];
@@ -418,13 +422,18 @@ void docmatrixDCT2(struct ensemble *ens,int a)
                     prev=prev->left;
                 }
             }
-            sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
+            sprintf(Huffman,"%d.%d.%d\n",(int)noon->b,(int)noon->r,(int)noon->g);
             sprintf(value,"%s",noon->cryptedvalue);
             fputs(value,f);
             fputs(Huffman,o);
             y++;
         }
-        /* size_t a=0;
+        /*else
+        {
+            fputs("0",f);
+            y++;
+        } 
+         size_t a=0;
         while((value++)!=" ")
             a++;
         for(int i=0;i+a<30;i++)
@@ -472,6 +481,12 @@ struct stat* fichiercompress2(char* name,int line,int nbdecol)
     struct stat *b=malloc(sizeof(struct stat));
     int fd=open(name, O_CREAT|O_RDWR,00700);
     char rline[30];
+    char nb[20];
+    memset(nb,0,sizeof(line));
+    sprintf(nb,"%d.%d\n\n",line,nbdecol);
+    size_t a=strlen(nb);
+    if(write(fd,nb,a)==-1)
+        errx(1,"didn't write all the line");
     for(int s=0;s<line;s++)
     {
         for(int i=0;i<nbdecol;i++)

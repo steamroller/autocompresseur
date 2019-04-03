@@ -7,15 +7,20 @@ LDFLAGS=
 LDLIBS= `pkg-config --libs sdl` -lSDL_image -lm
 
 
-SRC= main.c pixel_operations.c compressionimage.c display.c  
+SRC= comp.c pixel_operations.c compressionimage.c display.c  
 OBJ= ${SRC:*.c=.o}
+SRC2= decompression.c pixel_operations.c display.c decomp.c
+OBJ2=${SRC2:*.c=.o}
 
-all: main 
+all: comp decomp 
 
-main : ${OBJ} 
+comp: ${OBJ}
+
+decomp:${OBJ2}
+
 
 clean:
-	${RM} main main.d *.o
+	${RM} comp comp.d decomp decomp.d *.o
 	${RM} *.DCT *.tree
 # END
 
