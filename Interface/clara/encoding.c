@@ -185,7 +185,7 @@ char* encryption(char string[])
 	return code;
 }
 
-int main()
+/*int main()
 {
 	char msg[100];
 	printf("\nEnter the message you want to encrypte:\n");
@@ -193,5 +193,5 @@ int main()
     
     encryption(msg);
     return 0;
-}
+}*/
 
