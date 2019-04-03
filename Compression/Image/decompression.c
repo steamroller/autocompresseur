@@ -167,6 +167,7 @@ struct DM_Im *decodage(char *pathtree,char *pathdct)
 
                 size_t n=0;
                 int negatif=0;
+				int q=0;
                 while(e[n]!='\0')
                 {
                     //printf("%s\n",&e[n]);
@@ -184,30 +185,31 @@ struct DM_Im *decodage(char *pathtree,char *pathdct)
                             char *w=malloc(sizeof(char));
                             w=strncpy(w,(char*)e+n,1);
                             if(negatif!=1)
-                            {
-                                negatif=0;
                                 value=10*value+atoi(w);
-                            }
                             else
+							{
+								negatif=0;
                                 value=(-1)*atoi(w);
+							}
                             n++;
                             free(w);
                             //printf("%d\n",value);
                         }
                     }
-                    value=value*(1+20*(a+b));
-                    if(abc->r==0)
+                    value=value*(1+25*(a+b));
+                    if(q==0)
                     {
                         abc->r=value;
                         value=0;
                     }
-                    if(abc->g==0)
+                    if(q==1)
                     {
                         abc->g=value;
                         value=0;
                     }
                     abc->b=value;
                     n++;
+					q++;
                 }
             }
             if(x==0 && v==0)
@@ -258,9 +260,9 @@ SDL_Surface *insertionDCTI(struct DM_Im *dm)
                 for(size_t c=0;c<8;c++)
                 {
                     struct bloc *m=b;
-                    unsigned int r=0;
-                    unsigned int g=0;
-                    unsigned int b=0;
+                    double r=0;
+                    double g=0;
+                    double b=0;
                     for(size_t li=0;li<8;li++)
                     {
                         for(size_t co=0;co<8;co++)
@@ -281,7 +283,7 @@ SDL_Surface *insertionDCTI(struct DM_Im *dm)
                     Uint8 g1=g/4;
                     Uint8 b1=b/4;
                     printf("pixel(%ld;%ld)=r1=%d,g1=%d,b1=%d\n",8*x+l,8*y+c,r1,g1,b1);
-                    Uint32 pixel=SDL_MapRGBA(newsurface->format,r1,g1,b1,255);
+                    Uint32 pixel=SDL_MapRGB(newsurface->format,r1,g1,b1);
                     put_pixel(newsurface,8*x+l,8*y+c,pixel);
                 }
             }

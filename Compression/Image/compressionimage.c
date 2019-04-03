@@ -340,7 +340,7 @@ void docmatrixDCT(struct ensemble *ens,int a)
                     prev=prev->left;
                 }
             }
-            sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->b,noon->r,noon->g);
+            sprintf(Huffman,"%s={%d;%d;%d}\n",noon->cryptedvalue,noon->r,noon->g,noon->b);
             sprintf(value,"%s",noon->cryptedvalue);
             fputs(value,f);
             fputs(Huffman,o);
