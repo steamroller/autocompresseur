@@ -6,8 +6,9 @@
 #include <errno.h>
 #include <time.h>
 #include "encryption.h"
+#include "decoding.h"
 
-int my_read(char *chain, int len)
+int reado(char *chain, int len)
 {
 	char *entrypos = NULL;
 	if (fgets(chain, len, stdin) != NULL)
@@ -25,22 +26,23 @@ int my_read(char *chain, int len)
 	}
 }
 
-char* my_itoa(int nb, int size)
+char* my_itoa(int nb)
 {
 	int a = nb;
-	char* final = calloc(size, sizeof(char));
+	char* final = calloc(2, sizeof(char));
 	while(a != 0)
 	{
 		int last = a%10;
 		asprintf(&final, "%c%s", (char)last + 48, final);
 		a = a/10;
 	}
+	
 	return final;
 }
 
 //Check if a number is a prime number
 
-int is_prime_number(int n)
+int is_prime_number1(int n)
 {
 	for (int i = 2; i < n; i++)
 	{
@@ -54,7 +56,7 @@ int is_prime_number(int n)
 
 //Find the Highest Common Factor of a number
 
-int PGCD(int a, int b)
+int PGCD1(int a, int b)
 {
 	int r;
 	while(b != 0)
@@ -68,7 +70,8 @@ int PGCD(int a, int b)
 
 
 // Calculate pow(a,b)mod[n]
-long expo_modul(long a, long b, long n)
+
+long expo_modul1(long a, long b, long n)
 {
 	long r;
 	for (r = 1; b > 0; b = b/2)
@@ -83,19 +86,21 @@ long expo_modul(long a, long b, long n)
 }
 
 
-void list_init(struct list *List)
+void list_init1(struct list1 *List)
 {
 	List->data = 0;
 	List->next = NULL;
 }
 
-void list_push_end(struct list *List, int elm)
+void list_push_endo1(struct list1 *List, int elm)
 {
-	struct list *new = malloc(sizeof(struct list));
+	
+	struct list1 *new = malloc(sizeof(struct list1));
 	new->data = elm;
 	new->next = NULL;
 	
-	struct list *temp = List;
+	
+	struct list1 *temp = List;
 	while (temp->next != NULL)
 	{
 		temp = temp->next;
@@ -104,14 +109,16 @@ void list_push_end(struct list *List, int elm)
 	
 }
 
-char* list_to_char(struct list *l, int size)
+char* list_to_char1(struct list1 *l, int size)
 {
 	char* s = calloc(size, sizeof(char));
 	l = l->next;
 	int i;
 	for (i = 0; l != NULL; l = l->next, i++)
 	{
-		int z = asprintf(&s, "%s%s%c", s, my_itoa(l->data, size), ',');
+		
+		int z =asprintf(&s, "%s%s%c", s, my_itoa(l->data), ',');
+		
 		if (z == -1)
 		{
 			errx(1, "Impossible to convert");
@@ -125,11 +132,11 @@ int public_key(int p, int q)
 	//creation of the public key
 	int e = 2;
 	int phiden = (p-1)*(q-1);
-	if (is_prime_number(p) == 0 || is_prime_number(q) == 0)
+	if (is_prime_number1(p) == 0 || is_prime_number1(q) == 0)
 	{
 		errx(1, "Number not prime");
 	}
-	while (PGCD(phiden, e) != 1)
+	while (PGCD1(phiden, e) != 1)
 	{
 		e++;
 	}
@@ -148,14 +155,14 @@ char* encryption(char string[])
 	int q = 0;
 	printf("\nChoose the first PRIME number to create your private key :\n");
     scanf("%d", &p);
-    if(is_prime_number(p) == 0) 
+    if(is_prime_number1(p) == 0) 
 	{ 
 		errx(1, "\nWRONG INPUT\n"); 
 	}
 	
     printf("Choose the second PRIME number to create your private key :\n");
     scanf("%d", &q);
-    if(is_prime_number(q) == 0||p == q) 
+    if(is_prime_number1(q) == 0||p == q) 
 	{ 
 		errx(1, "\nWRONG INPUT\n");
 	}
@@ -165,8 +172,8 @@ char* encryption(char string[])
 
 
 // Begin of the encryption
-	struct list *L = malloc(sizeof(struct list));
-	list_init(L);
+	struct list1 *L = malloc(sizeof(struct list1));
+	list_init1(L);
 	int ascii;
 	int encr_let;
 	int length = strlen(string);
@@ -174,24 +181,25 @@ char* encryption(char string[])
 	while(i < length)
 	{
 		ascii = (int)string[i];
-		encr_let = expo_modul(ascii, e, n);
-		list_push_end(L, encr_let);
+		encr_let = expo_modul1(ascii, e, n);
+		
+		list_push_endo1(L, encr_let);
 		i++;
 	}
-	char* code = list_to_char(L, length);
+	char* code = list_to_char1(L, length);
 	printf("\nYour encoded message is : \n%s", code);
 	printf("\n");
  
 	return code;
 }
 
-/*int main()
-{
-	char msg[100];
-	printf("\nEnter the message you want to encrypte:\n");
-    my_read(msg, 100);
+//~ int main()
+//~ {
+	//~ char msg[100];
+	//~ printf("\nEnter the message you want to encrypte:\n");
+    //~ reado(msg, 100);
     
-    encryption(msg);
-    return 0;
-}*/
+    //~ encryption(msg);
+    //~ return 0;
+//~ }
 

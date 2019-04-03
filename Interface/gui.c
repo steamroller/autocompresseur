@@ -280,6 +280,21 @@ void cp_file(char *filename)   // copy file choosed in the folder tmp/
 	system(arg1_arg2);
 }
 
+
+int dechiffrement_needed(char *s)
+{
+	int len = strlen(s);
+	int i = 0;
+	int b = 1;
+	while(i < len/2 && b == 1)
+	{
+		if(!((int)s[i] >= 48 && (int)s[i] <= 57) && s[i] != ',')
+			b = 0;
+		i+=1;
+	}
+	return b;
+}
+
 void on_valid_button_clicked()
 {
 
@@ -297,12 +312,28 @@ void on_valid_button_clicked()
 	printf("pbivb = %s\n",decomp);
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
 	//strcpy(decomp,result);
-	result = decoding(decomp);
-	printf("res = %s\n",result);
-	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
-	GtkTextIter end;
-	gtk_text_buffer_get_end_iter(text_buffer,&end);
-	gtk_text_buffer_insert(text_buffer,&end,result,-1);
+	
+		
+	if( dechiffrement_needed(decomp))
+	{
+		result = decoding(decomp);
+		printf("res = %s\n",result);
+		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+		GtkTextIter end;
+		gtk_text_buffer_get_end_iter(text_buffer,&end);
+		gtk_text_buffer_insert(text_buffer,&end,result,-1);
+	}
+	else
+	{
+		result =decomp;
+		printf("res = %s\n",result);
+		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+		GtkTextIter end;
+		gtk_text_buffer_get_end_iter(text_buffer,&end);
+		gtk_text_buffer_insert(text_buffer,&end,result,-1);
+	}
+	
+	
 	
 	
 	/*cp_file(filename_open);
@@ -390,14 +421,17 @@ void on_oui_button_clicked()
 
 	
 	char *toencode = calloc(strlen(lines),sizeof(char));
+	
 	toencode= lines;
+	
 	
 	char *copy = g_strdup(filename);
 	
 	if (gtk_switch_get_active(GTK_SWITCH(switch_rsa)) && (gtk_switch_get_active(GTK_SWITCH(switch_huffman))))
 	{
 		//chiffrement
-		char *tocompress = encryption(toencode);
+		char *tocompress= calloc(strlen(lines)*4,sizeof(char));
+		tocompress = encryption(toencode);
 		whole_comp(tocompress,copy);
 
 	}
