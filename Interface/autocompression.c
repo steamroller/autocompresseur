@@ -60,7 +60,13 @@ const gchar * name;
 const gchar * password;
 const gchar * filename;
 const gchar * filename_open;
-//gchar *filename;
+
+/*list file */
+GtkTreeModel* store;
+GtkWidget * file_list; 
+GtkTreeIter  list_iter;
+GtkWidget *list_window;
+GtkWidget *view;
 
 /* WINDOW */
 
@@ -74,56 +80,6 @@ GtkWidget * filename_open_window;
 GtkTextBuffer * text_buffer;	
 GtkWidget * text_zone;
 
-int main(int argc, char *argv[])
-{
-	gtk_init(&argc,&argv);
-
-
-	builder=gtk_builder_new();
-
-	//------ GET ELEMENT FROM GLADE FILE
-	gtk_builder_add_from_file(builder,"gui.glade",NULL);
-	
-	main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));
-	menu_window=GTK_WIDGET(gtk_builder_get_object(builder,"menu_window"));
-	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
-	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
-	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
-	filename_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_window"));
-	filename_open_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_open_window"));
-
-    switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
- 	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
-	switch_dictionnary=GTK_WIDGET(gtk_builder_get_object(builder,"switch_dictionnary"));
-	
-	gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
-	gtk_switch_set_active(GTK_SWITCH(switch_huffman),TRUE);
-
-
-	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
-	new_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_file_button"));
-	open_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"open_file_button"));
-	setting_button=GTK_WIDGET(gtk_builder_get_object(builder,"setting_button"));
-	save_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
-	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
-	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
-	valid_button=GTK_WIDGET(gtk_builder_get_object(builder,"valid_button"));
-
-	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
-	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
-	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
-	filename_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_entry"));
-	filename_open_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_open_entry"));
-	
-	//------ CONNECT BUTTON
-	gtk_builder_connect_signals(builder,NULL);
-	g_object_unref(builder);
-	gtk_widget_show(main_window);
-	gtk_main();
-	return  0;
-
-
-}
 
 void on_edit_window_destroy()
 {
@@ -297,7 +253,7 @@ int dechiffrement_needed(char *s)
 
 void on_valid_button_clicked()
 {
-
+	gtk_widget_hide(list_window);
 	filename_open = gtk_entry_get_text(GTK_ENTRY(filename_open_entry));
 	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
 
@@ -359,6 +315,7 @@ void on_valid_button_clicked()
 
 	gtk_widget_show(edit_window);
 	gtk_widget_hide(filename_open_window);
+	gtk_widget_hide(file_list);
 	//gtk_widget_hide(menu_window);
 	//}
 }
@@ -368,7 +325,7 @@ void on_open_file_button_clicked()
 
 	gtk_widget_show(filename_open_window);
 	gtk_widget_hide(menu_window);
-
+	gtk_widget_show_all ( file_list );
 	/*GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(open_file_button));
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
@@ -406,12 +363,21 @@ void on_close_edit_button_clicked()
 	gtk_text_buffer_get_end_iter(text_buffer,&end);
 	gtk_text_buffer_delete (text_buffer,&start,&end);
 }
+
+
+void model_data_new(GtkTreeModel* store,const gchar* fichier)  
+{  
+    GtkTreeIter iter;  
+    gtk_list_store_append(GTK_LIST_STORE(store), &iter);  
+    gtk_list_store_set(GTK_LIST_STORE(store), &iter,0,fichier,-1);  
+}
+
 void on_oui_button_clicked()
 {
 	filename = gtk_entry_get_text(GTK_ENTRY(filename_entry));
 	
 	printf("filename : %s \n\n--------------------------------------\n\n",filename);
-	
+	model_data_new(store, filename); 
 	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 	GtkTextIter start;
 	GtkTextIter end;
@@ -540,5 +506,89 @@ void on_switch_dictionnary_state_set()
 	}
 	//else
 		//printf("dictionnary off ! \n");
+
+}
+
+  
+GtkTreeModel* create_model() {  
+    GtkListStore  *store;  
+    store = gtk_list_store_new (1,G_TYPE_STRING);  
+    return GTK_TREE_MODEL(store);  
+}  
+  
+void arrange_tree_view(GtkWidget* view) {  
+    GtkCellRenderer* renderer;  
+  
+    // colonne 1: nom  
+    renderer = gtk_cell_renderer_text_new ();  
+    gtk_tree_view_insert_column_with_attributes(  
+        GTK_TREE_VIEW(view), -1, "fichiers disponibles", renderer, "text",0, NULL);  
+  
+}  
+
+
+int main(int argc, char *argv[])
+{
+	gtk_init(&argc,&argv);
+
+
+	builder=gtk_builder_new();
+
+	//------ GET ELEMENT FROM GLADE FILE
+	gtk_builder_add_from_file(builder,"gui.glade",NULL);
+	
+	/* START LIST WINDOW */
+	list_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	file_list=gtk_window_new(GTK_WINDOW_TOPLEVEL);  
+    
+    GtkWidget* view;  
+    view = gtk_tree_view_new();  
+    gtk_container_add( GTK_CONTAINER(file_list), view);  
+    arrange_tree_view(view); 
+    store = create_model();  
+    gtk_tree_view_set_model ( GTK_TREE_VIEW(view),  store);  
+   
+    g_object_unref( store );  
+  
+    /* END LIST WINDOW*/
+    
+	main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));
+	menu_window=GTK_WIDGET(gtk_builder_get_object(builder,"menu_window"));
+	settings_window=GTK_WIDGET(gtk_builder_get_object(builder,"settings_window"));
+	edit_window=GTK_WIDGET(gtk_builder_get_object(builder,"edit_window"));
+	text_zone=GTK_WIDGET(gtk_builder_get_object(builder,"text_zone"));
+	filename_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_window"));
+	filename_open_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_open_window"));
+
+    switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
+ 	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
+	switch_dictionnary=GTK_WIDGET(gtk_builder_get_object(builder,"switch_dictionnary"));
+	
+	gtk_switch_set_active(GTK_SWITCH(switch_dictionnary),FALSE);
+	gtk_switch_set_active(GTK_SWITCH(switch_huffman),TRUE);
+
+
+	new_user=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
+	new_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_file_button"));
+	open_file_button=GTK_WIDGET(gtk_builder_get_object(builder,"open_file_button"));
+	setting_button=GTK_WIDGET(gtk_builder_get_object(builder,"setting_button"));
+	save_button=GTK_WIDGET(gtk_builder_get_object(builder,"new_user_button"));
+	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
+	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
+	valid_button=GTK_WIDGET(gtk_builder_get_object(builder,"valid_button"));
+
+	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
+	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
+	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
+	filename_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_entry"));
+	filename_open_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_open_entry"));
+	
+	//------ CONNECT BUTTON
+	gtk_builder_connect_signals(builder,NULL);
+	g_object_unref(builder);
+	gtk_widget_show(main_window);
+	gtk_main();
+	return  0;
+
 
 }
