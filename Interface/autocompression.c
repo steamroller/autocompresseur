@@ -81,6 +81,34 @@ GtkTextBuffer * text_buffer;
 GtkWidget * text_zone;
 
 
+void model_data_new(GtkTreeModel* store,const gchar* fichier)  
+{  
+    GtkTreeIter iter;  
+    gtk_list_store_append(GTK_LIST_STORE(store), &iter);  
+    gtk_list_store_set(GTK_LIST_STORE(store), &iter,0,fichier,-1);  
+}
+
+
+void get_available_files()
+{
+	FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("available_files", "r");
+    
+    while ((read = getline(&line, &len, fp)) != -1) {
+        //const gchar* tt = "...";
+        model_data_new(store, line);
+       // printf("%s", line);
+    }
+
+    fclose(fp);
+    
+}
+
+
 void on_edit_window_destroy()
 {
 	gtk_main_quit();
@@ -256,8 +284,7 @@ void on_valid_button_clicked()
 	gtk_widget_hide(list_window);
 	filename_open = gtk_entry_get_text(GTK_ENTRY(filename_open_entry));
 	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
-
-
+	
 	char *decomp;
 	printf("choco\n");
 	char *fln = g_strdup(filename_open);
@@ -347,6 +374,7 @@ void on_setting_button_clicked()
 {
 	gtk_widget_show(settings_window);
 	gtk_widget_hide(menu_window);
+	
 
 }
 
@@ -365,18 +393,19 @@ void on_close_edit_button_clicked()
 }
 
 
-void model_data_new(GtkTreeModel* store,const gchar* fichier)  
-{  
-    GtkTreeIter iter;  
-    gtk_list_store_append(GTK_LIST_STORE(store), &iter);  
-    gtk_list_store_set(GTK_LIST_STORE(store), &iter,0,fichier,-1);  
-}
 
 void on_oui_button_clicked()
 {
 	filename = gtk_entry_get_text(GTK_ENTRY(filename_entry));
 	
 	printf("filename : %s \n\n--------------------------------------\n\n",filename);
+	
+	char pathFile[50];
+	sprintf(pathFile, "filenames/%s", filename);
+	int fd = open(pathFile, O_RDWR | O_APPEND | O_CREAT); 
+	if(fd==-1)
+		printf("open file failed");
+	
 	model_data_new(store, filename); 
 	text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 	GtkTextIter start;
@@ -448,6 +477,7 @@ void on_save_button_clicked()
 
 void on_apply_button_clicked()
 {
+	
 	gtk_widget_show(menu_window);
 	gtk_widget_hide(settings_window);
 	
@@ -530,12 +560,13 @@ void arrange_tree_view(GtkWidget* view) {
 int main(int argc, char *argv[])
 {
 	gtk_init(&argc,&argv);
-
-
+	
 	builder=gtk_builder_new();
 
 	//------ GET ELEMENT FROM GLADE FILE
 	gtk_builder_add_from_file(builder,"gui.glade",NULL);
+	
+	
 	
 	/* START LIST WINDOW */
 	list_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -548,8 +579,12 @@ int main(int argc, char *argv[])
     store = create_model();  
     gtk_tree_view_set_model ( GTK_TREE_VIEW(view),  store);  
    
+   	system("ls filenames/ >> available_files");
+	get_available_files();
+	printf("file added \n");
+	system(" rm available_files");
     g_object_unref( store );  
-  
+  	
     /* END LIST WINDOW*/
     
 	main_window=GTK_WIDGET(gtk_builder_get_object(builder,"main_window"));

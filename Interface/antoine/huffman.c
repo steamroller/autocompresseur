@@ -897,6 +897,8 @@ void whole_comp(char *input,char *filename)
 {
 	//printf("sizeofint = %i\n",(int)sizeof(int));
 	char *data_path;
+	
+	
 	int recup = asprintf(&data_path,"%s%s%s","../fichiers_utilisateur/",filename,".data");
 	printf("data_path = %s\n",data_path);
 	if(recup == -1)
@@ -911,6 +913,7 @@ void whole_comp(char *input,char *filename)
 	int len = strlen(res->cabane->string);
 	char *tamp = calloc(2,sizeof(char));
 	fwrite(&res->cabane->booleen,1,1,f1);
+	
 	long datasize = 1;
 	for(int i = 0; i < len; i++)
 	{
