@@ -5,8 +5,25 @@
 #include<err.h>
 #include"lzw.h"
 
+
+void printab(int *tab)
+{
+	printf("chips\n");
+	printf("%i\n",*tab);
+	//int taille = sizeof(tab)/sizeof(int);
+	//int i = 0;
+	while(*tab != -1)
+	{
+		printf("kcbeoi\n");
+		printf("%i\n",*tab);
+		tab += 1;
+	}
+}
+
+
 int sod(struct dictionary *dico);
 
+//int *tab = calloc(1000,sizeof(int));
 
 
 struct dictionary
@@ -153,10 +170,13 @@ int main(int argc, char *argv[])
 		printf("%s \n",str);
 
 	}*/
+	//*n = NULL;
+	//n =(int *)calloc(1,100*sizeof(int));
+
 	//printf("wtf");
 	//printf("<119><104><111><032><097><114><101><032><121><111><117>\n");
 	//char t[1250] ="<101><104><111><128><111>\n";
-
+	
 	char *try = calloc(1,200*sizeof(char));
 	//printf("crochet = %s\n",first(t));
 	//printf("decomp = %s\n",decompress(t,try));
@@ -165,7 +185,8 @@ int main(int argc, char *argv[])
 	int *array = invalues(phrase,l);
 	print_array(array,l);*/
 	char *tty = calloc(1,888*sizeof(char));
-	tty=final(ret,argv[1]);
+	int *tab2 = calloc(1000,sizeof(int));
+	tty=final(ret,argv[1],tab2);
 	printf("\n");
 	size_t v = 0;
 	while(c!=NULL)
@@ -176,15 +197,29 @@ int main(int argc, char *argv[])
 		v += 1;
 	}
 	//int n = 0;
+	//int *tab = calloc(1,1000*sizeof(int));
+	int *n = calloc(1000,sizeof(int));
 	printf("\nPhrase initiale : %s\n\n",argv[1]);
-	printf("Resultat apres compression : %s -----> ",(final(d,argv[1])));
+	printf("Resultat apres compression : %s -----> ",(final(d,argv[1],n)));
 	int pr = nbword(tty)*nec(sod(d));
+	//printf("pr = %i\n",pr);
+	//printab(n);
 	printf("%i * %i = %i bits\n\n",nbword(tty),nec(sod(d)),pr);
+	/*printf("ce tab : %i\n",*n);
+	n += 1;
+	printf("ce tab : %i\n",*n);*/
+	//printab(n);
+
+
+
+	
 	printf("Resultat apres decompression : %s -----> ",decompress(tty,try));
 	int apr = 8*strlen(argv[1]);
 	printf("%li * %i = %i bits\n\n",strlen(argv[1]),8,apr);
 	//printf("nbword = %i\n",nbword(tty));
 	printf("Taux de compression : %.2f%%\n\n",100 - (double)pr/(double)apr*100);
+
+	
 
 
 	/*size_t v = 0;

@@ -194,19 +194,26 @@ struct dictionary *add(char* to_add,struct dictionary *dico)
 																																										
 //======================================================================================================================================================================
 
-char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
+char *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
 {
 	if(*s == 0)
 	{
 		nbw = nbw;
+		tab-=nbw;
 		return str;
 	}
 	if(strlen(s) == 1)
 	{
+		*tab = is_belonging(dico,s);
+		printf("*tab = %i\n",*tab);
 		int a = asprintf(&str,"%s<%d>",str,is_belonging(dico,s));
 		if (a == -1)
 			printf("error");
 		nbw = nbw;
+		*(tab+1) = -1;
+		tab -= nbw;
+		printf("*f = %i\n",*tab);
+		printf("nbw = %i\n",nbw);
 		return str;
 	}
 	else
@@ -232,11 +239,18 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 		if((a = is_belonging(dico,temp))!=-1)
 		{
 			//printf("pas de chance = %i\n",a);
+			*tab = a;
+			printf("*tab = %i\n",*tab);
 			int b = asprintf(&str,"%s<%s>",str,convert(a));
 			if (b == -1)
 				printf("error");
 			dico = f;
 			nbw = nbw;
+			*(tab+1) = -1;
+			tab -= nbw;
+			printf("*f = %i\n",*tab);
+			printf("nbw = %i\n",nbw);
+
 			return str;
 		}
 		
@@ -264,10 +278,13 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 		dico = add(temp,dico);
 		dico = f;
 		s -= 1;
+		*tab = vg;
+		//printf("*tab = %i\n",*tab);
+		tab += 1;
 		int c = asprintf(&str,"%s<%s>",str,convert(vg));
 		if (c == -1)
 			printf("error");
-		return max_word(dico,s,str,nbw+1);
+		return max_word(dico,s,str,nbw+1,tab);
 	}
 }
 
@@ -292,11 +309,11 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw)
 }*/
 
 
-char *final(struct dictionary *dico, char *s)
+char *final(struct dictionary *dico, char *s,int *tab)
 {
 	//printf("taille = %i\n",sod(dico));
 	char *v = calloc(1,4000*sizeof(char));
-	return max_word(dico,s,v,1);
+	return max_word(dico,s,v,1,tab);
 }
 
 //======================================================================================================================================================================
