@@ -318,6 +318,7 @@ struct tabint *onzebits(int *tab,int nbw)
 	u_int8_t *ret = calloc(1,(nbw * sizeof(u_int8_t))/2 + 1);
 	u_int8_t *bis = ret;
 	int m = 0;
+	int it = 1;
 	while(m<nbw)//pour tous les nombres
 	{
 		while(m<nbw && index < 8)//on occupe tous les bits
@@ -341,6 +342,7 @@ struct tabint *onzebits(int *tab,int nbw)
 				*ret = *ret | gauche;
 				printf("ret = %i\n",*ret);
 				ret += 1;
+				it += 1;
 				*ret = *ret | (droite<<7);
 			}
 			else if(m%8 == 3)
@@ -358,6 +360,7 @@ struct tabint *onzebits(int *tab,int nbw)
 				*ret = *ret | (gauche);
 				printf("ret = %i\n",*ret);
 				ret += 1;
+				it += 1;
 				*ret = *ret | (droite<<6);
 			}
 			else if(m%8 == 6)
@@ -369,6 +372,8 @@ struct tabint *onzebits(int *tab,int nbw)
 				*ret = *ret | (reste);
 				printf("retf = %i\n",*ret);
 				ret += 1;
+				if(m+1<nbw)
+					it+=1;
 			}
 			m+=1;
 			tab += 1;
@@ -379,7 +384,8 @@ struct tabint *onzebits(int *tab,int nbw)
 	}
 	struct tabint *f = calloc(1,sizeof(struct tabint));
 	f->tab = bis;
-	f->nb = nbw;
+	printf("nbitnec = %i\n",it);
+	f->nb = it;
 	return f;
 }
 
@@ -398,6 +404,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 	}
 	struct tabint *tmp = onzebits(tabtab,nbw);
 	r = tmp->tab;
+	int it = tmp->nb;
 
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
@@ -414,7 +421,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 
 	FILE *f2;
 	f2 = fopen("testb.bin","wb");
-	for(int i = 0; i < nbw + 1*(nbw%8 != 0);i++)
+	for(int i = 0; i < it;i++)
 	{
 		printf("writtenr = %i\n",*r);
 		fwrite(&(*r),1,1,f2);
@@ -573,6 +580,146 @@ char *recup11(char *datapath,char *datapath2)
 
 
 
+//===========================================================================
+//===============================Ecriture et lecture sur 12 bits=============
+//===========================================================================
+struct tabint *douzebits(int *tab,int nbw)
+{
+	int index = 0;
+	u_int8_t *ret = calloc(1,(nbw * sizeof(u_int8_t))/2 + 1);
+	u_int8_t *bis = ret;
+	int m = 0;
+	while(m<nbw)//pour tous les nombres
+	{
+		while(m<nbw && index < 8)//on occupe tous les bits
+		{
+			u_int8_t reste = (*tab>>8);//= 1 ou 0
+			printf("squelette = %i\n",reste);
+			int masque = reste << (4-index);
+			//printf("masque = %i\n",masque);
+			*ret = *ret | masque;
+			tab += 1;
+			index += 4;
+			m+=1;
+		}
+		printf("ret = %i\n",*ret);
+		index = 0;
+		ret += 1;
+	}
+	struct tabint *f = calloc(1,sizeof(struct tabint));
+	f->tab = bis;
+	f->nb = nbw;
+	return f;
+}
+
+//FONCTION PRINCIPALE
+struct double_tab *build_douze(int *tab,int nbw)
+{
+	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
+	u_int8_t *kk = k;
+	int *tabtab =tab;
+	u_int8_t *r = calloc(1,(nbw/8 + 1*(nbw%8 != 0))*sizeof(u_int8_t));
+	for(int i = 0; i < nbw;i++)
+	{
+		*k = *tab & 255;
+		k += 1;
+		tab += 1;
+	}
+	struct tabint *tmp = douzebits(tabtab,nbw);
+	r = tmp->tab;
+
+	struct double_tab *final = calloc(1,sizeof(struct double_tab));
+	final->keep = kk;
+	final->res = r;
+
+	FILE *f1;
+	f1 = fopen("test.bin","wb");
+	for(int i = 0; i < nbw;i++)
+	{
+		fwrite(&(*kk),1,1,f1);
+		kk += 1;
+	}
+	fclose(f1);
+
+	FILE *f2;
+	f2 = fopen("testb.bin","wb");
+	for(int i = 0; i < nbw/2 + 1*(nbw%8 != 0);i++)
+	{
+		fwrite(&(*r),1,1,f2);
+		r += 1;
+	}
+	fclose(f2);
+
+
+
+
+	return final;
+
+
+}
+
+char *recup12(char *datapath,char *datapath2)
+{
+	int *somme = calloc(1,10000*sizeof(int));
+	int *somme2 = somme;
+	int *sommef = somme;
+	FILE *f =fopen(datapath,"rb");
+	int nbit = 0;
+	u_int8_t p = 0;
+	while(fread(&p,1,1,f)==1)
+	{
+		printf("avantdernier= %i\n",p);
+		*somme = p;
+		somme += 1;
+		nbit += 1;
+	}
+	fclose(f);
+
+
+	FILE *fp =fopen(datapath2,"rb");
+	u_int8_t d = 0;
+	while(fread(&d,1,1,f)==1)
+	{
+		printf("good = %i\n",d);
+		for(int i = 0 ; i < 8 ; i++)
+		{
+			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
+			if(i == 0)
+			{
+				*somme2 += ((d & 240)<<4);
+			}
+			else
+			{
+				*somme2 += ((d&15)<<8);
+			}
+			i+=4;
+			somme2 += 1;
+		}
+	}
+	*somme2 = -1;
+	fclose(fp);
+	char *fou = calloc(1,sizeof(char));
+	int o = 0;
+	while(o < nbit)//*sommef != -1)
+	{
+		printf("sommef = %i\n",*sommef);
+		if(*sommef > 99)
+			asprintf(&fou,"%s<%i>",fou,*sommef);
+		//printf("fff = %i\n",*sommef);
+		else if(*sommef > 9)
+			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+		else
+			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+
+		sommef += 1;
+		o+=1;
+	}
+	return fou;
+}
+
+
+
+
 int main(int argc,char *argv[])
 {
 	/*int a = 500;
@@ -584,7 +731,7 @@ int main(int argc,char *argv[])
 	printf("so = %i\n",rec);*/
 	//int arg = atoi(argv[1]);
 	//printf("res = %i\n",arg & 255);
-	int tab[16]={1020,2040,350,350,129,256,12,15,1020,2040,350,350,129,256,12,15};
+	int tab[17]={1020,956,350,350,129,256,12,15,1020,899,350,350,129,256,12,15,1003};
 	/*struct tabint *test = neufbits(tab,16);
 	for(int u = 0;u<2;u++)
 	{
@@ -592,8 +739,8 @@ int main(int argc,char *argv[])
 		test->tab += 1;
 	}*/
 ////////
-	struct double_tab *main = build_onze(tab,15);
-	for(int u = 0; u < 16 ;u++)
+	struct double_tab *main = build_douze(tab,17);
+	for(int u = 0; u < 17 ;u++)
 	{
 		printf("keep n-%i = %i\n",u,*(main->keep));
 		main->keep+=1;
@@ -605,7 +752,7 @@ int main(int argc,char *argv[])
 
 	}
 	char *print = calloc(1,sizeof(char));
-	int u = asprintf(&print,"%s%s",print,recup11("test.bin","testb.bin"));
+	int u = asprintf(&print,"%s%s",print,recup12("test.bin","testb.bin"));
 	printf("%s\n",print);
 	///////
 
