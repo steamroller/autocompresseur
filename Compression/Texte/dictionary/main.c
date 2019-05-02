@@ -4,7 +4,19 @@
 #include<string.h>
 #include<err.h>
 #include"lzw.h"
+#include"bitwise.h"
 
+struct double_tab
+{
+	u_int8_t *keep;
+	u_int8_t *res;
+};
+
+struct tabint
+{
+	u_int8_t *tab;
+	int nb;
+};
 
 void printab(int *tab)
 {
@@ -83,6 +95,7 @@ int main(int argc, char *argv[])
 	//printf("5 en char donne : %c\n",(char)514);
 	struct dictionary *ret = build();
 	struct dictionary *c = ret;
+	struct dictionnary *e = ret;
 	struct dictionary *d = build();
 	//struct dictionary *d = ret;
 	//struct dictionary *c = ret;////LAAA
@@ -186,7 +199,10 @@ int main(int argc, char *argv[])
 	print_array(array,l);*/
 	char *tty = calloc(1,888*sizeof(char));
 	int *tab2 = calloc(1000,sizeof(int));
-	tty=final(ret,argv[1],tab2);
+	int *balec = malloc(2*sizeof(int));
+	tty=final(ret,argv[1],tab2,balec);
+	printf("balec = %i\n",*balec);
+	printf("tty : %s\n",tty);
 	printf("\n");
 	size_t v = 0;
 	while(c!=NULL)
@@ -198,10 +214,14 @@ int main(int argc, char *argv[])
 	}
 	//int n = 0;
 	//int *tab = calloc(1,1000*sizeof(int));
-	int *n = calloc(1000,sizeof(int));
+	int *n = calloc(1,1000*sizeof(int));
 	printf("\nPhrase initiale : %s\n\n",argv[1]);
-	printf("Resultat apres compression : %s -----> ",(final(d,argv[1],n)));
-	int pr = nbword(tty)*nec(sod(d));
+
+	printf("Resultat apres compression : %s -----> ",tty);//(final(d,argv[1],n,balec)));
+	int saude = sod(d);
+	printf("saud = %i\n",saude);
+	int saud = sod(e);
+	int pr = nbword(tty)*nec(saud);
 	//printf("pr = %i\n",pr);
 	//printab(n);
 	printf("%i * %i = %i bits\n\n",nbword(tty),nec(sod(d)),pr);
@@ -209,11 +229,53 @@ int main(int argc, char *argv[])
 	n += 1;
 	printf("ce tab : %i\n",*n);*/
 	//printab(n);
+	
+	int which = -1;
+	char *rep;
+	if(saud < 256)
+	{
+		struct double_tab *prisoner = build_huit(tab2,*balec);
+		which = 8;
+		printf("on est sur 8bits\n");
+		rep = recup8("test.bin","testb.bin");
+	}
+	else if(saud < 512)
+	{
+		struct double_tab *prisoner = build_neuf(tab2,*balec);
+		which = 9;
+		printf("on est sur 9bits\n");
+		rep = recup9("test.bin","testb.bin");
+	}
+	else if(saud < 1023)
+	{
+		struct double_tab *prisoner = build_dix(tab2,*balec);
+		which = 10;
+		printf("on est sur 10bits\n");
+		rep = recup10("test.bin","testb.bin");
+	}
+	else if(saud < 2048)
+	{
+		struct double_tab *prisoner = build_onze(tab2,*balec);
+		which = 11;
+		printf("on est sur 11bits\n");
+		rep = recup11("test.bin","testb.bin");
+	}
+	else 
+	{
+		struct double_tab *prisoner = build_douze(tab2,*balec);
+		which = 12;
+		printf("on est sur 12bits\n");
+		rep = recup12("test.bin","testb.bin");
+	}
+
+
+	//char *rep = recup9("test.bin","testb.bin");
+
 
 
 
 	
-	printf("Resultat apres decompression : %s -----> ",decompress(tty,try));
+	printf("Resultat apres decompression : %s -----> ",decompress(rep,try));
 	int apr = 8*strlen(argv[1]);
 	printf("%li * %i = %i bits\n\n",strlen(argv[1]),8,apr);
 	//printf("nbword = %i\n",nbword(tty));

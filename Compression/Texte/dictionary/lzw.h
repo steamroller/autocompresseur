@@ -9,7 +9,7 @@ int weight(char *s);
 int is_belonging(struct dictionary *dico, char *s);
 //int max_word(struct dictionary *dico, char *s);
 void substring(char *s);
-char *final(struct dictionary *dico, char *s,int *tab);
+char *final(struct dictionary *dico, char *s,int *tab,int *nbw);
 int digit_count(int nombre);
 char *recup(struct dictionary *dic, int index);
 char *first(char *s);

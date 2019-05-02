@@ -10,7 +10,7 @@ LDLIBS=
 # and "insert_sort.h" files in order to compile.
 # (These files can be empty.)
 
-SRC= lzw.c main.c
+SRC= lzw.c main.c bitwise.c
 OBJ= ${SRC:.c=.o}
 DEP= ${SRC:.c=.d}
 

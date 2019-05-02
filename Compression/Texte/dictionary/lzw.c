@@ -194,13 +194,24 @@ struct dictionary *add(char* to_add,struct dictionary *dico)
 																																										
 //======================================================================================================================================================================
 
-char *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
+struct arya
+{
+	int nbww;
+	char *chaine;
+};
+
+struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
 {
 	if(*s == 0)
 	{
 		nbw = nbw;
 		tab-=nbw;
-		return str;
+		//return str;
+		struct arya *r = calloc(1,sizeof(struct arya));
+		r->nbww = nbw;
+		r->chaine = str;
+		return r;
+
 	}
 	if(strlen(s) == 1)
 	{
@@ -214,7 +225,10 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
 		tab -= nbw;
 		printf("*f = %i\n",*tab);
 		printf("nbw = %i\n",nbw);
-		return str;
+		struct arya *r = calloc(1,sizeof(struct arya));
+		r->nbww = nbw;
+		r->chaine = str;
+		return r;
 	}
 	else
 	{
@@ -251,7 +265,12 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
 			printf("*f = %i\n",*tab);
 			printf("nbw = %i\n",nbw);
 
-			return str;
+			//return str;
+			struct arya *r = calloc(1,sizeof(struct arya));
+			r->nbww = nbw;
+			r->chaine = str;
+			return r;
+
 		}
 		
 
@@ -309,11 +328,15 @@ char *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab)
 }*/
 
 
-char *final(struct dictionary *dico, char *s,int *tab)
+char *final(struct dictionary *dico, char *s,int *tab,int *nbw)
 {
 	//printf("taille = %i\n",sod(dico));
 	char *v = calloc(1,4000*sizeof(char));
-	return max_word(dico,s,v,1,tab);
+	int a = 1;
+	struct arya *ret = max_word(dico,s,v,a,tab);
+	printf("a = %i\n",ret->nbww);
+	*nbw = ret->nbww;
+	return ret->chaine;
 }
 
 //======================================================================================================================================================================
