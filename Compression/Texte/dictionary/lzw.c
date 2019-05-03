@@ -411,6 +411,7 @@ char *decompress(char *init,char *dest)
 	dico = build();
 	size_t i = 0;
 	size_t tot = strlen(init);
+	int index = 0;
 	while(i < tot-1)
 	{
 		//bw += 1;
@@ -426,7 +427,8 @@ char *decompress(char *init,char *dest)
 			i += 1;
 			s += 1;
 		}
-		//printf("tmp = %s\n",temp);
+		printf("tmp %i = %s\n",index,temp);
+		index += 1;
 		int actu = atoi(temp);
 		//if(tp < sod(dico))
 		if(1)
@@ -495,4 +497,40 @@ char *decompress(char *init,char *dest)
 
 }
 
-
+char *inch(int *tab,char *dest)
+{
+	struct dictionary *dico = build();
+	int si = 128;
+	char *prev = calloc(1,6*sizeof(char));
+	char *too = calloc(1,2*sizeof(char));
+	while(*tab != -1)
+	{
+		if(*tab < si)
+		{
+			int res = asprintf(&dest,"%s%s",dest, recup(dico, *tab));
+			if(res == -1)
+				printf("preob\n");
+			too = "";
+			asprintf(&too, "%s%s%c",too,prev,(recup(dico,*tab))[0]);
+			if(is_belonging(dico,too)==-1)
+			{
+				add(too,dico);
+				printf("too = %s\n",too);
+			si += 1;
+			}
+			prev = recup(dico,*tab);
+		}
+		else
+		{
+			printf("even that\n");
+			too = "";
+			asprintf(&dest,"%s%s%c",dest,prev,prev[0]);
+			asprintf(&too,"%s%s%c",too,prev,prev[0]);
+			add(too,dico);
+			prev =too;
+			si += 1;
+		}
+		tab += 1;
+	}
+	return dest;
+}

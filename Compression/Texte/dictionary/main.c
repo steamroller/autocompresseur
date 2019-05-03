@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 	//printf("<119><104><111><032><097><114><101><032><121><111><117>\n");
 	//char t[1250] ="<101><104><111><128><111>\n";
 	
-	char *try = calloc(1,200*sizeof(char));
+	char *try = calloc(1,200000*sizeof(char));
 	//printf("crochet = %s\n",first(t));
 	//printf("decomp = %s\n",decompress(t,try));
 	/*char *phrase = "Bonjour";
@@ -322,4 +322,7 @@ int main(int argc, char *argv[])
 	//printf(recup(d,130));
 	(void)saude;
 	(void)n;
+	int tab[11] = {97,98,128,99,129,132,-1};
+	char *temp = calloc(1,100*sizeof(char));
+	printf("temp = %s\n",inch(tab,temp));
 }

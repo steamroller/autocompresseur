@@ -16,5 +16,6 @@ char *first(char *s);
 char *decompress(char *init,char *dest);
 int nbword(char *s);
 int sod(struct dictionary *dico);
+char *inch(int *tab, char *dest);
 
 #endif

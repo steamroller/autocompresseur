@@ -334,7 +334,7 @@ struct tabint *onzebits(int *tab,int nbw)
 		{
 			u_int8_t reste = *tab>>8;
 			//printf("tab = %i\n",*tab);
-			printf("r = %i\n",reste);
+			//printf("r = %i\n",reste);
 			if(m%8 == 0)
 			{
 				*ret = *ret | (reste<<5);
