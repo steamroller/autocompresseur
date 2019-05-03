@@ -216,15 +216,15 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 	if(strlen(s) == 1)
 	{
 		*tab = is_belonging(dico,s);
-		printf("*tab = %i\n",*tab);
+		//printf("*tab = %i\n",*tab);
 		int a = asprintf(&str,"%s<%d>",str,is_belonging(dico,s));
 		if (a == -1)
 			printf("error");
 		nbw = nbw;
 		*(tab+1) = -1;
 		tab -= nbw;
-		printf("*f = %i\n",*tab);
-		printf("nbw = %i\n",nbw);
+		//printf("*f = %i\n",*tab);
+		//printf("nbw = %i\n",nbw);
 		struct arya *r = calloc(1,sizeof(struct arya));
 		r->nbww = nbw;
 		r->chaine = str;
@@ -254,7 +254,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 		{
 			//printf("pas de chance = %i\n",a);
 			*tab = a;
-			printf("*tab = %i\n",*tab);
+			//printf("*tab = %i\n",*tab);
 			int b = asprintf(&str,"%s<%s>",str,convert(a));
 			if (b == -1)
 				printf("error");
@@ -262,8 +262,8 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 			nbw = nbw;
 			*(tab+1) = -1;
 			tab -= nbw;
-			printf("*f = %i\n",*tab);
-			printf("nbw = %i\n",nbw);
+			//printf("*f = %i\n",*tab);
+			//printf("nbw = %i\n",nbw);
 
 			//return str;
 			struct arya *r = calloc(1,sizeof(struct arya));

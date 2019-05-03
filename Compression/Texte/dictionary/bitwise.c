@@ -114,7 +114,7 @@ char *recup9(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("close = %i\n",p);
+		//printf("close = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -126,7 +126,7 @@ char *recup9(char *datapath,char *datapath2)
 	u_int8_t d = 0;
 	while(fread(&d,1,1,f)==1)
 	{
-		printf("good = %i\n",d);
+		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 8 ; i++)
 		{
 			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
@@ -140,14 +140,18 @@ char *recup9(char *datapath,char *datapath2)
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("sommef = %i\n",*sommef);
+		int a = 0; 
+		//printf("sommef = %i\n",*sommef);
 		if(*sommef > 99)
-			asprintf(&fou,"%s<%i>",fou,*sommef);
+			a = asprintf(&fou,"%s<%i>",fou,*sommef);
 		//printf("fff = %i\n",*sommef);
 		else if(*sommef > 9)
-			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
 		else
-			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+		
+		if(a == -1)
+			printf("error with asprintf\n");
 
 		sommef += 1;
 		o+=1;
@@ -190,7 +194,7 @@ struct tabint *dixbits(int *tab,int nbw)
 			}
 
 			//u_int8_t reste = (*tab & (1<<8))>>8;//= 1 ou 0
-			printf("tab = %i, r = %i\n",*tab,reste);
+			//printf("tab = %i, r = %i\n",*tab,reste);
 			int masque = reste << (6-index);
 			//printf("masque = %i\n",masque);
 			*ret = *ret | masque;
@@ -198,7 +202,7 @@ struct tabint *dixbits(int *tab,int nbw)
 			index += 2;
 			m+=1;
 		}
-		printf("ret = %i\n",*ret);
+		//printf("ret = %i\n",*ret);
 		index = 0;
 		ret += 1;
 	}
@@ -265,7 +269,7 @@ char *recup10(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("close = %i\n",p);
+		//printf("close = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -277,7 +281,7 @@ char *recup10(char *datapath,char *datapath2)
 	u_int8_t d = 0;
 	while(fread(&d,1,1,f)==1)
 	{
-		printf("good = %i\n",d);
+		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 4 ; i++)
 		{
 			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
@@ -290,17 +294,22 @@ char *recup10(char *datapath,char *datapath2)
 	fclose(fp);
 	char *fou = calloc(1,sizeof(char));
 	int o = 0;
+	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("sommef = %i\n",*sommef);
+		
+		//printf("sommef = %i\n",*sommef);
 		if(*sommef > 99)
-			asprintf(&fou,"%s<%i>",fou,*sommef);
+			a = asprintf(&fou,"%s<%i>",fou,*sommef);
 		//printf("fff = %i\n",*sommef);
 		else if(*sommef > 9)
-			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
 		else
-			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
 
+		if(a == -1)
+			printf("error with asprintf\n");
+			
 		sommef += 1;
 		o+=1;
 	}
@@ -324,7 +333,7 @@ struct tabint *onzebits(int *tab,int nbw)
 		while(m<nbw && index < 8)//on occupe tous les bits
 		{
 			u_int8_t reste = *tab>>8;
-			printf("tab = %i\n",*tab);
+			//printf("tab = %i\n",*tab);
 			printf("r = %i\n",reste);
 			if(m%8 == 0)
 			{
@@ -340,7 +349,7 @@ struct tabint *onzebits(int *tab,int nbw)
 				u_int8_t gauche = reste>>1;
 				u_int8_t droite = reste % 2;
 				*ret = *ret | gauche;
-				printf("ret = %i\n",*ret);
+				//printf("ret = %i\n",*ret);
 				ret += 1;
 				it += 1;
 				*ret = *ret | (droite<<7);
@@ -358,7 +367,7 @@ struct tabint *onzebits(int *tab,int nbw)
 				u_int8_t gauche = reste & 4;
 				u_int8_t droite = reste & 3;
 				*ret = *ret | (gauche);
-				printf("ret = %i\n",*ret);
+				//printf("ret = %i\n",*ret);
 				ret += 1;
 				it += 1;
 				*ret = *ret | (droite<<6);
@@ -370,7 +379,7 @@ struct tabint *onzebits(int *tab,int nbw)
 			else if(m%8 == 7)
 			{
 				*ret = *ret | (reste);
-				printf("retf = %i\n",*ret);
+				//printf("retf = %i\n",*ret);
 				ret += 1;
 				if(m+1<nbw)
 					it+=1;
@@ -384,7 +393,7 @@ struct tabint *onzebits(int *tab,int nbw)
 	}
 	struct tabint *f = calloc(1,sizeof(struct tabint));
 	f->tab = bis;
-	printf("nbitnec = %i\n",it);
+	//printf("nbitnec = %i\n",it);
 	f->nb = it;
 	return f;
 }
@@ -423,7 +432,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 	f2 = fopen("testb.bin","wb");
 	for(int i = 0; i < it;i++)
 	{
-		printf("writtenr = %i\n",*r);
+		//printf("writtenr = %i\n",*r);
 		fwrite(&(*r),1,1,f2);
 		r += 1;
 	}
@@ -448,7 +457,7 @@ char *recup11(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("sur 8bits = %i\n",p);
+		//printf("sur 8bits = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -463,15 +472,15 @@ char *recup11(char *datapath,char *datapath2)
 	int jokerbis = 0;
 	while(fread(&d,1,1,f)==1)
 	{
-		printf("lus = %i\n",d);
+		//printf("lus = %i\n",d);
 		while(a)
 		{
 			if(m%8 == 0)
 			{
-				printf("somme init= %i\n",*somme2);
-				printf("d = %i\n",d);
+				//printf("somme init= %i\n",*somme2);
+				//printf("d = %i\n",d);
 				*somme2 += ((d>>5)<<8);
-				printf("dodo = %i\n",*somme2);
+				//printf("dodo = %i\n",*somme2);
 				somme2 += 1;
 				m+=1;
 			}
@@ -487,7 +496,7 @@ char *recup11(char *datapath,char *datapath2)
 			{
 				if(joker == 0)
 				{
-					printf("congru a 2,1\n");
+					//printf("congru a 2,1\n");
 					int b = 0b0011;
 					*somme2 += ((d & b)<<9);
 					a = 0;
@@ -495,7 +504,7 @@ char *recup11(char *datapath,char *datapath2)
 				}
 				else
 				{
-					printf("congru a 2,2\n");
+					//printf("congru a 2,2\n");
 					*somme2 += ((d & 128)<<1);
 					joker = 0;
 					somme2 += 1;
@@ -512,7 +521,7 @@ char *recup11(char *datapath,char *datapath2)
 			}
 			else if(m%8 == 4)
 			{
-				printf("congru a 4\n");
+				//printf("congru a 4\n");
 				int mask = 0b00001110;
 				*somme2 += ((d&mask)<<7);
 				somme2 += 1;
@@ -561,17 +570,22 @@ char *recup11(char *datapath,char *datapath2)
 	fclose(fp);
 	char *fou = calloc(1,sizeof(char));
 	int o = 0;
+	int lostintheflood = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("sommef = %i\n",*sommef);
+		//printf("sommef = %i\n",*sommef);
 		if(*sommef > 99)
-			asprintf(&fou,"%s<%i>",fou,*sommef);
+			lostintheflood = asprintf(&fou,"%s<%i>",fou,*sommef);
 		//printf("fff = %i\n",*sommef);
 		else if(*sommef > 9)
-			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+			lostintheflood = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
 		else
-			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			lostintheflood = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
 
+
+		if(lostintheflood == -1)
+			printf("error with asprintf\n");
+			
 		sommef += 1;
 		o+=1;
 	}
@@ -594,7 +608,7 @@ struct tabint *douzebits(int *tab,int nbw)
 		while(m<nbw && index < 8)//on occupe tous les bits
 		{
 			u_int8_t reste = (*tab>>8);//= 1 ou 0
-			printf("squelette = %i\n",reste);
+			//printf("squelette = %i\n",reste);
 			int masque = reste << (4-index);
 			//printf("masque = %i\n",masque);
 			*ret = *ret | masque;
@@ -602,7 +616,7 @@ struct tabint *douzebits(int *tab,int nbw)
 			index += 4;
 			m+=1;
 		}
-		printf("ret = %i\n",*ret);
+		//printf("ret = %i\n",*ret);
 		index = 0;
 		ret += 1;
 	}
@@ -668,7 +682,7 @@ char *recup12(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("avantdernier= %i\n",p);
+		//printf("avantdernier= %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -680,7 +694,7 @@ char *recup12(char *datapath,char *datapath2)
 	u_int8_t d = 0;
 	while(fread(&d,1,1,f)==1)
 	{
-		printf("good = %i\n",d);
+		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 8 ; i++)
 		{
 			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
@@ -700,16 +714,20 @@ char *recup12(char *datapath,char *datapath2)
 	fclose(fp);
 	char *fou = calloc(1,sizeof(char));
 	int o = 0;
+	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("sommef = %i\n",*sommef);
+		//printf("sommef = %i\n",*sommef);
 		if(*sommef > 99)
-			asprintf(&fou,"%s<%i>",fou,*sommef);
+			a= asprintf(&fou,"%s<%i>",fou,*sommef);
 		//printf("fff = %i\n",*sommef);
 		else if(*sommef > 9)
-			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
 		else
-			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			
+		if(a == -1)
+			printf("error with asprintf\n");
 
 		sommef += 1;
 		o+=1;
@@ -764,6 +782,7 @@ struct double_tab *build_huit(int *tab,int nbw)
 
 char *recup8(char *datapath,char *datapath2)
 {
+	(void)datapath2;
 	int *somme = calloc(1,10000*sizeof(int));
 	int *somme2 = somme;
 	int *sommef = somme;
@@ -772,7 +791,7 @@ char *recup8(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("close = %i\n",p);
+		//printf("close = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -782,20 +801,24 @@ char *recup8(char *datapath,char *datapath2)
 
 	char *fou = calloc(1,sizeof(char));
 	int o = 0;
+	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("sommef = %i\n",*sommef);
+		//printf("sommef = %i\n",*sommef);
 		if(*sommef > 99)
-			asprintf(&fou,"%s<%i>",fou,*sommef);
+			a = asprintf(&fou,"%s<%i>",fou,*sommef);
 		//printf("fff = %i\n",*sommef);
 		else if(*sommef > 9)
-			asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
+			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
 		else
-			asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
+			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
 
+		if(a == -1)
+			printf("error with asprintf");
 		sommef += 1;
 		o+=1;
 	}
+	(void)somme2;
 	return fou;
 }
 
