@@ -40,8 +40,7 @@ void printab(int *tab)
 	printf("%i\n",*tab);
 	//int taille = sizeof(tab)/sizeof(int);
 	//int i = 0;
-	//while(*tab != -1)
-	for (int i = 0 ; i<4;i++)
+	while(*tab != -1)
 	{
 		printf("kcbeoi\n");
 		printf("%i\n",*tab);
@@ -207,16 +206,16 @@ int main(int argc, char *argv[])
 	//printf("<119><104><111><032><097><114><101><032><121><111><117>\n");
 	//char t[1250] ="<101><104><111><128><111>\n";
 	
-	char *try = calloc(1,200000*sizeof(char));
+	char *try = calloc(1,500*sizeof(char));
 	//printf("crochet = %s\n",first(t));
 	//printf("decomp = %s\n",decompress(t,try));
 	/*char *phrase = "Bonjour";
 	size_t l = length(phrase);
 	int *array = invalues(phrase,l);
 	print_array(array,l);*/
-	char *tty = calloc(1,10000*sizeof(char));
-	int *tab2 = calloc(10000,sizeof(int));
-	int *balec = malloc(2000*sizeof(int));
+	char *tty = calloc(1,500*sizeof(char));
+	int *tab2 = calloc(500,sizeof(int));
+	int *balec = malloc(5000*sizeof(int));
 	tty=final(ret,argv[1],tab2,balec);
 	//printf("balec = %i\n",*balec);
 	//printf("tty : %s\n",tty);
@@ -229,6 +228,7 @@ int main(int argc, char *argv[])
 		c = c->next;
 		v += 1;
 	}
+	//free(c);
 	printf("\nPhrase initiale : %s\n\n",argv[1]);
 	printf("Nombre de caracteres : %li\n",strlen(argv[1]));
 
@@ -292,22 +292,22 @@ int main(int argc, char *argv[])
 	//struct double_tab *prisoner = build_neuf(tab2,*balec);
 	//int *ress = recup9("test.bin","testb.bin");
 
-	/*long somme = size("test.bin")+size("testb.bin");
+	long somme = size("test.bin")+size("testb.bin");
 	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size("test.bin"));
 	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size("testb.bin"));
-	printf("La somme totale de l'enregistrement est de : %li octets\n",size("test.bin")+size("testb.bin"));*/
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size("test.bin")+size("testb.bin"));
 
 	//char *rep = recup9("test.bin","testb.bin");
 
 	//struct double_tab *prisoner = build_neuf(tab2,*balec);
 	//int *ress = recup9("test.bin","testb.bin");
-	//printab(ress);
+	//printab(rep);
 	
-	printf("Resultat apres decompression : %s -----> ",inch(rep,try));
-	/*int apr = strlen(argv[1]);
+	printf("Resultat apres decompression : %s\n -----> ",inch(rep,try));
+	int apr = strlen(argv[1]);
 	printf("%li * %i = %i octets\n\n",strlen(argv[1]),8,apr);
 	//printf("nbword = %i\n",nbword(tty));
-	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);*/
+	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);
 
 	
 
@@ -322,7 +322,22 @@ int main(int argc, char *argv[])
 	}*/
 	//printf(recup(d,130));
 	(void)saude;
-	/*int tab[11] = {97,98,128,99,129,132,-1};
-	char *temp = calloc(1,100*sizeof(char));
-	printf("temp = %s\n",inch(tab,temp));*/
+	//int tab[11] = {114,32,97,32,122,32,-1};
+	int *tab = calloc(1,1000*sizeof(int));
+	int *k = tab;
+	*tab = 114;
+	tab+=1;
+	*tab = 32;
+	tab+=1;
+	*tab = 97;
+	tab+=1;
+	*tab = 32;
+	tab+=1;
+	*tab = 122;
+	tab+=1;
+	*tab = 32;
+	tab += 1;
+	*tab = -1;
+	//char *temp = calloc(1,100*sizeof(char));
+	//printf("temp = %s\n",inch(k,temp));
 }

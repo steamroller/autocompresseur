@@ -114,7 +114,7 @@ int *recup9(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		printf("close = %i\n",p);
+		//printf("close = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -126,7 +126,7 @@ int *recup9(char *datapath,char *datapath2)
 	u_int8_t d = 0;
 	while(fread(&d,1,1,fp)==1)
 	{
-		printf("good = %i\n",d);
+		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 8 ; i++)
 		{
 			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
@@ -134,7 +134,7 @@ int *recup9(char *datapath,char *datapath2)
 			somme2 += 1;
 		}
 	}
-	*somme2 = -1;
+	//*somme2 = -1;
 	fclose(fp);
 	int *fou = calloc(1,nbit*sizeof(int));
 	int *fouret = fou;
@@ -289,7 +289,7 @@ int *recup10(char *datapath,char *datapath2)
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("that fuckinh sommed is : %i\n",*sommef);
+		//printf("that fuckinh sommed is : %i\n",*sommef);
 		*fou = *sommef;
 		fou += 1;
 		sommef += 1;
@@ -431,7 +431,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 
 int *recup11(char *datapath,char *datapath2)
 {
-	int *somme = calloc(1,10000*sizeof(int));
+	int *somme = calloc(1,1000000*sizeof(int));
 	int *somme2 = somme;
 	int *sommef = somme;
 	int m = 0;
@@ -690,7 +690,7 @@ int *recup12(char *datapath,char *datapath2)
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("that fuckinh sommed is : %i\n",*sommef);
+		//printf("that fuckinh sommed is : %i\n",*sommef);
 		*fou = *sommef;
 		fou += 1;
 		sommef += 1;
@@ -732,7 +732,6 @@ struct double_tab *build_huit(int *tab,int nbw)
 		kk += 1;
 	}
 	fclose(f1);
-
 	FILE *f2;
 	f2 = fopen("testb.bin","wb");
 	fclose(f2);
@@ -770,7 +769,7 @@ int *recup8(char *datapath,char *datapath2)
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("that fuckinh sommed is : %i\n",*sommef);
+		//printf("that fuckinh sommed is : %i\n",*sommef);
 		*fou = *sommef;
 		fou += 1;
 		sommef += 1;
