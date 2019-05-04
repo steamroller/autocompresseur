@@ -221,7 +221,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 		if (a == -1)
 			printf("error");
 		nbw = nbw;
-		*(tab+1) = -1;
+		//*(tab+1) = -1;
 		tab -= nbw;
 		//printf("*f = %i\n",*tab);
 		//printf("nbw = %i\n",nbw);
@@ -260,7 +260,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 				printf("error");
 			dico = f;
 			nbw = nbw;
-			*(tab+1) = -1;
+			//*(tab+1) = -1;
 			tab -= nbw;
 			//printf("*f = %i\n",*tab);
 			//printf("nbw = %i\n",nbw);
@@ -501,8 +501,8 @@ char *inch(int *tab,char *dest)
 {
 	struct dictionary *dico = build();
 	int si = 128;
-	char *prev = calloc(1,6*sizeof(char));
-	char *too = calloc(1,2*sizeof(char));
+	char *prev = calloc(1,10000*sizeof(char));
+	char *too = calloc(1,10000*sizeof(char));
 	while(*tab != -1)
 	{
 		if(*tab < si)
@@ -511,7 +511,10 @@ char *inch(int *tab,char *dest)
 			if(res == -1)
 				printf("preob\n");
 			too = "";
-			asprintf(&too, "%s%s%c",too,prev,(recup(dico,*tab))[0]);
+			int y = asprintf(&too, "%s%s%c",too,prev,(recup(dico,*tab))[0]);
+			if(y == -1)
+				printf("preob\n");
+
 			if(is_belonging(dico,too)==-1)
 			{
 				add(too,dico);
@@ -524,8 +527,10 @@ char *inch(int *tab,char *dest)
 		{
 			printf("even that\n");
 			too = "";
-			asprintf(&dest,"%s%s%c",dest,prev,prev[0]);
-			asprintf(&too,"%s%s%c",too,prev,prev[0]);
+			int j = asprintf(&dest,"%s%s%c",dest,prev,prev[0]);
+			int k = asprintf(&too,"%s%s%c",too,prev,prev[0]);
+			if(k == -1 || j == -1)
+				printf("probb with asprintf\n");
 			add(too,dico);
 			prev =too;
 			si += 1;

@@ -104,7 +104,7 @@ struct double_tab *build_neuf(int *tab,int nbw)
 
 }
 
-char *recup9(char *datapath,char *datapath2)
+int *recup9(char *datapath,char *datapath2)
 {
 	int *somme = calloc(1,10000*sizeof(int));
 	int *somme2 = somme;
@@ -114,7 +114,7 @@ char *recup9(char *datapath,char *datapath2)
 	u_int8_t p = 0;
 	while(fread(&p,1,1,f)==1)
 	{
-		//printf("close = %i\n",p);
+		printf("close = %i\n",p);
 		*somme = p;
 		somme += 1;
 		nbit += 1;
@@ -124,9 +124,9 @@ char *recup9(char *datapath,char *datapath2)
 
 	FILE *fp =fopen(datapath2,"rb");
 	u_int8_t d = 0;
-	while(fread(&d,1,1,f)==1)
+	while(fread(&d,1,1,fp)==1)
 	{
-		//printf("good = %i\n",d);
+		printf("good = %i\n",d);
 		for(int i = 0 ; i < 8 ; i++)
 		{
 			//printf("mask = %i\n",(d & (1<<(7-i)))<<i);
@@ -136,27 +136,19 @@ char *recup9(char *datapath,char *datapath2)
 	}
 	*somme2 = -1;
 	fclose(fp);
-	char *fou = calloc(1,sizeof(char));
+	int *fou = calloc(1,nbit*sizeof(int));
+	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		int a = 0; 
-		//printf("sommef = %i\n",*sommef);
-		if(*sommef > 99)
-			a = asprintf(&fou,"%s<%i>",fou,*sommef);
-		//printf("fff = %i\n",*sommef);
-		else if(*sommef > 9)
-			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
-		else
-			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
-		
-		if(a == -1)
-			printf("error with asprintf\n");
-
+		//printf("that fuckinh sommed is : %i\n",*sommef);
+		*fou = *sommef;
+		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
-	return fou;
+	*fou = -1;
+	return fouret;
 }
 
 
@@ -259,7 +251,7 @@ struct double_tab *build_dix(int *tab,int nbw)
 
 }
 
-char *recup10(char *datapath,char *datapath2)
+int *recup10(char *datapath,char *datapath2)
 {
 	int *somme = calloc(1,10000*sizeof(int));
 	int *somme2 = somme;
@@ -279,7 +271,7 @@ char *recup10(char *datapath,char *datapath2)
 
 	FILE *fp =fopen(datapath2,"rb");
 	u_int8_t d = 0;
-	while(fread(&d,1,1,f)==1)
+	while(fread(&d,1,1,fp)==1)
 	{
 		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 4 ; i++)
@@ -292,28 +284,19 @@ char *recup10(char *datapath,char *datapath2)
 	}
 	*somme2 = -1;
 	fclose(fp);
-	char *fou = calloc(1,sizeof(char));
+	int *fou = calloc(1,nbit*sizeof(int));
+	int *fouret = fou;
 	int o = 0;
-	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		
-		//printf("sommef = %i\n",*sommef);
-		if(*sommef > 99)
-			a = asprintf(&fou,"%s<%i>",fou,*sommef);
-		//printf("fff = %i\n",*sommef);
-		else if(*sommef > 9)
-			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
-		else
-			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
-
-		if(a == -1)
-			printf("error with asprintf\n");
-			
+		printf("that fuckinh sommed is : %i\n",*sommef);
+		*fou = *sommef;
+		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
-	return fou;
+	*fou = -1;
+	return fouret;
 }
 
 
@@ -446,7 +429,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 
 }
 
-char *recup11(char *datapath,char *datapath2)
+int *recup11(char *datapath,char *datapath2)
 {
 	int *somme = calloc(1,10000*sizeof(int));
 	int *somme2 = somme;
@@ -470,7 +453,7 @@ char *recup11(char *datapath,char *datapath2)
 	int a = 1;
 	int joker = 0;
 	int jokerbis = 0;
-	while(fread(&d,1,1,f)==1)
+	while(fread(&d,1,1,fp)==1)
 	{
 		//printf("lus = %i\n",d);
 		while(a)
@@ -568,28 +551,19 @@ char *recup11(char *datapath,char *datapath2)
 	}
 	*somme2 = -1;
 	fclose(fp);
-	char *fou = calloc(1,sizeof(char));
+	int *fou = calloc(1,nbit*sizeof(int));
+	int *fouret = fou;
 	int o = 0;
-	int lostintheflood = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		//printf("sommef = %i\n",*sommef);
-		if(*sommef > 99)
-			lostintheflood = asprintf(&fou,"%s<%i>",fou,*sommef);
-		//printf("fff = %i\n",*sommef);
-		else if(*sommef > 9)
-			lostintheflood = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
-		else
-			lostintheflood = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
-
-
-		if(lostintheflood == -1)
-			printf("error with asprintf\n");
-			
+		printf("that fuckinh sommed is : %i\n",*sommef);
+		*fou = *sommef;
+		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
-	return fou;
+	*fou = -1;
+	return fouret;
 }
 
 
@@ -672,7 +646,7 @@ struct double_tab *build_douze(int *tab,int nbw)
 
 }
 
-char *recup12(char *datapath,char *datapath2)
+int *recup12(char *datapath,char *datapath2)
 {
 	int *somme = calloc(1,10000*sizeof(int));
 	int *somme2 = somme;
@@ -692,7 +666,7 @@ char *recup12(char *datapath,char *datapath2)
 
 	FILE *fp =fopen(datapath2,"rb");
 	u_int8_t d = 0;
-	while(fread(&d,1,1,f)==1)
+	while(fread(&d,1,1,fp)==1)
 	{
 		//printf("good = %i\n",d);
 		for(int i = 0 ; i < 8 ; i++)
@@ -711,28 +685,19 @@ char *recup12(char *datapath,char *datapath2)
 		}
 	}
 	*somme2 = -1;
-	fclose(fp);
-	char *fou = calloc(1,sizeof(char));
+	int *fou = calloc(1,nbit*sizeof(int));
+	int *fouret = fou;
 	int o = 0;
-	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		//printf("sommef = %i\n",*sommef);
-		if(*sommef > 99)
-			a= asprintf(&fou,"%s<%i>",fou,*sommef);
-		//printf("fff = %i\n",*sommef);
-		else if(*sommef > 9)
-			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
-		else
-			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
-			
-		if(a == -1)
-			printf("error with asprintf\n");
-
+		printf("that fuckinh sommed is : %i\n",*sommef);
+		*fou = *sommef;
+		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
-	return fou;
+	*fou = -1;
+	return fouret;
 }
 
 //============================================================================
@@ -780,7 +745,7 @@ struct double_tab *build_huit(int *tab,int nbw)
 
 }
 
-char *recup8(char *datapath,char *datapath2)
+int *recup8(char *datapath,char *datapath2)
 {
 	(void)datapath2;
 	int *somme = calloc(1,10000*sizeof(int));
@@ -799,27 +764,21 @@ char *recup8(char *datapath,char *datapath2)
 	fclose(f);
 
 
-	char *fou = calloc(1,sizeof(char));
+	//char *fou = calloc(1,sizeof(char));
+	int *fou = calloc(1,nbit*sizeof(int));
+	int *fouret = fou;
 	int o = 0;
-	int a = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		//printf("sommef = %i\n",*sommef);
-		if(*sommef > 99)
-			a = asprintf(&fou,"%s<%i>",fou,*sommef);
-		//printf("fff = %i\n",*sommef);
-		else if(*sommef > 9)
-			a = asprintf(&fou,"%s<%c%i>",fou,'0',*sommef);
-		else
-			a = asprintf(&fou,"%s<%c%c%i>",fou,'0','0',*sommef);
-
-		if(a == -1)
-			printf("error with asprintf");
+		printf("that fuckinh sommed is : %i\n",*sommef);
+		*fou = *sommef;
+		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
 	(void)somme2;
-	return fou;
+	*fou = -1;
+	return fouret;
 }
 
 

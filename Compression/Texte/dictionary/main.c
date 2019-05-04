@@ -40,7 +40,8 @@ void printab(int *tab)
 	printf("%i\n",*tab);
 	//int taille = sizeof(tab)/sizeof(int);
 	//int i = 0;
-	while(*tab != -1)
+	//while(*tab != -1)
+	for (int i = 0 ; i<4;i++)
 	{
 		printf("kcbeoi\n");
 		printf("%i\n",*tab);
@@ -213,9 +214,9 @@ int main(int argc, char *argv[])
 	size_t l = length(phrase);
 	int *array = invalues(phrase,l);
 	print_array(array,l);*/
-	char *tty = calloc(1,888*sizeof(char));
-	int *tab2 = calloc(1000,sizeof(int));
-	int *balec = malloc(2*sizeof(int));
+	char *tty = calloc(1,10000*sizeof(char));
+	int *tab2 = calloc(10000,sizeof(int));
+	int *balec = malloc(2000*sizeof(int));
 	tty=final(ret,argv[1],tab2,balec);
 	//printf("balec = %i\n",*balec);
 	//printf("tty : %s\n",tty);
@@ -228,9 +229,6 @@ int main(int argc, char *argv[])
 		c = c->next;
 		v += 1;
 	}
-	//int n = 0;
-	//int *tab = calloc(1,1000*sizeof(int));
-	int *n = calloc(1,1000*sizeof(int));
 	printf("\nPhrase initiale : %s\n\n",argv[1]);
 	printf("Nombre de caracteres : %li\n",strlen(argv[1]));
 
@@ -248,7 +246,7 @@ int main(int argc, char *argv[])
 	//printab(n);
 	
 	int which = -1;
-	char *rep;
+	int *rep;
 	if(saud < 256)
 	{
 		struct double_tab *prisoner = build_huit(tab2,*balec);
@@ -286,27 +284,30 @@ int main(int argc, char *argv[])
 		struct double_tab *prisoner = build_douze(tab2,*balec);
 		(void)prisoner;
 		which = 12;
-		printf("on est sur 12 bits\n");
+		//printf("on est sur 12 bits\n");
 		rep = recup12("test.bin","testb.bin");
 	}
 	printf("on travail sur %i bits\n",which);
 
-	long somme = size("test.bin")+size("testb.bin");
+	//struct double_tab *prisoner = build_neuf(tab2,*balec);
+	//int *ress = recup9("test.bin","testb.bin");
+
+	/*long somme = size("test.bin")+size("testb.bin");
 	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size("test.bin"));
 	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size("testb.bin"));
-	printf("La somme totale de l'enregistrement est de : %li octets\n",size("test.bin")+size("testb.bin"));
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size("test.bin")+size("testb.bin"));*/
 
 	//char *rep = recup9("test.bin","testb.bin");
 
-
-
-
+	//struct double_tab *prisoner = build_neuf(tab2,*balec);
+	//int *ress = recup9("test.bin","testb.bin");
+	//printab(ress);
 	
-	printf("Resultat apres decompression : %s -----> ",decompress(rep,try));
-	int apr = strlen(argv[1]);
+	printf("Resultat apres decompression : %s -----> ",inch(rep,try));
+	/*int apr = strlen(argv[1]);
 	printf("%li * %i = %i octets\n\n",strlen(argv[1]),8,apr);
 	//printf("nbword = %i\n",nbword(tty));
-	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);
+	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);*/
 
 	
 
@@ -321,8 +322,7 @@ int main(int argc, char *argv[])
 	}*/
 	//printf(recup(d,130));
 	(void)saude;
-	(void)n;
-	int tab[11] = {97,98,128,99,129,132,-1};
+	/*int tab[11] = {97,98,128,99,129,132,-1};
 	char *temp = calloc(1,100*sizeof(char));
-	printf("temp = %s\n",inch(tab,temp));
+	printf("temp = %s\n",inch(tab,temp));*/
 }
