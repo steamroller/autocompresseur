@@ -136,7 +136,7 @@ int *recup9(char *datapath,char *datapath2)
 	}
 	//*somme2 = -1;
 	fclose(fp);
-	int *fou = calloc(1,nbit*sizeof(int));
+	int *fou = calloc(1,(nbit*8 + 10)*sizeof(int));
 	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
@@ -284,7 +284,7 @@ int *recup10(char *datapath,char *datapath2)
 	}
 	*somme2 = -1;
 	fclose(fp);
-	int *fou = calloc(1,nbit*sizeof(int));
+	int *fou = calloc(1,(nbit*8 + 10) * sizeof(int));
 	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
@@ -551,7 +551,7 @@ int *recup11(char *datapath,char *datapath2)
 	}
 	*somme2 = -1;
 	fclose(fp);
-	int *fou = calloc(1,nbit*sizeof(int));
+	int *fou = calloc(1,(nbit*8 + 10) * sizeof(int));
 	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
@@ -685,7 +685,7 @@ int *recup12(char *datapath,char *datapath2)
 		}
 	}
 	*somme2 = -1;
-	int *fou = calloc(1,nbit*sizeof(int));
+	int *fou = calloc(1,(nbit* 8 + 10) * sizeof(int));
 	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
@@ -764,19 +764,25 @@ int *recup8(char *datapath,char *datapath2)
 
 
 	//char *fou = calloc(1,sizeof(char));
-	int *fou = calloc(1,nbit*sizeof(int));
+	int *fou = calloc(1,(nbit*8 + 10)*sizeof(int));
 	int *fouret = fou;
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
 		//printf("that fuckinh sommed is : %i\n",*sommef);
 		*fou = *sommef;
+		printf("fou = %i\n",*fou);
 		fou += 1;
 		sommef += 1;
 		o+=1;
 	}
 	(void)somme2;
 	*fou = -1;
+	/*for(int m = 0 ; m<10 ; m++)
+	{
+		printf("m = %i\n",*fouret);
+		fouret += 1;
+	}*/
 	return fouret;
 }
 

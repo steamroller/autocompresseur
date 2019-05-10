@@ -235,7 +235,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 	{
 		struct dictionary *f = dico;
 		int size = 1;
-		char *toreturn = calloc(1,100*sizeof(char));
+		char *toreturn = calloc(1,1000*sizeof(char));
 		*toreturn = *s;
 		toreturn += 1;
 		s += 1;
@@ -282,7 +282,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 		char *chiffre = temp;
 		char last = chiffre[strlen(chiffre)-1];
 		substring(chiffre);
-		char *chiffree = calloc(1,100*sizeof(char));
+		char *chiffree = calloc(1,1000*sizeof(char));
 		//printf(" = %s\n",chiffre);
 		for(size_t i = 0; i<strlen(chiffre);i++)
 		{
@@ -299,7 +299,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 		dico = f;
 		s -= 1;
 		*tab = vg;
-		//printf("*tab = %i\n",*tab);
+		printf("*tab = %i\n",*tab);
 		tab += 1;
 		int c = asprintf(&str,"%s<%s>",str,convert(vg));
 		if (c == -1)
@@ -332,7 +332,7 @@ struct arya *max_word(struct dictionary *dico, char*s,char *str,int nbw,int *tab
 char *final(struct dictionary *dico, char *s,int *tab,int *nbw)
 {
 	//printf("taille = %i\n",sod(dico));
-	char *v = calloc(1,4000*sizeof(char));
+	char *v = calloc(1,8000*sizeof(char));
 	int a = 1;
 	struct arya *ret = max_word(dico,s,v,a,tab);
 	//printf("a = %i\n",ret->nbww);
@@ -365,7 +365,7 @@ char *recup(struct dictionary *dic, int index)
 		s += 1;
 	}
 	//printf("germain le mais humain\n");
-	size_t t = strlen(dic->value);
+	//size_t t = strlen(dic->value);
 	//printf("t = %li\n",t);
 	char *ret = calloc(1,10*sizeof(char));
 	//printf("la\n");
@@ -508,33 +508,41 @@ char *decompress(char *init,char *dest)
 
 char *inch(int *tab,char *dest)
 {
-	int *bis = tab;
+	printf("probably memory if not here\n");
+	int *bis = NULL;
+	bis = tab;
 	int *tri = tab;
 	/*for(int o = 0 ; o < 10 ;o++)
 	{
 		printf("crocodule = %i\n",*tab);
 		tab += 1;
 	}*/
-	//printf("inchishere\n");
-	struct dictionary *dico = build();
-	/*for(int u = 0 ; u < 10 ;u++)
+	printf("inchishere\n");
+	//struct dictionary *dico = build();
+	int brico = 0;
+	while(*tri != -1)
 	{
 		printf("u = %i\n",*tri);
 		tri += 1;
+		brico += 1;
 	}
-	tri -= 10;*/
-	//struct dictionary *dico = build();
+	tri -= brico;
+	struct dictionary *dico = build();
+	struct dictionary *last = dico;
 
 	//printf("ehe\n");
 	int si = 128;
-	char *prev = calloc(1,50*sizeof(char));
+	char *prev = calloc(1,15*sizeof(char));
 	//printf("ehaeho\n");
-	char *too = calloc(1,50*sizeof(char));
+	char *too = calloc(1,15*sizeof(char));
 	/*if(prev == NULL || too == NULL)
 		printf("dead\n");*/
 	//printf("eho\n");
-	while(*bis != -1)
+	int test = 0;
+	//while(*bis != -1)
+	while(test < brico)
 	{
+		test += 1;
 		/*for(int u = 0 ; u < 10 ;u++)
 		{
 			printf("u = %i\n",*tri);
@@ -542,8 +550,8 @@ char *inch(int *tab,char *dest)
 		}
 		tri -= 10;*/
 		//printf("dest = %s\n",dest);
-		//printf("bis = %i\n",*bis);
-		//printf("bis+1 = %i\n",*(bis+1));
+		printf("bis = %i\n",*bis);
+		printf("bis+1 = %i\n",*(bis+1));
 		if(*bis < si)
 		{
 			//printf("va dej\n");
@@ -556,20 +564,21 @@ char *inch(int *tab,char *dest)
 			int y = asprintf(&too, "%s%s%c",too,prev,(recup(dico,*bis))[0]);
 			if(y == -1)
 				printf("preob\n");
-			//printf("porte\n");
+		//	printf("porte\n");
 			if(is_belonging(dico,too)==-1)
 			{
 				//printf("choco\n");
 				add(too,dico);
-				//printf("too = %s\n",too);
+				printf("too = %s\n",too);
 				si += 1;
 			}
 			//printf("pronblaime\n");
 			prev = recup(dico,*bis);
+			//printf("chealsez\n");
 		}
 		else
 		{
-			//printf("even that\n");
+			printf("even that\n");
 			too = "";
 			int j = asprintf(&dest,"%s%s%c",dest,prev,prev[0]);
 			int k = asprintf(&too,"%s%s%c",too,prev,prev[0]);
@@ -581,5 +590,12 @@ char *inch(int *tab,char *dest)
 		}
 		bis = bis + 1;
 	}
+	/*int x = 0;
+	for(int m = 0 ; m < 169 ; m++)
+	{
+		printf("dico[%i] = %s\n",m,last->value);
+		last = last->next;
+	}*/
+
 	return dest;
 }

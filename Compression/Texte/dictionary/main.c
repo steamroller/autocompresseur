@@ -5,20 +5,23 @@
 #include<err.h>
 #include"lzw.h"
 #include"bitwise.h"
+#include"enbal.c"
 //#include<conio.h>
 
 long size(char *adrr)
 {
 	FILE *f;
-	long size;
+	long size = 0;
 	f = fopen(adrr,"rb");
 	if(f)
 	{
 		fseek(f,0,SEEK_END);
 		size = ftell(f);
 		fclose(f);
+		printf("done\n");
 		return size;
 	}
+	printf("branlette\n");
 	return -1;
 }
 
@@ -88,7 +91,7 @@ int main(int argc, char *argv[])
 {
 	if(argc != 2)
 		errx(1,"2 arguments excpected");
-
+	
 	//char p[9]="chocolat";
 	//printf("%i est le poids de chocolat \n",weight(p));
 	//substring(p);
@@ -205,7 +208,9 @@ int main(int argc, char *argv[])
 	//printf("wtf");
 	//printf("<119><104><111><032><097><114><101><032><121><111><117>\n");
 	//char t[1250] ="<101><104><111><128><111>\n";
-	
+	char *user = calloc(1,strlen(argv[1])*sizeof(char));
+	user = to_ascii(argv[1]);
+	printf("chaine = %s\n",user);
 	char *try = calloc(1,500*sizeof(char));
 	//printf("crochet = %s\n",first(t));
 	//printf("decomp = %s\n",decompress(t,try));
@@ -214,9 +219,9 @@ int main(int argc, char *argv[])
 	int *array = invalues(phrase,l);
 	print_array(array,l);*/
 	char *tty = calloc(1,500*sizeof(char));
-	int *tab2 = calloc(500,sizeof(int));
+	int *tab2 = calloc(10000,sizeof(int));
 	int *balec = malloc(5000*sizeof(int));
-	tty=final(ret,argv[1],tab2,balec);
+	tty=final(ret,user,tab2,balec);
 	//printf("balec = %i\n",*balec);
 	//printf("tty : %s\n",tty);
 	printf("\n");
@@ -229,7 +234,7 @@ int main(int argc, char *argv[])
 		v += 1;
 	}
 	//free(c);
-	printf("\nPhrase initiale : %s\n\n",argv[1]);
+	printf("\nPhrase initiale : %s\n\n",to_ascii(argv[1]));
 	printf("Nombre de caracteres : %li\n",strlen(argv[1]));
 
 	printf("Resultat apres compression : %s -----> ",tty);//(final(d,argv[1],n,balec)));
@@ -246,7 +251,7 @@ int main(int argc, char *argv[])
 	//printab(n);
 	
 	int which = -1;
-	int *rep;
+	int *rep = calloc(1,10000*sizeof(int));
 	if(saud < 256)
 	{
 		struct double_tab *prisoner = build_huit(tab2,*balec);
@@ -254,6 +259,16 @@ int main(int argc, char *argv[])
 		which = 8;
 		//printf("on est sur 8 bits\n");
 		rep = recup8("test.bin","testb.bin");
+		int a = 0;
+		while(*rep != -1)
+		{
+			a+=1;
+			printf("rep %i\n",*rep);
+			rep += 1;
+		}
+		*rep = -1;
+		rep -= a + 1;
+
 	}
 	else if(saud < 512)
 	{
@@ -302,7 +317,7 @@ int main(int argc, char *argv[])
 	//struct double_tab *prisoner = build_neuf(tab2,*balec);
 	//int *ress = recup9("test.bin","testb.bin");
 	//printab(rep);
-	
+	printf("merde\n");
 	printf("Resultat apres decompression : %s\n -----> ",inch(rep,try));
 	int apr = strlen(argv[1]);
 	printf("%li * %i = %i octets\n\n",strlen(argv[1]),8,apr);
@@ -323,7 +338,7 @@ int main(int argc, char *argv[])
 	//printf(recup(d,130));
 	(void)saude;
 	//int tab[11] = {114,32,97,32,122,32,-1};
-	int *tab = calloc(1,1000*sizeof(int));
+	/*int *tab = calloc(1,1000*sizeof(int));
 	int *k = tab;
 	*tab = 114;
 	tab+=1;
@@ -337,7 +352,7 @@ int main(int argc, char *argv[])
 	tab+=1;
 	*tab = 32;
 	tab += 1;
-	*tab = -1;
+	*tab = -1;*/
 	//char *temp = calloc(1,100*sizeof(char));
 	//printf("temp = %s\n",inch(k,temp));
 }
