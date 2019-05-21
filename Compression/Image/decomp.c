@@ -7,12 +7,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int main(int argc, char *argv[])
+int decomp(char *path)
 {
     SDL_Surface *screen;
-    if(argc!=3 &&  argc!=5)
-        errx(1,"not good amount of argument :the good amount is 2 or 4");
-    struct DM_Im *c=decodage(argv[1],argv[2]);
+    char ff[20];
+    sprintf(ff, "%d.tree",path);
+    struct DM_Im *c=decodage(path,ff);
     SDL_Surface *surface;
     surface=insertionDCTI(c);
     screen=display_image(surface);

@@ -8,18 +8,15 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-int main(int argc, char *argv[])
+int comp(char *path)
 {
-    if(argc!=3)
-        errx(1,"not good amount of argument :the good amount is 2 with first argument is the path and second is the quality");
-    
     SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
     SDL_Surface* resized_surface;
 
     init_sdl();
 
-    image_surface = load_image(argv[1]);
+    image_surface = load_image(path);
     screen_surface = display_image(image_surface);
     
     printf("old width= %d\n",image_surface->w);
@@ -45,10 +42,7 @@ int main(int argc, char *argv[])
     struct ensemble *beginensemble=ensemble;
     int mq[64];
     int a=0;
-    char *p;
-    long coocoo=strtol(argv[2], &p,10);
-    int bea=coocoo;
-    matricequantification(bea,mq);
+    matricequantification(20,mq);
 
     for(int c=0;c<nwidth;c++)
     {
@@ -69,8 +63,8 @@ int main(int argc, char *argv[])
     char name[40];
     char namme[40];
 
-    sprintf(name,"%s%i.DCT",argv[1],bea);
-    sprintf(namme,"%s%i.tree",argv[1],bea);
+    sprintf(name,"%s.DCT",path);
+    sprintf(namme,"%s.tree",name);
     
     struct stat *stating=fichiercompress2(name,nwidth,nheight);
 
@@ -106,6 +100,8 @@ int main(int argc, char *argv[])
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(resized_surface);
     SDL_FreeSurface(screen_surface);
-
+    int status3= remove(path);
+    if(status3!=0)
+        puts(path);
     return 0;
 }
