@@ -11,10 +11,10 @@
 #include <SDL/SDL.h>
 #include "antoine/huffman.h"
 #include "antoine/huffman.c"
-#include "clara/encryption.h"
-#include "clara/encoding.c"
-#include "clara/decoding.h"
-#include "clara/decoding.c"
+#include "clara2/encryption.h"
+#include "clara2/encoding.c"
+#include "clara2/decoding.h"
+#include "clara2/decoding.c"
 
 //void whole_comp(char *input, char *filename);
 
@@ -297,7 +297,8 @@ void on_valid_button_clicked()
 	//strcpy(decomp,result);
 	
 	
-	if( dechiffrement_needed(decomp))
+	//~ if( dechiffrement_needed(decomp))
+	if (1)
 	{
 		result = decoding(decomp);
 		printf("res = %s\n",result);
