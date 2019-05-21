@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,8 +7,8 @@
 #include <math.h>
 #include <errno.h>
 #include <time.h>
-#include "encoding.h"
-
+#include "encryption.h"
+#include "decoding.h"
 
 //Allows to get what the user writes on the terminal back.
 int reado(char *chain, int len)
@@ -28,10 +30,10 @@ int reado(char *chain, int len)
 }
 
 // Transform an int into a char
-char* my_itoa(int nb, int size)
+char* my_itoa(int nb)
 {
 	int a = nb;
-	char* final = calloc(size, sizeof(char));
+	char* final = calloc(2, sizeof(char));
 	while(a != 0)
 	{
 		int last = a%10;
@@ -42,7 +44,7 @@ char* my_itoa(int nb, int size)
 }
 
 //Check if a number is a prime number
-int is_prime_number(int n)
+int is_prime_number1(int n)
 {
 	for (int i = 2; i < n; i++)
 	{
@@ -89,26 +91,13 @@ void list_init1(struct list1 *List)
 	List->data = 0;
 	List->next = NULL;
 }
-
-//~ // Allows to print a list on the therminal
-//~ void print_list2(struct list_2 *l)
-//~ {
-	//~ l = l->next;
-	//~ for(int i = 0; l != NULL; l = l->next, i++)
-	//~ {
-		//~ printf("%s", l->data);
-		//~ printf(",");
-	//~ }
-//~ }
-
-
 // Insert an element at the end of the list
-void list_push_endo1(struct list1 *List, int elm)
+void list_push_endo1(struct list1 *List, char* elm)
 {
 	struct list1 *new = malloc(sizeof(struct list1));
 	new->data = elm;
 	new->next = NULL;
-
+	
 	
 	struct list1 *temp = List;
 	while (temp->next != NULL)
@@ -128,6 +117,7 @@ char* list_to_char1(struct list1 *l, int size)
 	for (i = 0; l != NULL; l = l->next, i++)
 	{
 		int z = asprintf(&s, "%s%s%c", s, l->data, ',');
+		
 		if (z == -1)
 		{
 			errx(1, "Impossible to convert");
@@ -136,75 +126,22 @@ char* list_to_char1(struct list1 *l, int size)
 	return s;
 }
 
-
-// Allows to create the public key
 int public_key(int p, int q)
 {
 	//creation of the public key
 	int e = 2;
 	int phiden = (p-1)*(q-1);
-	if (is_prime_number(p) == 0 || is_prime_number(q) == 0)
+	if (is_prime_number1(p) == 0 || is_prime_number1(q) == 0)
 	{
 		errx(1, "Number not prime");
 	}
-	while (PGCD(phiden, e) != 1)
+	while (PGCD1(phiden, e) != 1)
 	{
 		e++;
 	}
 
 	return e;
 }
-
-//~ // Initialize the sentinel of an emtpy list
-//~ void list_init(struct list_3 *List)
-//~ {
-	//~ List->data = 0;
-	//~ List->next = NULL;
-//~ }
-
-//~ // Insert an element at the end of the list
-//~ void list_push_end(struct list_3 *List, char elm)
-//~ {
-	//~ struct list_3 *new = malloc(sizeof(struct list_3));
-	//~ new->data = elm;
-	//~ new->next = NULL;
-	
-	//~ struct list_3 *temp = List;
-	//~ while (temp->next != NULL)
-	//~ {
-		//~ temp = temp->next;
-	//~ }
-	//~ temp->next = new;
-	
-//~ }
-
-//~ // Transform a list of element into a char*
-//~ char* list_to_char1(struct list_3 *l, int size)
-//~ {
-	//~ char* s = calloc(size, sizeof(char));
-	//~ l = l->next;
-	//~ int i;
-	//~ for (i = 0; l != NULL; l = l->next, i++)
-	//~ {
-		//~ int z = asprintf(&s, "%s%c", s, (char)l->data);
-		//~ if (z == -1)
-		//~ {
-			//~ errx(1, "Impossible to convert");
-		//~ }
-	//~ }
-	//~ return s;
-//~ }
-
-//~ // Allows to print a list on the therminal
-//~ void print_list(struct list_3 *l)
-//~ {
-	//~ l = l->next;
-	//~ for(int i = 0; l != NULL; l = l->next, i++)
-	//~ {
-		//~ printf("%c", l->data);
-	//~ }
-//~ }
-
 
 // Allows to convert each bloc into the base 50
 char conv50(int n)
@@ -434,7 +371,7 @@ char *to_base_50(int n)
 	}
 	return s;
 }
-// Encrypte a text
+
 char* encryption(char string[])
 {
 	int p = 191;
@@ -444,8 +381,8 @@ char* encryption(char string[])
 
 
 // Begin of the encryption
-	struct list_2 *L = malloc(sizeof(struct list_2));
-	list_init2(L);
+	struct list1 *L = malloc(sizeof(struct list1));
+	list_init1(L);
 	int ascii;
 	int encr_let;
 	int length = strlen(string);
@@ -453,30 +390,25 @@ char* encryption(char string[])
 	while(i < length)
 	{
 		ascii = (int)string[i];
-		encr_let = expo_modul(ascii, e, n);
-		//~ printf("encr_let = %d\n", encr_let);
+		encr_let = expo_modul1(ascii, e, n);
 		char *tmp = to_base_50(encr_let);
-		//~ printf("tmp = %s\n", tmp);
-		//~ printf("\n\n");
-		list_push_end2(L, tmp);
+		list_push_endo1(L, tmp);
 		i++;
 	}
-	//~ printf("\nL = ");
-	//~ print_list2(L);
-	char* code = list_to_char2(L, length);
-	printf("\n\nYour encoded message is : \n%s", code);
+	char* code = list_to_char1(L, length);
+	printf("\nYour encoded message is : \n%s", code);
 	printf("\n");
  
 	return code;
 }
 
-int main()
-{
-	char msg[100];
-	printf("\nEnter the message you want to encrypte:\n");
-    my_read(msg, 100);
+//~ int main()
+//~ {
+	//~ char msg[100];
+	//~ printf("\nEnter the message you want to encrypte:\n");
+    //~ reado(msg, 100);
     
-    encryption(msg);
-    return 0;
-}
+    //~ encryption(msg);
+    //~ return 0;
+//~ }
 

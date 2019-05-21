@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,7 +90,6 @@ char* list_to_char(struct list *l, int size)
 	return s;
 }
 
-//Create the private key
 int private_key(int p, int q)
 {
 //creation of the public key thanks to the two number entered by the user
@@ -352,9 +353,8 @@ long base_10(char *s)
 	return sum;
 }
 
-
 char* decoding(char str[])
-{	
+{
 	int p = 191;
 	int q = 229;
 	int n = p*q;
@@ -375,15 +375,10 @@ char* decoding(char str[])
 		while(str[i] != ',')
 		{
 			encr_let[j] = str[i];
-			//~ printf("\nencr_let[%d] = %c\n", j, str[i]);
 			i++;
 			j++;
 		}
-		//~ printf("sortie de boucle\n");
-		//~ printf("encr_let = %s\n", encr_let);
-		
 		long bloc = base_10(encr_let);
-		//~ printf("bloc = %ld\n", bloc);
 		long ascii = expo_modul(bloc, d, n);
 		char decod = (char)ascii;
 		list_push_end(L, decod);
@@ -396,17 +391,17 @@ char* decoding(char str[])
 	return code;
 }
 
-int main()
-{
-	char msg[100];
-    printf("\nEnter the message you want to decode:\n");
-    if (fflush(stdin) != 0)
-    {
-		errx(EXIT_FAILURE, "Impossible because %d", errno);
-	}
-	scanf("%s", msg);
+//~ int main()
+//~ {
+	//~ char msg[100];
+    //~ printf("\nEnter the message you want to decode:\n");
+    //~ if (fflush(stdin) != 0)
+    //~ {
+		//~ errx(EXIT_FAILURE, "Impossible because %d", errno);
+	//~ }
+	//~ scanf("%s", msg);
 	
-	decoding(msg);
+	//~ decoding(msg);
 	
-    return 0;
-}
+    //~ return 0;
+//~ }
