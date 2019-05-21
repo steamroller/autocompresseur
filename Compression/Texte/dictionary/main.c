@@ -18,10 +18,10 @@ long size(char *adrr)
 		fseek(f,0,SEEK_END);
 		size = ftell(f);
 		fclose(f);
-		printf("done\n");
+		//printf("done\n");
 		return size;
 	}
-	printf("branlette\n");
+	//printf("branlette\n");
 	return -1;
 }
 
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
 		while(*rep != -1)
 		{
 			a+=1;
-			printf("rep %i\n",*rep);
+			//printf("rep %i\n",*rep);
 			rep += 1;
 		}
 		*rep = -1;
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 	//struct double_tab *prisoner = build_neuf(tab2,*balec);
 	//int *ress = recup9("test.bin","testb.bin");
 	//printab(rep);
-	printf("merde\n");
+	//printf("merde\n");
 	printf("Resultat apres decompression : %s\n -----> ",inch(rep,try));
 	int apr = strlen(argv[1]);
 	printf("%li * %i = %i octets\n\n",strlen(argv[1]),8,apr);

@@ -296,7 +296,7 @@ void on_valid_button_clicked()
 	const gchar *result = calloc(strlen(decomp),sizeof(char));
 	//strcpy(decomp,result);
 	
-		
+	
 	if( dechiffrement_needed(decomp))
 	{
 		result = decoding(decomp);
@@ -435,6 +435,8 @@ void on_oui_button_clicked()
 		
 		whole_comp(toencode,copy);
 	}
+
+	//cas de compression lzw
 	
 	printf(" text :\n %s \n\n--------------------------------------\n\n",lines);
 	
