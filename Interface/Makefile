@@ -1,18 +1,27 @@
-CC=gcc
-CPPFLAGS= -MMD `pkg-config --cflags gtk+-3.0`
-CFLAGS= -Wall -Wextra -Werror  -std=c99 -g
-LDLIBS= `pkg-config  --libs  gtk+-3.0  ` -lm -export-dynamic
+# Makefile
 
+CPPFLAGS = -MMD
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99
+LDFLAGS =
+LDLIBS =
 
-SRC= autocompression.c huffman.c
-OBJ=${SRC:*.c=.o}
+SRC = encoding.c decoding.c
+OBJ = ${SRC:.c=.o}
+DEP = ${SRC:.c=.d}
 
-.PHONY:clean all
-all: autocompression
+all: encoding decoding
 
-hautenf : ${OBJ}
+test: encoding.o decoding.o
+
+-include ${DEP}
+
+.PHONY: clean
 
 clean:
+	${RM} ${OBJ}
+	${RM} ${DEP}
+	${RM} encoding decoding
 
-	${RM} autocompression *.o *.d userdatal userdatam
+# END
 
