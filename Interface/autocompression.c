@@ -51,8 +51,8 @@ GtkLabel* textlabel;
 GtkEntry* name_entry;
 GtkEntry * password_entry;
 GtkLabel * connexion_message;
+GtkFileChooser* filename_open_chooser;
 GtkEntry* filename_entry;
-GtkEntry* filename_open_entry;
 
 
 
@@ -282,7 +282,7 @@ int dechiffrement_needed(char *s)
 void on_valid_button_clicked()
 {
 	gtk_widget_hide(list_window);
-	filename_open = gtk_entry_get_text(GTK_ENTRY(filename_open_entry));
+	filename_open = g_path_get_basename(gtk_file_chooser_get_filename(filename_open_chooser));
 	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
 	
 	char *decomp;
@@ -352,7 +352,7 @@ void on_open_file_button_clicked()
 
 	gtk_widget_show(filename_open_window);
 	gtk_widget_hide(menu_window);
-	gtk_widget_show_all ( file_list );
+	//gtk_widget_show_all ( file_list );
 	/*GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(open_file_button));
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
@@ -618,8 +618,10 @@ int main(int argc, char *argv[])
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
 	password_entry=GTK_ENTRY(gtk_builder_get_object(builder,"password_entry"));
 	filename_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_entry"));
-	filename_open_entry=GTK_ENTRY(gtk_builder_get_object(builder,"filename_open_entry"));
-	
+	filename_open_chooser=GTK_FILE_CHOOSER(gtk_builder_get_object(builder,"filename_open_chooser"));
+
+	gtk_file_chooser_set_current_folder(filename_open_chooser, "filenames/");
+
 	//------ CONNECT BUTTON
 	gtk_builder_connect_signals(builder,NULL);
 	g_object_unref(builder);

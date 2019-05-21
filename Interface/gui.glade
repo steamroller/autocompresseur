@@ -116,40 +116,11 @@
     <property name="height_request">0</property>
     <property name="can_focus">False</property>
     <child>
-      <placeholder/>
-    </child>
-    <child>
       <object class="GtkFixed">
         <property name="width_request">32</property>
         <property name="height_request">32</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="width_request">105</property>
-            <property name="height_request">20</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">nom du fichier : </property>
-          </object>
-          <packing>
-            <property name="x">38</property>
-            <property name="y">39</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="filename_open_entry">
-            <property name="name">filename_open_entry</property>
-            <property name="width_request">166</property>
-            <property name="height_request">40</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">162</property>
-            <property name="y">30</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkButton" id="valid_button">
             <property name="label">gtk-ok</property>
@@ -166,6 +137,47 @@
           <packing>
             <property name="x">360</property>
             <property name="y">22</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="width_request">105</property>
+                <property name="height_request">20</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="yes">nom du fichier : </property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFileChooserButton" id="filename_open_chooser">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="title" translatable="yes"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="x">38</property>
+            <property name="y">39</property>
           </packing>
         </child>
       </object>
