@@ -1,7 +1,8 @@
 autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/gtk-3.0/gdk/gdk.h /usr/include/gtk-3.0/gdk/gdkconfig.h \
  /usr/include/glib-2.0/glib.h /usr/include/glib-2.0/glib/galloca.h \
- /usr/include/glib-2.0/glib/gtypes.h /usr/include/glib-2.0/glibconfig.h \
+ /usr/include/glib-2.0/glib/gtypes.h \
+ /usr/lib/glib-2.0/include/glibconfig.h \
  /usr/include/glib-2.0/glib/gmacros.h \
  /usr/include/glib-2.0/glib/gversionmacros.h \
  /usr/include/glib-2.0/glib/garray.h \
@@ -42,6 +43,10 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/glib-2.0/glib/gpattern.h \
  /usr/include/glib-2.0/glib/gprimes.h /usr/include/glib-2.0/glib/gqsort.h \
  /usr/include/glib-2.0/glib/gqueue.h /usr/include/glib-2.0/glib/grand.h \
+ /usr/include/glib-2.0/glib/grcbox.h \
+ /usr/include/glib-2.0/glib/grefcount.h \
+ /usr/include/glib-2.0/glib/grefstring.h \
+ /usr/include/glib-2.0/glib/gmem.h /usr/include/glib-2.0/glib/gmacros.h \
  /usr/include/glib-2.0/glib/gregex.h \
  /usr/include/glib-2.0/glib/gscanner.h \
  /usr/include/glib-2.0/glib/gsequence.h \
@@ -84,6 +89,7 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/glib-2.0/gobject/gtypeplugin.h \
  /usr/include/glib-2.0/gobject/gvaluearray.h \
  /usr/include/glib-2.0/gobject/gvaluetypes.h \
+ /usr/include/glib-2.0/gobject/glib-enumtypes.h \
  /usr/include/glib-2.0/gobject/gobject-autocleanups.h \
  /usr/include/glib-2.0/gio/gaction.h \
  /usr/include/glib-2.0/gio/gactiongroup.h \
@@ -239,6 +245,7 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/pango-1.0/pango/pango-script.h \
  /usr/include/pango-1.0/pango/pango-language.h \
  /usr/include/pango-1.0/pango/pango-bidi-type.h \
+ /usr/include/pango-1.0/pango/pango-direction.h \
  /usr/include/pango-1.0/pango/pango-break.h \
  /usr/include/pango-1.0/pango/pango-item.h \
  /usr/include/pango-1.0/pango/pango-context.h \
@@ -413,6 +420,9 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/gtk-3.0/gtk/gtkdrawingarea.h \
  /usr/include/gtk-3.0/gtk/gtkeventbox.h \
  /usr/include/gtk-3.0/gtk/gtkeventcontroller.h \
+ /usr/include/gtk-3.0/gtk/gtkeventcontrollerkey.h \
+ /usr/include/gtk-3.0/gtk/gtkeventcontrollermotion.h \
+ /usr/include/gtk-3.0/gtk/gtkeventcontrollerscroll.h \
  /usr/include/gtk-3.0/gtk/gtkexpander.h \
  /usr/include/gtk-3.0/gtk/gtkfixed.h \
  /usr/include/gtk-3.0/gtk/gtkfilechooser.h \
@@ -434,6 +444,7 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/gtk-3.0/gtk/gtkgesturemultipress.h \
  /usr/include/gtk-3.0/gtk/gtkgesturepan.h \
  /usr/include/gtk-3.0/gtk/gtkgesturerotate.h \
+ /usr/include/gtk-3.0/gtk/gtkgesturestylus.h \
  /usr/include/gtk-3.0/gtk/gtkgestureswipe.h \
  /usr/include/gtk-3.0/gtk/gtkgesturezoom.h \
  /usr/include/gtk-3.0/gtk/gtkglarea.h /usr/include/gtk-3.0/gtk/gtkgrid.h \
@@ -579,6 +590,6 @@ autocompression: autocompression.c /usr/include/gtk-3.0/gtk/gtk.h \
  /usr/include/gtk-3.0/gtk/gtk-autocleanups.h antoine/huffman.h \
  antoine/huffman.c clara2/encryption.h clara2/encoding.c \
  clara2/encryption.h clara2/decoding.h clara2/decoding.h \
- clara2/decoding.c dorian/comp.c dorian/compressionimage.h \
- dorian/pixel_operations.h dorian/display.h dorian/display.c \
- dorian/pixel_operations.c dorian/compressionimage.c
+ clara2/decoding.c antoine/total.c dorian/comp.c \
+ dorian/compressionimage.h dorian/pixel_operations.h dorian/display.h \
+ dorian/display.c dorian/pixel_operations.c dorian/compressionimage.c
