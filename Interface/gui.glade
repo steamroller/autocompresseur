@@ -116,6 +116,9 @@
     <property name="height_request">0</property>
     <property name="can_focus">False</property>
     <child>
+      <placeholder/>
+    </child>
+    <child>
       <object class="GtkFixed">
         <property name="width_request">32</property>
         <property name="height_request">32</property>
@@ -469,8 +472,8 @@
             <signal name="clicked" handler="on_setting_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">132</property>
-            <property name="y">181</property>
+            <property name="x">131</property>
+            <property name="y">234</property>
           </packing>
         </child>
         <child>
@@ -482,7 +485,24 @@
             <property name="pixbuf">bysteamroller.png</property>
           </object>
           <packing>
-            <property name="y">219</property>
+            <property name="y">361</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="compress_image_button">
+            <property name="label">compression Image</property>
+            <property name="name">compress_image_button</property>
+            <property name="width_request">150</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_compress_image_button_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">129</property>
+            <property name="y">179</property>
           </packing>
         </child>
       </object>

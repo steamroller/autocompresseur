@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+//#define _GNU_SOURCE
 
 #include <stdlib.h>
 #include <err.h>
@@ -15,6 +15,11 @@
 #include "clara2/encoding.c"
 #include "clara2/decoding.h"
 #include "clara2/decoding.c"
+#include "dorian/comp.c"
+#include "dorian/compressionimage.c"
+//#include "dorian/decomp.c"
+
+
 
 //void whole_comp(char *input, char *filename);
 
@@ -38,6 +43,7 @@ GtkWidget* save_button;
 GtkWidget* close_edit_button;
 GtkWidget* oui_button;
 GtkWidget* valid_button;
+GtkWidget* compress_image_button;
 
 GtkWidget* switch_rsa;
 GtkWidget* switch_huffman;
@@ -559,6 +565,25 @@ void arrange_tree_view(GtkWidget* view) {
   
 }  
 
+void on_compress_image_button_clicked()
+{
+	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(compress_image_button));
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	dialog = gtk_file_chooser_dialog_new ("Open File",GTK_WINDOW(toplevel)     
+,action,
+        "open",GTK_RESPONSE_ACCEPT,"Cancel",GTK_RESPONSE_CANCEL, NULL);
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        char * filename1 = gtk_file_chooser_get_filename (chooser);
+		comp(filename1);
+	}
+	else
+		g_print("You pressed the cancel \n");
+	gtk_widget_destroy(dialog);
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -614,6 +639,7 @@ int main(int argc, char *argv[])
 	close_edit_button=GTK_WIDGET(gtk_builder_get_object(builder,"close_edit_button"));
 	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
 	valid_button=GTK_WIDGET(gtk_builder_get_object(builder,"valid_button"));
+	compress_image_button=GTK_WIDGET(gtk_builder_get_object(builder,"compress_image_button"));
 
 	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));
