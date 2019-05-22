@@ -587,7 +587,7 @@ int *recup11(char *datapath,char *datapath2)
 	int o = 0;
 	while(o < nbit)//*sommef != -1)
 	{
-		printf("that fuckinh sommed is : %i\n",*sommef);
+		//printf("that fuckinh sommed is : %i\n",*sommef);
 		*fou = *sommef;
 		fou += 1;
 		sommef += 1;
@@ -1689,6 +1689,12 @@ char *retour_lzw(char *filename)
 	char *bin2 = calloc(1,10*sizeof(char));
 	asprintf(&bin2,"%s.bin2",filename);
 	
+
+	long somme = size(bin1)+size(bin2);
+	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size(bin1));
+	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size(bin2));
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size(bin1)+size(bin2));
+	printf("value = %f\n",(abss(4-((double)(size(bin1) / (double)size(bin2))))));
 	//int saude = sod(d);
 	//printf("saud = %i\n",saude);
 	//int saud = sod(e);
@@ -1726,13 +1732,13 @@ char *retour_lzw(char *filename)
 		printf("on est sur 9 bits\n");
 		rep = recup9(bin1,bin2);
 	}
-	else if(abss(4 - (double)((size(bin1) / size(bin2))) < 0.1))
+	else if(abss(4-((double)(size(bin1) / (double)size(bin2))))< 0.1)
 	{
 		which = 10;
 		printf("on est sur 10 bits\n");
 		rep = recup10(bin1,bin2);
 	}
-	else if(abss(2 - (double)((size(bin1) / size(bin2))) < 0.1))
+	else if(abss(2-((double)(size(bin1) / (double)size(bin2))))< 0.1)
 	{
 		which = 12;
 		//printf("on est sur 11 bits\n");
@@ -1750,17 +1756,18 @@ char *retour_lzw(char *filename)
 	//struct double_tab *prisoner = build_neuf(tab2,*balec);
 	//int *ress = recup9("test.bin","testb.bin");
 
-	long somme = size(bin1)+size(bin2);
+	/*long somme = size(bin1)+size(bin2);
 	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size(bin1));
 	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size(bin2));
-	printf("La somme totale de l'enregistrement est de : %li octets\n",size(bin1)+size(bin2));
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size(bin1)+size(bin2));*/
 
 	char *rett = inch(rep,try);
+	printf("len = %li\n",strlen(rett));
 	printf("Resultat apres decompression : %s\n",rett);
 	//int apr = strlen(input);
 	//printf("%li * %i = %i octets\n\n",strlen(input),8,apr);
 	//printf("nbword = %i\n",nbword(tty));
-	//printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);
+	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)(strlen(rett))*100);
 
 	//(void)saude;
 	(void)try;
