@@ -15,6 +15,7 @@
 #include "clara2/encoding.c"
 #include "clara2/decoding.h"
 #include "clara2/decoding.c"
+#include "antoine/total.c"
 #include "dorian/comp.c"
 #include "dorian/compressionimage.c"
 //#include "dorian/decomp.c"
@@ -274,15 +275,20 @@ void cp_file(char *filename)   // copy file choosed in the folder tmp/
 int dechiffrement_needed(char *s)
 {
 	int len = strlen(s);
-	int i = 0;
-	int b = 1;
-	while(i < len/2 && b == 1)
-	{
-		if(!((int)s[i] >= 48 && (int)s[i] <= 57) && s[i] != ',')
-			b = 0;
-		i+=1;
-	}
-	return b;
+	if(s[len-1] ==',')
+		return 1;
+	return 0;
+}
+
+int file_exists(char *path,char *filename)
+{
+	asprintf(&filename,"%s%s%s",path,filename,".bin1");
+	int exists = (access(filename,F_OK)!=-1);
+	return exists;
+
+
+
+
 }
 
 void on_valid_button_clicked()
@@ -296,31 +302,53 @@ void on_valid_button_clicked()
 	char *fln = g_strdup(filename_open);
 	printf("fln = %s\n",fln);
 	
-	decomp = whole_decomp(fln);
-	
-	printf("pbivb = %s\n",decomp);
-	const gchar *result = calloc(strlen(decomp),sizeof(char));
-	//strcpy(decomp,result);
-	
-	
-	//~ if( dechiffrement_needed(decomp))
-	if (1)
+
+	if(file_exists("../fichiers_utilisateur/",fln) == 0)
 	{
-		result = decoding(decomp);
-		printf("res = %s\n",result);
-		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
-		GtkTextIter end;
-		gtk_text_buffer_get_end_iter(text_buffer,&end);
-		gtk_text_buffer_insert(text_buffer,&end,result,-1);
+
+		decomp = whole_decomp(fln);
+	
+		printf("pbivb = %s\n",decomp);
+		const gchar *result = calloc(strlen(decomp),sizeof(char));
+		//strcpy(decomp,result);
+	
+	
+
+	//~ if( dechiffrement_needed(decomp))
+		if (dechiffrement_needed(decomp))
+		{
+			result = decoding(decomp);
+			printf("res = %s\n",result);
+			text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+			GtkTextIter end;
+			gtk_text_buffer_get_end_iter(text_buffer,&end);
+			gtk_text_buffer_insert(text_buffer,&end,result,-1);
+		}
+		else
+		{
+			result =decomp;
+			printf("res = %s\n",result);
+			text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
+			GtkTextIter end;
+			gtk_text_buffer_get_end_iter(text_buffer,&end);
+			gtk_text_buffer_insert(text_buffer,&end,result,-1);
+		}
 	}
 	else
 	{
-		result =decomp;
-		printf("res = %s\n",result);
+		printf("cacaboudin\n");
+		char *overleaf = calloc(1,sizeof(char));
+		asprintf(&overleaf,"%s%s","../fichiers_utilisateur/",fln);
+		decomp = retour_lzw(overleaf);
+		const gchar *result = calloc(strlen(decomp),sizeof(char));
+		result = decomp;
 		text_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_zone));
 		GtkTextIter end;
 		gtk_text_buffer_get_end_iter(text_buffer,&end);
 		gtk_text_buffer_insert(text_buffer,&end,result,-1);
+
+
+		
 	}
 	
 	
@@ -441,6 +469,10 @@ void on_oui_button_clicked()
 	{
 		
 		whole_comp(toencode,copy);
+	}
+	else
+	{
+		work_lzw(toencode,copy);
 	}
 
 	//cas de compression lzw
