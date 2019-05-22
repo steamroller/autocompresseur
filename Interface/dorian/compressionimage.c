@@ -95,14 +95,14 @@ void freematrix(struct matrix *mat)
 }
 void freenode(struct node *no)
 {
-    if(no->left==NULL && no->left==NULL)
-    {
-        free(no);
-    }
     if(no->left!=NULL)
         freenode(no->left);
     if(no->right!=NULL)
         freenode(no->right);
+    if(no->left==NULL && no->right==NULL)
+    {
+        free(no);
+    }
 }
 void freeens(struct ensemble *ens)
 {

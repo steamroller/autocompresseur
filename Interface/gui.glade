@@ -459,7 +459,7 @@
           </object>
           <packing>
             <property name="x">134</property>
-            <property name="y">98</property>
+            <property name="y">90</property>
           </packing>
         </child>
         <child>
@@ -477,7 +477,7 @@
           </object>
           <packing>
             <property name="x">134</property>
-            <property name="y">154</property>
+            <property name="y">146</property>
           </packing>
         </child>
         <child>
@@ -495,7 +495,7 @@
           </object>
           <packing>
             <property name="x">134</property>
-            <property name="y">264</property>
+            <property name="y">307</property>
           </packing>
         </child>
         <child>
@@ -507,7 +507,7 @@
             <property name="pixbuf">bysteamroller.png</property>
           </object>
           <packing>
-            <property name="y">361</property>
+            <property name="y">381</property>
           </packing>
         </child>
         <child>
@@ -524,6 +524,8 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
@@ -555,7 +557,60 @@
           </object>
           <packing>
             <property name="x">134</property>
-            <property name="y">209</property>
+            <property name="y">201</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="compress_image_button1">
+            <property name="name">compress_image_button</property>
+            <property name="width_request">184</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="on_decompress_image_button_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="icon_name">applications-accessories</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">False</property>
+                    <property name="padding">5</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="label" translatable="yes">Load image</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">134</property>
+            <property name="y">251</property>
           </packing>
         </child>
       </object>

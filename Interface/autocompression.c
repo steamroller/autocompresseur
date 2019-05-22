@@ -16,8 +16,8 @@
 #include "clara2/decoding.h"
 #include "clara2/decoding.c"
 #include "antoine/total.c"
-#include "dorian/comp.c"
-#include "dorian/compressionimage.c"
+//#include "dorian/comp.c"
+//#include "dorian/compressionimage.c"
 //#include "dorian/decomp.c"
 
 
@@ -45,6 +45,7 @@ GtkWidget* close_edit_button;
 GtkWidget* oui_button;
 GtkWidget* valid_button;
 GtkWidget* compress_image_button;
+GtkWidget* compress_image_button1;
 
 GtkWidget* switch_rsa;
 GtkWidget* switch_huffman;
@@ -597,8 +598,57 @@ void arrange_tree_view(GtkWidget* view) {
   
 }  
 
+
+void on_decompress_image_button_clicked()
+{
+	
+	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(compress_image_button1));
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	dialog = gtk_file_chooser_dialog_new ("Open File",GTK_WINDOW(toplevel)     
+,action,
+        "open",GTK_RESPONSE_ACCEPT,"Cancel",GTK_RESPONSE_CANCEL, NULL);
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        char * filename1 = gtk_file_chooser_get_filename (chooser);
+		printf("f = %s\n", filename1);
+		//comp(filename1);
+
+		FILE *fp;
+  		char path[1035];
+		asprintf(&filename1, "%s%s", "dorian/decomp ", filename1);
+		printf("command :%s\n", filename1);
+
+  		/* Open the command for reading. */
+  		fp = popen(filename1 , "r");
+  		if (fp == NULL) {
+    		printf("Failed to run command\n" );
+    		exit(1);
+  		}
+
+  		/* Read the output a line at a time - output it. */
+  		while (fgets(path, sizeof(path)-1, fp) != NULL) {
+    		printf("%s", path);
+  		}
+
+  		/* close */
+  		pclose(fp);
+	}
+	else
+		g_print("You pressed the cancel \n");
+
+	gtk_widget_destroy(dialog);
+
+}
+
+
+
+
+
 void on_compress_image_button_clicked()
 {
+
 	GtkWidget *toplevel=gtk_widget_get_toplevel(GTK_WIDGET(compress_image_button));
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
@@ -609,10 +659,32 @@ void on_compress_image_button_clicked()
     {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         char * filename1 = gtk_file_chooser_get_filename (chooser);
-		comp(filename1);
+		printf("f = %s\n", filename1);
+		//comp(filename1);
+
+		FILE *fp;
+  		char path[1035];
+		asprintf(&filename1, "%s%s", "dorian/comp ", filename1);
+		printf("command :%s\n", filename1);
+
+  		/* Open the command for reading. */
+  		fp = popen(filename1 , "r");
+  		if (fp == NULL) {
+    		printf("Failed to run command\n" );
+    		exit(1);
+  		}
+
+  		/* Read the output a line at a time - output it. */
+  		while (fgets(path, sizeof(path)-1, fp) != NULL) {
+    		printf("%s", path);
+  		}
+
+  		/* close */
+  		pclose(fp);
 	}
 	else
 		g_print("You pressed the cancel \n");
+
 	gtk_widget_destroy(dialog);
 }
 
@@ -661,7 +733,7 @@ int main(int argc, char *argv[])
 	GdkScreen *screen = gdk_display_get_default_screen (display);
 	GtkCssProvider *provider = gtk_css_provider_new();
 	gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	const gchar *css = "scrolledwindow {border-color:green;} entry {border-color:orange;}";//background-color:rgb(51, 153, 51);}";
+	const gchar *css = "scrolledwindow {border:2px groove; border-color:green;} entry {border-color:orange;} button {border-color:black;}";//background-color:rgb(51, 153, 51);}";
 	gtk_css_provider_load_from_data(provider, css, -1, NULL);
 	g_object_unref(provider);
 
@@ -683,6 +755,7 @@ int main(int argc, char *argv[])
 	oui_button=GTK_WIDGET(gtk_builder_get_object(builder,"oui_button"));
 	valid_button=GTK_WIDGET(gtk_builder_get_object(builder,"valid_button"));
 	compress_image_button=GTK_WIDGET(gtk_builder_get_object(builder,"compress_image_button"));
+	compress_image_button1=GTK_WIDGET(gtk_builder_get_object(builder,"compress_image_button1"));
 
 	connexion_message= GTK_LABEL(gtk_builder_get_object(builder,"connexion_message"));
 	name_entry=GTK_ENTRY(gtk_builder_get_object(builder,"login_entry"));

@@ -3,8 +3,8 @@
 #include <SDL/SDL.h>
 #include "SDL/SDL_image.h"
 #include "compressionimage.h"
-#include "display.c"
-#include "pixel_operations.c"
+#include "display.h"
+#include "pixel_operations.h"
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -60,13 +60,11 @@ int comp(char *path)
             ensemble=ensemble->next;
         }
     };
-    char name[40];
-    //char namme[40];
-	char *namme = calloc(2,2*sizeof(char));
+    char *name=calloc(1,1);
+    char *namme=calloc(1,1);
 
-    sprintf(name,"%s.DCT",path);
-    //sprintf(namme,"%s.tree",name);
-	asprintf(&namme,"%s%s",name,".tree");
+    asprintf(&name,"%s.DCT",path);
+    asprintf(&namme,"%s%s",name, ".tree");
     
     struct stat *stating=fichiercompress2(name,nwidth,nheight);
 
@@ -107,12 +105,15 @@ int comp(char *path)
         puts(path);
     return 0;
 }
-/*
+
 int main(int argc, char* argv[])
 {
     if(argc!=2)
+	{
+		printf("argc:%d, argv[1]:%s\n", argc, argv[1]);
         errx(1,"not good nomber of arg");
+	}
     comp(argv[1]);
     return 1;
-}*/
+}
 
