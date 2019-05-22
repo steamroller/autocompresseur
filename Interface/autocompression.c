@@ -655,6 +655,17 @@ int main(int argc, char *argv[])
 	filename_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_window"));
 	filename_open_window=GTK_WIDGET(gtk_builder_get_object(builder,"filename_open_window"));
 
+
+	/* TEXT ZONE COLORATION */
+	GdkDisplay *display = gdk_display_get_default();
+	GdkScreen *screen = gdk_display_get_default_screen (display);
+	GtkCssProvider *provider = gtk_css_provider_new();
+	gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	const gchar *css = "scrolledwindow {border-color:green;} entry {border-color:orange;}";//background-color:rgb(51, 153, 51);}";
+	gtk_css_provider_load_from_data(provider, css, -1, NULL);
+	g_object_unref(provider);
+
+
     switch_rsa=GTK_WIDGET(gtk_builder_get_object(builder,"switch_rsa"));
  	switch_huffman=GTK_WIDGET(gtk_builder_get_object(builder,"switch_huffman"));
 	switch_dictionnary=GTK_WIDGET(gtk_builder_get_object(builder,"switch_dictionnary"));

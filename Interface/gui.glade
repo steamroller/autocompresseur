@@ -10,6 +10,7 @@
   <object class="GtkApplicationWindow" id="edit_window">
     <property name="name">edit_window</property>
     <property name="can_focus">False</property>
+    <property name="window_position">center</property>
     <signal name="destroy" handler="on_edit_window_destroy" swapped="no"/>
     <child>
       <placeholder/>
@@ -20,31 +21,6 @@
         <property name="can_focus">False</property>
         <property name="vexpand">True</property>
         <property name="resize_mode">immediate</property>
-        <child>
-          <object class="GtkTextView" id="text_zone">
-            <property name="name">text_zone</property>
-            <property name="width_request">785</property>
-            <property name="height_request">400</property>
-            <property name="visible">True</property>
-            <property name="app_paintable">True</property>
-            <property name="can_focus">True</property>
-            <property name="margin_left">19</property>
-            <property name="margin_right">21</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">20</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">False</property>
-            <property name="resize_mode">immediate</property>
-            <property name="hscroll_policy">natural</property>
-            <property name="wrap_mode">word</property>
-            <property name="input_purpose">alpha</property>
-            <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_WORD_COMPLETION | GTK_INPUT_HINT_VERTICAL_WRITING | GTK_INPUT_HINT_EMOJI | GTK_INPUT_HINT_NONE</property>
-          </object>
-          <packing>
-            <property name="x">29</property>
-            <property name="y">109</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkButton" id="save_button">
             <property name="label">gtk-save</property>
@@ -107,6 +83,41 @@
             <property name="y">44</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="width_request">785</property>
+            <property name="height_request">400</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="margin_right">27</property>
+            <property name="margin_bottom">25</property>
+            <property name="resize_mode">immediate</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="vscrollbar_policy">always</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="text_zone">
+                <property name="name">text_zone</property>
+                <property name="width_request">785</property>
+                <property name="height_request">400</property>
+                <property name="visible">True</property>
+                <property name="app_paintable">True</property>
+                <property name="can_focus">True</property>
+                <property name="hexpand">False</property>
+                <property name="vexpand">False</property>
+                <property name="resize_mode">immediate</property>
+                <property name="hscroll_policy">natural</property>
+                <property name="wrap_mode">word</property>
+                <property name="input_purpose">alpha</property>
+                <property name="input_hints">GTK_INPUT_HINT_SPELLCHECK | GTK_INPUT_HINT_WORD_COMPLETION | GTK_INPUT_HINT_VERTICAL_WRITING | GTK_INPUT_HINT_EMOJI | GTK_INPUT_HINT_NONE</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">29</property>
+            <property name="y">109</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -125,29 +136,13 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
-          <object class="GtkButton" id="valid_button">
-            <property name="label">gtk-ok</property>
-            <property name="name">valid_button</property>
-            <property name="width_request">55</property>
-            <property name="height_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="use_stock">True</property>
-            <property name="always_show_image">True</property>
-            <signal name="clicked" handler="on_valid_button_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">360</property>
-            <property name="y">22</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="margin_bottom">35</property>
+            <property name="resize_mode">immediate</property>
             <child>
               <object class="GtkLabel">
                 <property name="width_request">105</property>
@@ -155,7 +150,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="yes">nom du fichier : </property>
+                <property name="label" translatable="yes">Filename : </property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -165,16 +160,41 @@
             </child>
             <child>
               <object class="GtkFileChooserButton" id="filename_open_chooser">
+                <property name="width_request">150</property>
                 <property name="visible">True</property>
+                <property name="app_paintable">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="title" translatable="yes"/>
+                <property name="resize_mode">immediate</property>
+                <property name="title" translatable="yes">Choose a file...</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="valid_button">
+                <property name="label">gtk-ok</property>
+                <property name="name">valid_button</property>
+                <property name="width_request">55</property>
+                <property name="height_request">50</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_valid_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="padding">87</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -206,7 +226,7 @@
             <property name="height_request">20</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">nom du fichier : </property>
+            <property name="label" translatable="yes">Filename : </property>
           </object>
           <packing>
             <property name="x">38</property>
@@ -270,7 +290,7 @@
             <property name="input_hints">GTK_INPUT_HINT_UPPERCASE_CHARS | GTK_INPUT_HINT_UPPERCASE_WORDS | GTK_INPUT_HINT_NONE</property>
           </object>
           <packing>
-            <property name="x">274</property>
+            <property name="x">276</property>
             <property name="y">121</property>
           </packing>
         </child>
@@ -297,7 +317,7 @@
             <property name="label" translatable="yes">            LOGIN :</property>
           </object>
           <packing>
-            <property name="x">171</property>
+            <property name="x">164</property>
             <property name="y">61</property>
           </packing>
         </child>
@@ -323,11 +343,12 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="margin_right">35</property>
             <signal name="clicked" handler="on_connexion_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="x">305</property>
-            <property name="y">193</property>
+            <property name="y">192</property>
           </packing>
         </child>
         <child>
@@ -341,7 +362,7 @@
             <signal name="clicked" handler="on_new_user_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">157</property>
+            <property name="x">145</property>
             <property name="y">192</property>
           </packing>
         </child>
@@ -426,25 +447,26 @@
           <object class="GtkButton" id="new_file_button">
             <property name="label">gtk-new</property>
             <property name="name">new_file_button</property>
-            <property name="width_request">150</property>
+            <property name="width_request">184</property>
             <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="margin_right">130</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="on_new_file_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="x">134</property>
-            <property name="y">68</property>
+            <property name="y">98</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="open_file_button">
             <property name="label">gtk-open</property>
             <property name="name">open_file_button</property>
-            <property name="width_request">150</property>
+            <property name="width_request">184</property>
             <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -454,15 +476,15 @@
             <signal name="clicked" handler="on_open_file_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">133</property>
-            <property name="y">124</property>
+            <property name="x">134</property>
+            <property name="y">154</property>
           </packing>
         </child>
         <child>
           <object class="GtkButton" id="setting_button">
             <property name="label">gtk-properties</property>
             <property name="name">setting_button</property>
-            <property name="width_request">150</property>
+            <property name="width_request">184</property>
             <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -472,8 +494,8 @@
             <signal name="clicked" handler="on_setting_button_clicked" swapped="no"/>
           </object>
           <packing>
-            <property name="x">131</property>
-            <property name="y">234</property>
+            <property name="x">134</property>
+            <property name="y">264</property>
           </packing>
         </child>
         <child>
@@ -490,19 +512,50 @@
         </child>
         <child>
           <object class="GtkButton" id="compress_image_button">
-            <property name="label">compression Image</property>
             <property name="name">compress_image_button</property>
-            <property name="width_request">150</property>
+            <property name="width_request">184</property>
             <property name="height_request">40</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="on_compress_image_button_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">applications-graphics</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="padding">3</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_left">5</property>
+                    <property name="label" translatable="yes">Image compression</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="x">129</property>
-            <property name="y">179</property>
+            <property name="x">134</property>
+            <property name="y">209</property>
           </packing>
         </child>
       </object>
@@ -526,6 +579,7 @@
             <property name="height_request">26</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="margin_right">40</property>
             <property name="active">True</property>
             <signal name="state-set" handler="on_switch_rsa_state_set" swapped="no"/>
           </object>
@@ -543,7 +597,7 @@
             <property name="label" translatable="yes">Chiffrement par RSA</property>
           </object>
           <packing>
-            <property name="x">45</property>
+            <property name="x">42</property>
             <property name="y">56</property>
           </packing>
         </child>
@@ -567,7 +621,7 @@
           <object class="GtkSwitch" id="switch_dictionnary">
             <property name="use_action_appearance">True</property>
             <property name="name">switch_dictionnary</property>
-            <property name="width_request">70</property>
+            <property name="width_request">82</property>
             <property name="height_request">26</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -588,7 +642,7 @@
             <property name="label" translatable="yes">Compression par Huffman</property>
           </object>
           <packing>
-            <property name="x">42</property>
+            <property name="x">41</property>
             <property name="y">103</property>
           </packing>
         </child>
@@ -601,7 +655,7 @@
             <property name="label" translatable="yes">Compression par dictionnaire</property>
           </object>
           <packing>
-            <property name="x">42</property>
+            <property name="x">45</property>
             <property name="y">151</property>
           </packing>
         </child>
@@ -614,7 +668,7 @@
             <property name="pixbuf">image1.png</property>
           </object>
           <packing>
-            <property name="x">58</property>
+            <property name="x">50</property>
           </packing>
         </child>
         <child>
@@ -626,6 +680,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="margin_bottom">15</property>
             <property name="use_stock">True</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="on_apply_button_clicked" swapped="no"/>
