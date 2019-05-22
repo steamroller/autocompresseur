@@ -76,7 +76,7 @@ struct tabint *neufbits(int *tab,int nbw)
 }
 
 //FONCTION PRINCIPALE
-struct double_tab *build_neuf(int *tab,int nbw)
+struct double_tab *build_neuf(int *tab,int nbw,char *filename)
 {
 	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
 	u_int8_t *kk = k;
@@ -94,9 +94,13 @@ struct double_tab *build_neuf(int *tab,int nbw)
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
 	final->res = r;
+	char *one = calloc(1,sizeof(char));
+	char *two = calloc(1,sizeof(char));
+	asprintf(&one,"%s.bin1",filename);
+	asprintf(&two,"%s.bin2",filename);
 
 	FILE *f1;
-	f1 = fopen("test.bin","wb");
+	f1 = fopen(one,"wb");
 	for(int i = 0; i < nbw;i++)
 	{
 		fwrite(&(*kk),1,1,f1);
@@ -105,7 +109,7 @@ struct double_tab *build_neuf(int *tab,int nbw)
 	fclose(f1);
 
 	FILE *f2;
-	f2 = fopen("testb.bin","wb");
+	f2 = fopen(two,"wb");
 	for(int i = 0; i < nbw/8 + 1*(nbw%8 != 0);i++)
 	{
 		fwrite(&(*r),1,1,f2);
@@ -223,7 +227,7 @@ struct tabint *dixbits(int *tab,int nbw)
 
 
 //FONCTION PRINCIPALE
-struct double_tab *build_dix(int *tab,int nbw)
+struct double_tab *build_dix(int *tab,int nbw,char *filename)
 {
 	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
 	u_int8_t *kk = k;
@@ -241,9 +245,14 @@ struct double_tab *build_dix(int *tab,int nbw)
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
 	final->res = r;
+	
+	char *one = calloc(1,sizeof(char));
+	char *two = calloc(1,sizeof(char));
+	asprintf(&one,"%s.bin1",filename);
+	asprintf(&two,"%s.bin2",filename);
 
 	FILE *f1;
-	f1 = fopen("test.bin","wb");
+	f1 = fopen(one,"wb");
 	for(int i = 0; i < nbw;i++)
 	{
 		fwrite(&(*kk),1,1,f1);
@@ -252,7 +261,7 @@ struct double_tab *build_dix(int *tab,int nbw)
 	fclose(f1);
 
 	FILE *f2;
-	f2 = fopen("testb.bin","wb");
+	f2 = fopen(two,"wb");
 	for(int i = 0; i < nbw/4 + 1*(nbw%8 != 0);i++)
 	{
 		fwrite(&(*r),1,1,f2);
@@ -399,7 +408,7 @@ struct tabint *onzebits(int *tab,int nbw)
 }
 
 //FONCTION PRINCIPALE
-struct double_tab *build_onze(int *tab,int nbw)
+struct double_tab *build_onze(int *tab,int nbw, char *filename)
 {
 	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
 	u_int8_t *kk = k;
@@ -418,9 +427,14 @@ struct double_tab *build_onze(int *tab,int nbw)
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
 	final->res = r;
+	
+	char *one = calloc(1,sizeof(char));
+	char *two = calloc(1,sizeof(char));
+	asprintf(&one,"%s.bin1",filename);
+	asprintf(&two,"%s.bin2",filename);
 
 	FILE *f1;
-	f1 = fopen("test.bin","wb");
+	f1 = fopen(one,"wb");
 	for(int i = 0; i < nbw;i++)
 	{
 		fwrite(&(*kk),1,1,f1);
@@ -429,7 +443,7 @@ struct double_tab *build_onze(int *tab,int nbw)
 	fclose(f1);
 
 	FILE *f2;
-	f2 = fopen("testb.bin","wb");
+	f2 = fopen(two,"wb");
 	for(int i = 0; i < it;i++)
 	{
 		//printf("writtenr = %i\n",*r);
@@ -618,7 +632,7 @@ struct tabint *douzebits(int *tab,int nbw)
 }
 
 //FONCTION PRINCIPALE
-struct double_tab *build_douze(int *tab,int nbw)
+struct double_tab *build_douze(int *tab,int nbw,char *filename)
 {
 	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
 	u_int8_t *kk = k;
@@ -636,9 +650,14 @@ struct double_tab *build_douze(int *tab,int nbw)
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
 	final->res = r;
+	
+	char *one = calloc(1,sizeof(char));
+	char *two = calloc(1,sizeof(char));
+	asprintf(&one,"%s.bin1",filename);
+	asprintf(&two,"%s.bin2",filename);
 
 	FILE *f1;
-	f1 = fopen("test.bin","wb");
+	f1 = fopen(one,"wb");
 	for(int i = 0; i < nbw;i++)
 	{
 		fwrite(&(*kk),1,1,f1);
@@ -647,7 +666,7 @@ struct double_tab *build_douze(int *tab,int nbw)
 	fclose(f1);
 
 	FILE *f2;
-	f2 = fopen("testb.bin","wb");
+	f2 = fopen(two,"wb");
 	for(int i = 0; i < nbw/2 + 1*(nbw%8 != 0);i++)
 	{
 		fwrite(&(*r),1,1,f2);
@@ -722,7 +741,7 @@ int *recup12(char *datapath,char *datapath2)
 //============================================================================
 
 //FONCTION PRINCIPALE
-struct double_tab *build_huit(int *tab,int nbw)
+struct double_tab *build_huit(int *tab,int nbw,char *filename)
 {
 	u_int8_t *k = calloc(1,nbw*sizeof(u_int8_t));
 	u_int8_t *kk = k;
@@ -740,9 +759,13 @@ struct double_tab *build_huit(int *tab,int nbw)
 	struct double_tab *final = calloc(1,sizeof(struct double_tab));
 	final->keep = kk;
 	final->res = r;
+	char *one = calloc(1,sizeof(char));
+	char *two = calloc(1,sizeof(char));
+	asprintf(&one,"%s.bin1",filename);
+	asprintf(&two,"%s.bin2",filename);
 
 	FILE *f1;
-	f1 = fopen("test.bin","wb");
+	f1 = fopen(one,"wb");
 	for(int i = 0; i < nbw;i++)
 	{
 		fwrite(&(*kk),1,1,f1);
@@ -750,7 +773,7 @@ struct double_tab *build_huit(int *tab,int nbw)
 	}
 	fclose(f1);
 	FILE *f2;
-	f2 = fopen("testb.bin","wb");
+	f2 = fopen(two,"wb");
 	fclose(f2);
 
 
@@ -1526,10 +1549,10 @@ char *to_ascii(char *nul)
 	return bis;
 }
 
-void work_lzw(char *input)
+void work_lzw(char *input, char *filename)
 {
 
-
+	asprintf(&filename,"%s%s","../fichiers_utilisateur/",filename);
 	struct dictionary *ret = build();
 	struct dictionary *c = ret;
 	struct dictionary *e = ret;
@@ -1562,88 +1585,74 @@ void work_lzw(char *input)
 	int saude = sod(d);
 	//printf("saud = %i\n",saude);
 	int saud = sod(e);
-	int pr = *balec*nec(saud);
+	//int pr = *balec*nec(saud);
 	//printf("pr = %i\n",pr);
 	//printab(n);
-	printf("%i * %i = %i bits\n\n",*balec,nec(saud),pr);
+	//printf("%i * %i = %i bits\n\n",*balec,nec(saud),pr);
 	/*printf("ce tab : %i\n",*n);
 	n += 1;
 	printf("ce tab : %i\n",*n);*/
 	//printab(n);
 	
+		///////////////:ICIIIIIIIIIIIIII
 	int which = -1;
 	int *rep = calloc(1,10000*sizeof(int));
 	if(saud < 256)
 	{
-		struct double_tab *prisoner = build_huit(tab2,*balec);
+		struct double_tab *prisoner = build_huit(tab2,*balec,filename);
 		(void)prisoner;
 		which = 8;
 		//printf("on est sur 8 bits\n");
-		rep = recup8("test.bin","testb.bin");
-		int a = 0;
-		while(*rep != -1)
-		{
-			a+=1;
-			//printf("rep %i\n",*rep);
-			rep += 1;
-		}
-		*rep = -1;
-		rep -= a + 1;
+		
 
 	}
 	else if(saud < 512)
 	{
-		struct double_tab *prisoner = build_neuf(tab2,*balec);
+		struct double_tab *prisoner = build_neuf(tab2,*balec,filename);
 		(void)prisoner;
 		which = 9;
 		//printf("on est sur 9 bits\n");
-		rep = recup9("test.bin","testb.bin");
+		
 	}
 	else if(saud < 1023)
 	{
-		struct double_tab *prisoner = build_dix(tab2,*balec);
+		struct double_tab *prisoner = build_dix(tab2,*balec,filename);
 		(void)prisoner;
 		which = 10;
 		//printf("on est sur 10 bits\n");
-		rep = recup10("test.bin","testb.bin");
+		
 	}
 	else if(saud < 2048)
 	{
-		struct double_tab *prisoner = build_onze(tab2,*balec);
+		struct double_tab *prisoner = build_onze(tab2,*balec,filename);
 		(void)prisoner;
 		which = 11;
 		//printf("on est sur 11 bits\n");
-		rep = recup11("test.bin","testb.bin");
+		
 	}
 	else 
 	{
-		struct double_tab *prisoner = build_douze(tab2,*balec);
+		struct double_tab *prisoner = build_douze(tab2,*balec,filename);
 		(void)prisoner;
 		which = 12;
 		//printf("on est sur 12 bits\n");
-		rep = recup12("test.bin","testb.bin");
+		
 	}
 	printf("on travail sur %i bits\n",which);
 
-	//struct double_tab *prisoner = build_neuf(tab2,*balec);
-	//int *ress = recup9("test.bin","testb.bin");
+	char *bin1 = calloc(1,10*sizeof(char));
+	asprintf(&bin1,"%s.bin1",filename);
+	char *bin2 = calloc(1,10*sizeof(char));
+	asprintf(&bin2,"%s.bin2",filename);
 
-	long somme = size("test.bin")+size("testb.bin");
-	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size("test.bin"));
-	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size("testb.bin"));
-	printf("La somme totale de l'enregistrement est de : %li octets\n",size("test.bin")+size("testb.bin"));
-
-
-	printf("Resultat apres decompression : %s\n -----> ",inch(rep,try));
-	int apr = strlen(input);
-	printf("%li * %i = %i octets\n\n",strlen(input),8,apr);
-	//printf("nbword = %i\n",nbword(tty));
-	printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);
-
+	long somme = size(bin1)+size(bin2);
+	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size(bin1));
+	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size(bin2));
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size(bin1)+size(bin2));
+	(void)somme;
 	(void)saude;
-	(void)d;
-	(void)e;
 	(void)try;
+	(void)rep;
 
 
 	/*size_t v = 0;
@@ -1664,6 +1673,101 @@ void work_lzw(char *input)
 	
 	//~ work_lzw(argv[1]);
 //~ }
+
+double abss(double d)
+{
+	if(d > 0)
+		return d;
+	return -d;
+}
+char *retour_lzw(char *filename)
+{
+
+	char *try = calloc(1,500*sizeof(char));
+	char *bin1 = calloc(1,10*sizeof(char));
+	asprintf(&bin1,"%s.bin1",filename);
+	char *bin2 = calloc(1,10*sizeof(char));
+	asprintf(&bin2,"%s.bin2",filename);
+	
+	//int saude = sod(d);
+	//printf("saud = %i\n",saude);
+	//int saud = sod(e);
+	//int pr = *balec*nec(saud);
+	//printf("pr = %i\n",pr);
+	//printab(n);
+	//printf("%i * %i = %i bits\n\n",*balec,nec(saud),pr);
+	/*printf("ce tab : %i\n",*n);
+	n += 1;
+	printf("ce tab : %i\n",*n);*/
+	//printab(n);
+	printf("what the hell\n");
+		///////////////:ICIIIIIIIIIIIIII
+	int which = -1;
+	int *rep = calloc(1,10000*sizeof(int));
+	if(size(bin2) == 0)
+	{
+		which = 8;
+		//printf("on est sur 8 bits\n");
+		rep = recup8(bin1,bin2);
+		int a = 0;
+		while(*rep != -1)
+		{
+			a+=1;
+			//printf("rep %i\n",*rep);
+			rep += 1;
+		}
+		*rep = -1;
+		rep -= a + 1;
+
+	}
+	else if((double)(size(bin1) / size(bin2)) > 4)
+	{
+		which = 9;
+		printf("on est sur 9 bits\n");
+		rep = recup9(bin1,bin2);
+	}
+	else if(abss(4 - (double)((size(bin1) / size(bin2))) < 0.1))
+	{
+		which = 10;
+		printf("on est sur 10 bits\n");
+		rep = recup10(bin1,bin2);
+	}
+	else if(abss(2 - (double)((size(bin1) / size(bin2))) < 0.1))
+	{
+		which = 12;
+		//printf("on est sur 11 bits\n");
+		rep = recup12(bin1,bin2);
+	}
+	else 
+	{
+		which = 11;
+		//printf("on est sur 12 bits\n");
+		rep = recup11(bin1,bin2);
+	}
+	printf("on travail sur %i bits\n",which);
+		////////////////LAAAAAAAAAAAAAAAAA
+
+	//struct double_tab *prisoner = build_neuf(tab2,*balec);
+	//int *ress = recup9("test.bin","testb.bin");
+
+	long somme = size(bin1)+size(bin2);
+	printf("LA TAILLE DU FICHIER TEST EST DE : %li\n",size(bin1));
+	printf("LA TAILLE DU FICHIER TESTB EST DE : %li\n",size(bin2));
+	printf("La somme totale de l'enregistrement est de : %li octets\n",size(bin1)+size(bin2));
+
+	char *rett = inch(rep,try);
+	printf("Resultat apres decompression : %s\n",rett);
+	//int apr = strlen(input);
+	//printf("%li * %i = %i octets\n\n",strlen(input),8,apr);
+	//printf("nbword = %i\n",nbword(tty));
+	//printf("Taux de compression : %.2f%%\n\n",100 - (double)somme/(double)apr*100);
+
+	//(void)saude;
+	(void)try;
+	(void)somme;
+	//(void)try;
+	return rett;
+}
 
 
 
