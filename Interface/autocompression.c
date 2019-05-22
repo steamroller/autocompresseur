@@ -299,9 +299,9 @@ void on_valid_button_clicked()
 	printf("Ouverture du fichier : %s \n\n--------------------------------------\n\n", filename_open);
 	
 	char *decomp;
-	printf("choco\n");
+	//printf("choco\n");
 	char *fln = g_strdup(filename_open);
-	printf("fln = %s\n",fln);
+	//printf("fln = %s\n",fln);
 	
 
 	if(file_exists("../fichiers_utilisateur/",fln) == 0)
@@ -309,7 +309,8 @@ void on_valid_button_clicked()
 
 		decomp = whole_decomp(fln);
 	
-		printf("pbivb = %s\n",decomp);
+		//
+		//printf("pbivb = %s\n",decomp);
 		const gchar *result = calloc(strlen(decomp),sizeof(char));
 		//strcpy(decomp,result);
 	
@@ -337,7 +338,7 @@ void on_valid_button_clicked()
 	}
 	else
 	{
-		printf("cacaboudin\n");
+		//printf("cacaboudin\n");
 		char *overleaf = calloc(1,sizeof(char));
 		asprintf(&overleaf,"%s%s","../fichiers_utilisateur/",fln);
 		decomp = retour_lzw(overleaf);

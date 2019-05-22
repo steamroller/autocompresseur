@@ -1087,7 +1087,7 @@ char *whole_decomp(char *path)
 	}
 	fclose(f2);*/
 
-	printf("dodo\n");
+	//printf("dodo\n");
 
 	char *terminus = decompress(data,align_data,tree,align_tree);
 	printf("decompress : %s\n",terminus);

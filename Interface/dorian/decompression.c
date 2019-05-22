@@ -114,7 +114,7 @@ struct DM_Im *decodage(char *pathtree,char *pathdct)
         }
     }
     col=value;
-    printf("line=%d && col= %d \n",line,col);
+	//printf("line=%d && col= %d \n",line,col);
     int v=0;
     int x=0;
     struct DM_Im *dm=initDM_Im(x,v,line,col);
@@ -211,8 +211,8 @@ struct DM_Im *decodage(char *pathtree,char *pathdct)
                 }
             }
             if(x==0 && v==0)
-                printf("d(%d,%d),b(%d,%d)=(%d,%d,%d)\n",
-                    v,x,a,b,abc->r,abc->g,abc->b);
+                //printf("d(%d,%d),b(%d,%d)=(%d,%d,%d)\n",
+                //    v,x,a,b,abc->r,abc->g,abc->b);
             a++;
             if(a==8)
             {
@@ -280,7 +280,7 @@ SDL_Surface *insertionDCTI(struct DM_Im *dm)
                     Uint8 r1=r/4;
                     Uint8 g1=g/4;
                     Uint8 b1=b/4;
-                    printf("pixel(%ld;%ld)=r1=%d,g1=%d,b1=%d\n",8*x+l,8*y+c,r1,g1,b1);
+                    //printf("pixel(%ld;%ld)=r1=%d,g1=%d,b1=%d\n",8*x+l,8*y+c,r1,g1,b1);
                     Uint32 pixel=SDL_MapRGBA(newsurface->format,r1,g1,b1,255);
                     put_pixel(newsurface,8*x+l,8*y+c,pixel);
                 }
