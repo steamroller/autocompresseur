@@ -61,10 +61,12 @@ int comp(char *path)
         }
     };
     char name[40];
-    char namme[40];
+    //char namme[40];
+	char *namme = calloc(2,2*sizeof(char));
 
     sprintf(name,"%s.DCT",path);
-    sprintf(namme,"%s.tree",name);
+    //sprintf(namme,"%s.tree",name);
+	asprintf(&namme,"%s%s",name,".tree");
     
     struct stat *stating=fichiercompress2(name,nwidth,nheight);
 
